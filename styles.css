@@ -863,7 +863,13 @@ textarea:focus-visible {
 
 /* --------------------------------------------------------------------------
    Tagline
-   Justin's, chosen 2026-08-25. It sits beside the wordmark as a lockup, but
+   Two of Justin's five lines, doing different jobs. The header carries
+   "Connecting Brands to Retail" — a descriptor, what the company IS. The hero
+   headline carries "From Opportunity to On Shelf" — what it DOES for you. Two
+   different lines is what stops the page repeating itself in 3.4rem type a
+   hundred pixels apart.
+
+   The lockup sits beside the wordmark, but
    only from 1100px up: below that the bar is already carrying the logo, four
    nav links and the CTA, and squeezing a fifth thing in makes the nav wrap —
    which makes the header taller, which is the one thing it must not do.
