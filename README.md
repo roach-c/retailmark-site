@@ -47,3 +47,14 @@ editing the existing MX or SPF ones, so email is untouched.
 
 Pushing to `main` publishes to GitHub Pages. `server.py` is for local
 development only and is not used in production.
+
+## Bump the asset version when you change CSS or JS
+
+`styles.css`, `script.js` and `hero3d.js` are linked with a `?v=` token in both
+HTML files. GitHub Pages serves them with `cache-control: max-age=600` and
+browsers hold them a good deal longer, so without the token a style change can
+sit invisible behind a stale file in someone's browser — during a demo, on the
+one machine you cannot hard-refresh.
+
+Change the token whenever those files change. Any new value works; the date
+plus a letter is just a readable convention.
