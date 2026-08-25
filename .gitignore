@@ -1,0 +1,7 @@
+# Real contact-form submissions from the local dev server. Personal data, and
+# there is no version of this that belongs in a public repository.
+submissions.json
+server.log
+
+.DS_Store
+__pycache__/

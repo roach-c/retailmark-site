@@ -1,0 +1,858 @@
+:root {
+  --black: #111111;
+  --charcoal: #222226;
+  --gold: #E8B923;
+  --gold-light: #F5D566;
+  --gold-dark: #C79A15;
+  --gold-soft: rgba(232, 185, 35, 0.12);
+  --cream: #FAF8F3;
+  --gray: #6B6B6F;
+  --gray-light: #9A9A9E;
+  --border: #E8E6DF;
+  --radius: 10px;
+  --radius-lg: 16px;
+  --max-width: 1160px;
+  /* The gutter for full-bleed rows: header and hero share it so they line up.
+     It scales with the viewport rather than sitting at a fixed 52px, because a
+     fixed gutter leaves the copy stranded on the far left of a wide monitor
+     with a canyon between it and the render. */
+  --edge: clamp(24px, 4.5vw, 110px);
+  --hero-copy: 620px;   /* the hero's left column; the render takes the rest */
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --shadow-sm: 0 1px 2px rgba(17, 17, 17, 0.04), 0 1px 3px rgba(17, 17, 17, 0.03);
+  --shadow-md: 0 8px 24px rgba(17, 17, 17, 0.07), 0 2px 6px rgba(17, 17, 17, 0.04);
+  --shadow-lg: 0 24px 48px rgba(17, 17, 17, 0.14), 0 8px 16px rgba(17, 17, 17, 0.06);
+  --shadow-gold: 0 10px 24px rgba(199, 154, 21, 0.28);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: "Manrope", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  color: var(--black);
+  background: #fff;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+.container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+h1, h2, h3 { line-height: 1.15; font-weight: 800; letter-spacing: -0.02em; }
+h2 { font-size: clamp(1.7rem, 3vw, 2.4rem); margin-bottom: 14px; }
+h3 { font-size: 1.15rem; margin-bottom: 10px; }
+p { color: var(--gray); }
+
+a { color: inherit; text-decoration: none; }
+
+::selection { background: var(--gold); color: var(--black); }
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--gold-dark);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.section-sub {
+  color: var(--gray);
+  max-width: 560px;
+  margin-bottom: 48px;
+  font-size: 1.05rem;
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 22px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: transform 0.2s var(--ease), box-shadow 0.2s var(--ease), background 0.2s var(--ease), color 0.2s var(--ease);
+  white-space: nowrap;
+}
+.btn-primary {
+  background: var(--gold);
+  color: var(--black);
+  box-shadow: var(--shadow-sm);
+}
+.btn-primary:hover {
+  background: var(--gold-dark);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-gold);
+}
+.btn-primary:active {
+  transform: translateY(0);
+  box-shadow: var(--shadow-sm);
+}
+.btn-ghost {
+  background: transparent;
+  border-color: var(--black);
+  color: var(--black);
+}
+.btn-ghost:hover {
+  background: var(--black);
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+.btn-ghost:active { transform: translateY(0); box-shadow: none; }
+.btn-lg { padding: 15px 30px; font-size: 1rem; }
+.btn-block { width: 100%; }
+.btn-nav { display: inline-flex; }
+
+/* Header */
+.site-header {
+  position: sticky;
+  top: 0;
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--border);
+  z-index: 100;
+  transition: box-shadow 0.25s var(--ease), border-color 0.25s var(--ease);
+}
+.site-header.is-scrolled {
+  box-shadow: 0 4px 20px rgba(17, 17, 17, 0.06);
+  border-bottom-color: transparent;
+}
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 14px;
+  padding-bottom: 14px;
+  gap: 24px;
+}
+.logo {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  background: var(--black);
+  border-radius: 8px;
+  /* Sized to fill the header, not to grow it. The bar's height is set by the
+     tallest thing in it — the CTA button at 52px — so the logo pill is built
+     to match that exactly and the banner does not move.
+
+     Uses retailmark-wordmark.png, which is the master logo cropped to its ink.
+     The master has the padding baked in: the wordmark is only 49% of that
+     file's height, so setting a height on it sized mostly empty space and left
+     the mark stranded in the middle of the black pill. Do not swap this back
+     to retailmark-logo.png without re-tuning the numbers below. */
+  padding: 10px 14px;
+  transition: transform 0.2s var(--ease), box-shadow 0.2s var(--ease);
+}
+.logo:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
+}
+.logo-img {
+  height: 32px;      /* + 20px of pill padding = 52px, the CTA button's height */
+  width: auto;
+  display: block;
+}
+.main-nav {
+  display: flex;
+  gap: 28px;
+  flex: 1;
+  justify-content: center;
+}
+.main-nav a {
+  position: relative;
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--charcoal);
+  padding: 4px 0;
+  transition: color 0.2s var(--ease);
+}
+.main-nav a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 100%;
+  bottom: -2px;
+  height: 2px;
+  background: var(--gold-dark);
+  border-radius: 2px;
+  transition: right 0.25s var(--ease);
+}
+.main-nav a:hover { color: var(--gold-dark); }
+.main-nav a:hover::after { right: 0; }
+.nav-toggle {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+}
+.nav-toggle span {
+  width: 24px;
+  height: 2px;
+  background: var(--black);
+  border-radius: 2px;
+  transition: transform 0.2s var(--ease), opacity 0.2s var(--ease);
+}
+
+/* Hero */
+.hero {
+  padding: 104px 0 76px;
+  /* Tall enough to give the render room to grow. The shelf is framed to fit
+     its canvas, so on a big monitor it was height-limited, not width-limited —
+     it sat small in the middle of all that space with a canyon between it and
+     the copy. Height is the lever that actually closes that gap. A no-op on a
+     laptop, where the hero is already about this tall. */
+  min-height: min(88vh, 1200px);
+  display: flex;
+  align-items: center;
+  background:
+    radial-gradient(circle at 85% 0%, rgba(232,185,35,0.18), transparent 55%),
+    radial-gradient(circle at 0% 100%, rgba(232,185,35,0.08), transparent 45%),
+    var(--cream);
+  position: relative;
+  overflow: hidden;
+}
+.hero-inner { position: relative; }
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  background: var(--black);
+  color: var(--gold);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 7px 16px;
+  border-radius: 999px;
+  margin-bottom: 26px;
+  box-shadow: var(--shadow-md);
+}
+.hero h1 {
+  font-size: clamp(2.1rem, 5vw, 3.4rem);
+  margin-bottom: 22px;
+}
+.hero-sub {
+  font-size: 1.15rem;
+  margin-bottom: 36px;
+}
+.hero-cta { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 60px; }
+.hero-stats {
+  display: flex;
+  gap: 28px 34px;
+  flex-wrap: wrap;
+  border-top: 1px solid var(--border);
+  padding-top: 30px;
+}
+.hero-stats div { display: flex; flex-direction: column; gap: 4px; }
+.hero-stats strong { font-size: 1.2rem; letter-spacing: -0.01em; }
+.hero-stats span { font-size: 0.85rem; color: var(--gray); }
+
+/* Logos strip */
+.logos-strip { padding: 36px 0; border-bottom: 1px solid var(--border); }
+.logos-label {
+  text-align: center;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--gray);
+  margin-bottom: 18px;
+}
+.logos-row {
+  display: flex;
+  justify-content: center;
+  gap: 48px;
+  flex-wrap: wrap;
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--charcoal);
+}
+.logos-row span {
+  opacity: 0.6;
+  transition: opacity 0.2s var(--ease), color 0.2s var(--ease);
+}
+.logos-row span:hover {
+  opacity: 1;
+  color: var(--gold-dark);
+}
+
+/* Services */
+.services { padding: 96px 0; }
+.service-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+}
+.service-card {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 28px;
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow 0.25s var(--ease), transform 0.25s var(--ease), border-color 0.25s var(--ease);
+}
+.service-card:hover {
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-4px);
+  border-color: rgba(232, 185, 35, 0.4);
+}
+.service-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  background: var(--gold-soft);
+  font-weight: 800;
+  color: var(--gold-dark);
+  font-size: 0.85rem;
+  margin-bottom: 16px;
+  transition: background 0.25s var(--ease), transform 0.25s var(--ease);
+}
+.service-card:hover .service-icon {
+  background: var(--gold);
+  color: var(--black);
+  transform: scale(1.06);
+}
+.service-card h3 { transition: color 0.2s var(--ease); }
+.service-card p { font-size: 0.92rem; }
+
+/* Why */
+.why { background: var(--black); color: #fff; padding: 96px 0; }
+.why-inner {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 56px;
+  align-items: center;
+}
+.why h2 { color: #fff; }
+.why-list { list-style: none; display: flex; flex-direction: column; gap: 20px; margin: 26px 0 32px; }
+.why-list li { color: #C9C9CC; font-size: 0.98rem; }
+.why-list strong { color: #fff; display: block; margin-bottom: 3px; }
+.why-card {
+  background: linear-gradient(160deg, var(--charcoal), #1a1a1e);
+  border: 1px solid #35353a;
+  border-radius: var(--radius-lg);
+  padding: 38px;
+  box-shadow: 0 30px 60px rgba(0,0,0,0.35);
+  transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease);
+}
+.why-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 36px 72px rgba(0,0,0,0.4);
+}
+.quote {
+  color: var(--gold);
+  font-size: 1.3rem;
+  font-weight: 600;
+  line-height: 1.45;
+}
+
+/* Partners */
+.partners { padding: 96px 0; text-align: center; }
+.partners .section-sub { margin-left: auto; margin-right: auto; }
+.partner-row {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  flex-wrap: wrap;
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: var(--charcoal);
+}
+.partner-row span {
+  opacity: 0.65;
+  transition: opacity 0.2s var(--ease), color 0.2s var(--ease), transform 0.2s var(--ease);
+}
+.partner-row span:hover {
+  opacity: 1;
+  color: var(--gold-dark);
+  transform: translateY(-2px);
+}
+
+/* Contact */
+.contact { background: var(--cream); padding: 96px 0; }
+.contact-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 56px;
+}
+.contact-copy p { margin: 14px 0 30px; font-size: 1.05rem; }
+.contact-details { display: flex; flex-direction: column; gap: 18px; }
+.contact-details span {
+  display: block;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--gray);
+  margin-bottom: 2px;
+}
+.contact-details a {
+  font-weight: 700;
+  font-size: 1.05rem;
+  transition: color 0.2s var(--ease);
+}
+.contact-details a:hover { color: var(--gold-dark); }
+.contact-form {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  box-shadow: var(--shadow-lg);
+}
+.contact-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--charcoal);
+}
+.contact-form input,
+.contact-form textarea {
+  font-family: inherit;
+  font-size: 0.95rem;
+  color: var(--black);
+  padding: 12px 14px;
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  background: var(--cream);
+  resize: vertical;
+  transition: border-color 0.2s var(--ease), box-shadow 0.2s var(--ease), background 0.2s var(--ease);
+}
+.contact-form input:hover,
+.contact-form textarea:hover {
+  border-color: var(--gray-light);
+}
+.contact-form input:focus,
+.contact-form textarea:focus {
+  outline: none;
+  border-color: var(--gold-dark);
+  background: #fff;
+  box-shadow: 0 0 0 4px var(--gold-soft);
+}
+.contact-form button[type="submit"]:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+.form-note { font-size: 0.85rem; color: var(--gold-dark); min-height: 1em; transition: opacity 0.2s var(--ease); }
+
+/* Footer */
+.site-footer { padding: 28px 0; border-top: 1px solid var(--border); }
+.footer-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.85rem;
+  color: var(--gray);
+}
+.footer-badge {
+  display: inline-flex;
+  align-items: center;
+  background: var(--black);
+  border-radius: 6px;
+  padding: 6px 10px;
+  transition: transform 0.2s var(--ease), box-shadow 0.2s var(--ease);
+}
+.footer-badge:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
+}
+.footer-badge img {
+  height: 28px;
+  width: auto;
+  display: block;
+}
+
+/* Scroll reveal */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
+}
+.reveal.in-view {
+  opacity: 1;
+  transform: translateY(0);
+}
+.reveal-stagger.in-view .service-card {
+  animation: reveal-fade 0.6s var(--ease) both;
+}
+.reveal-stagger.in-view .service-card:nth-child(1) { animation-delay: 0.02s; }
+.reveal-stagger.in-view .service-card:nth-child(2) { animation-delay: 0.06s; }
+.reveal-stagger.in-view .service-card:nth-child(3) { animation-delay: 0.1s; }
+.reveal-stagger.in-view .service-card:nth-child(4) { animation-delay: 0.14s; }
+.reveal-stagger.in-view .service-card:nth-child(5) { animation-delay: 0.18s; }
+.reveal-stagger.in-view .service-card:nth-child(6) { animation-delay: 0.22s; }
+.reveal-stagger.in-view .service-card:nth-child(7) { animation-delay: 0.26s; }
+.reveal-stagger.in-view .service-card:nth-child(8) { animation-delay: 0.3s; }
+.reveal-stagger.in-view .service-card:nth-child(9) { animation-delay: 0.34s; }
+@keyframes reveal-fade {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .reveal, .reveal-stagger .service-card {
+    opacity: 1 !important;
+    transform: none !important;
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* Responsive */
+@media (max-width: 860px) {
+  .why-inner, .contact-inner { grid-template-columns: 1fr; }
+  .service-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 640px) {
+  .main-nav, .btn-nav { display: none; }
+  .nav-toggle { display: flex; }
+  .service-grid { grid-template-columns: 1fr; }
+  .logos-row, .partner-row { gap: 24px; }
+  .footer-inner { flex-direction: column; gap: 6px; text-align: center; }
+}
+
+/* ==========================================================================
+   HERO 3D + real logo walls
+   ========================================================================== */
+/* The hero is cream with dark copy, and the render sits in the right-hand
+   space rather than behind the text. No scrim needed, and no contrast problem
+   to fix.
+
+   The copy is a LEFT COLUMN, not a centred block. `.hero-inner` carries
+   `.container`, so capping it at 780px left it centred in the viewport and the
+   headline ran straight over the shelf — "without" sat on top of the render at
+   1440px wide. Instead the container keeps its full width, so the copy starts
+   on the same left gutter as the logo in the header above it, and a grid holds
+   every child in column one. Column two is deliberately empty: it is the room
+   the shelf needs to breathe. */
+.hero-canvas{
+  /* Anchored to the copy column, not to a percentage. A percentage width caps
+     out on a wide monitor and leaves a dead gap in the middle of the screen;
+     starting where the copy ends means the render always takes everything left
+     over, at any width.
+     A <canvas> is a replaced element, so left+right with width:auto resolves
+     to its intrinsic size instead of stretching between them. It needs a real
+     width. */
+  position:absolute;top:0;right:0;height:100%;
+  width:calc(100% - var(--edge) - var(--hero-copy) - 14px);
+  z-index:0;pointer-events:none;
+  /* A soft left edge only. This used to dissolve the first 52% of the canvas,
+     back when the headline ran across it — now the copy has its own column and
+     that fade was washing out half the shelf. */
+  -webkit-mask-image:linear-gradient(to right,transparent 0%,#000 14%,#000 100%);
+  mask-image:linear-gradient(to right,transparent 0%,#000 14%,#000 100%);
+}
+/* Full bleed: the hero uses the whole screen width, so the copy sits on the
+   very left gutter and the render gets everything to the right of it. The
+   header does the same, so the logo lands directly above the badge. */
+.hero-inner{
+  position:relative;z-index:1;
+  width:100%;
+  max-width:none;margin:0;
+  padding-left:var(--edge);padding-right:var(--edge);
+  display:grid;
+  grid-template-columns:minmax(0,var(--hero-copy)) minmax(0,1fr);
+  text-align:left;
+}
+.site-header .header-inner{
+  max-width:none;
+  padding-left:var(--edge);padding-right:var(--edge);
+}
+.hero-inner > *{grid-column:1}
+/* The badge is a pill: as a grid item it would stretch to the column width and
+   stop looking like one. Everything else is meant to fill the column — the
+   stats rule above the row draws its line across it. */
+.hero-badge{justify-self:start}
+
+.logos-row,.partner-row{
+  display:flex;flex-wrap:wrap;align-items:center;justify-content:center;
+  gap:clamp(1.6rem,5vw,3.4rem);
+}
+.logos-row img{height:clamp(38px,5vw,62px);width:auto;display:block}
+.partner-row img{
+  height:clamp(22px,3vw,32px);width:auto;display:block;
+  opacity:.62;filter:grayscale(1);transition:opacity .25s var(--ease),filter .25s var(--ease);
+}
+.partner-row img:hover{opacity:1;filter:grayscale(0)}
+
+@media (max-width:900px){
+  /* below this the copy would run under the render */
+  .hero-canvas{display:none}
+  /* ...so the empty right-hand column has nothing left to reserve */
+  .hero-inner{grid-template-columns:minmax(0,1fr)}
+
+  /* The enlarged mark only fits where there is room for it. Below this the
+     header is tight enough that the wider pill steals width from the nav, the
+     nav wraps a line early, and a wrapped nav is a taller banner. So every
+     width under 900px keeps the original logo size and behaves exactly as it
+     did before the logo was enlarged.
+     Note the odd numbers: the cropped wordmark is all ink, where the old file
+     was 51% transparent padding. Matching the *old rendered mark* means 11px
+     of cropped image, not the old 22px of mostly-empty image. These values
+     reproduce the original 38x87 pill to the pixel. */
+  .logo{padding:13.6px 16.2px}
+  .logo-img{height:10.8px}
+}
+@media (max-width:640px){
+  .logos-row img{height:34px}
+}
+
+/* --------------------------------------------------------------------------
+   Brand band
+   One beat of nothing but the mark, sitting between the last proof section and
+   the ask. Black ground because the wordmark is white and gold — it has no
+   contrast on cream, and the section above it is white, so the alternation
+   does the separating work without needing a rule or a shadow.
+   -------------------------------------------------------------------------- */
+
+.brandmark {
+  background: var(--black);
+  padding: clamp(54px, 8vw, 104px) var(--edge);
+  display: grid;
+  place-items: center;
+}
+.brandmark-img {
+  /* Deliberately large. Capped in px as well as in %, or it becomes absurd on
+     an ultrawide monitor; capped by viewport height too, so a short landscape
+     window doesn't lose the sections either side of it. */
+  width: min(76%, 1200px);
+  max-height: 34vh;
+  height: auto;
+  object-fit: contain;
+  display: block;
+}
+
+/* --------------------------------------------------------------------------
+   Lexicon
+   A reference block, not a marketing block. Set as a real definition list so
+   it reads as reference material to a screen reader and to a search engine,
+   and so the terms carry the semantic weight rather than just being bold text.
+   -------------------------------------------------------------------------- */
+
+.lexicon { padding: 96px 0; background: var(--cream); }
+
+.lex-grid {
+  display: grid;
+  /* 235px so all four groups sit on one row inside the 1160px container.
+     At 280px it wrapped to two rows and left two thirds of the second row
+     empty, which reads as a mistake rather than a layout. */
+  grid-template-columns: repeat(auto-fit, minmax(235px, 1fr));
+  gap: 34px 32px;
+  align-items: start;
+}
+
+.lex-group h3 {
+  font-size: 0.82rem;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--gold-dark);
+  padding-bottom: 10px;
+  margin-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.lex-group dl { margin: 0; }
+.lex-group dt {
+  font-weight: 700;
+  font-size: 0.98rem;
+  color: var(--black);
+  margin-bottom: 3px;
+}
+/* the alias, for the terms people say two ways */
+.lex-group dt span {
+  font-weight: 500;
+  font-size: 0.84rem;
+  color: var(--gray-light);
+  margin-left: 6px;
+}
+.lex-group dd {
+  margin: 0 0 18px;
+  font-size: 0.9rem;
+  line-height: 1.55;
+  color: var(--gray);
+}
+.lex-group dd:last-child { margin-bottom: 0; }
+
+@media (max-width: 640px) {
+  .lexicon { padding: 64px 0; }
+  .lex-grid { gap: 28px; }
+}
+
+/* --------------------------------------------------------------------------
+   Interior pages
+   The homepage hero carries the 3D render and a full viewport of height. An
+   interior page needs none of that: it needs to say where you are and get out
+   of the way of the content.
+   -------------------------------------------------------------------------- */
+
+.page-hero {
+  background:
+    radial-gradient(circle at 88% 0%, rgba(232,185,35,0.16), transparent 58%),
+    var(--cream);
+  padding: 66px 0 54px;
+  border-bottom: 1px solid var(--border);
+}
+.page-hero h1 { font-size: clamp(1.9rem, 4vw, 2.9rem); margin-bottom: 14px; }
+.page-hero-sub { font-size: 1.08rem; max-width: 620px; }
+
+.crumbs { font-size: 0.85rem; color: var(--gray); margin-bottom: 14px; }
+.crumbs a { color: var(--gray); }
+.crumbs a:hover { color: var(--gold-dark); }
+.crumbs span { margin: 0 6px; color: var(--gray-light); }
+
+/* the nav entry for the page you are already on */
+.main-nav a.current { color: var(--gold-dark); }
+.main-nav a.current::after { right: 0; }
+
+/* the glossary is the whole page here, so it does not need to announce itself
+   a second time under the page title */
+.lexicon-page { padding-top: 62px; background: #fff; }
+
+.glossary-cta {
+  background: var(--black);
+  color: #fff;
+  padding: 76px 0;
+  text-align: center;
+}
+.glossary-cta h2 { color: #fff; margin-bottom: 10px; }
+.glossary-cta p { color: rgba(255,255,255,0.72); margin-bottom: 26px; }
+
+/* --------------------------------------------------------------------------
+   Brand wall
+   Sixteen logos, not four, so this is a grid rather than a centred flex row.
+   A wrapping flex row leaves the last line short and off-centre, which reads
+   as "we ran out" — a grid keeps the columns honest however many there are.
+   Each logo sits in a fixed cell and is contained inside it, because these
+   come from sixteen different design teams and share no aspect ratio, no
+   padding convention and no idea of how big a logo should be.
+   -------------------------------------------------------------------------- */
+
+.logos-strip { padding: 44px 0; }
+
+.logos-row {
+  display: flex;
+  /* Wrapping flex, not grid. A grid keeps its columns whatever the count, so
+     an odd number of logos leaves a hole at the end of the last row. Wrapping
+     centres the short row instead, which reads as deliberate — and the count
+     changes whenever a brand is added or a relationship ends. */
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 28px 20px;
+}
+.logos-row img {
+  /* Capped on both axes. Height alone leaves a square logo tiny next to a wide
+     wordmark; width alone lets the wide ones dominate. These two numbers keep
+     sixteen logos from sixteen design teams at roughly equal visual weight. */
+  flex: 0 0 auto;
+  max-width: 126px;
+  max-height: 58px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  /* Full colour on purpose. The greyed-out logo wall is a convention, but it
+     was washing the paler marks here almost off the page — and these are proof,
+     which is the one thing on the site that should not be subtle. */
+  opacity: 1;
+  transition: transform 0.25s var(--ease);
+}
+.logos-row img:hover { transform: translateY(-2px); }
+
+@media (max-width: 640px) {
+  .logos-row { gap: 22px 18px; }
+  .logos-row img { max-width: 92px; max-height: 42px; }
+}
+
+/* --------------------------------------------------------------------------
+   Brand marquee
+   Roughly four logos in view, rolling left and never stopping. Two identical
+   sets sit end to end and the track slides exactly one set's width, so the
+   moment it finishes the second set is where the first started and the loop is
+   invisible.
+
+   The CSS animation is the FALLBACK. When script.js is running it adds
+   .is-live and takes the transform over itself, because a speed you can push
+   on has to be a number in a loop, not a fixed animation-duration. Without
+   JavaScript the strip still rolls at a constant rate off this rule alone.
+
+   --items keeps the SPEED constant as brands are added: the duration scales
+   with the count rather than the same duration being shared out among more
+   logos and getting faster every time the CRM publishes.
+   -------------------------------------------------------------------------- */
+
+.logos-strip { padding: 44px 0; }
+
+.marquee {
+  overflow: hidden;
+  cursor: grab;
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+  mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+}
+.marquee.is-dragging { cursor: grabbing; }
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee calc(var(--items, 10) * 4.5s) linear infinite;
+  /* the pointer should grab the strip, not pick up an individual logo */
+  user-select: none;
+  -webkit-user-drag: none;
+  touch-action: pan-y;
+}
+.marquee.is-live .marquee-track { animation: none; }
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+.marquee-set {
+  display: flex;
+  align-items: center;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.marquee-set li {
+  flex: 0 0 auto;
+  width: clamp(150px, 24vw, 260px);   /* about four in view on a laptop */
+  display: grid;
+  place-items: center;
+  padding: 0 10px;
+}
+.marquee-set img {
+  max-width: 132px;
+  max-height: 58px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  pointer-events: none;               /* so a drag never becomes an image drag */
+}
+
+/* Motion that never stops is exactly what a vestibular sensitivity reacts to,
+   so for anyone who has asked their system to reduce motion this stops being
+   an animation and becomes an ordinary strip they scroll themselves. */
+@media (prefers-reduced-motion: reduce) {
+  .marquee { overflow-x: auto; cursor: default; }
+  .marquee-track { animation: none; transform: none !important; }
+  .marquee-set[aria-hidden="true"] { display: none; }
+}
