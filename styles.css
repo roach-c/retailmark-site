@@ -241,6 +241,10 @@ textarea:focus-visible {
 .hero h1 {
   font-size: clamp(2.1rem, 5vw, 3.4rem);
   margin-bottom: 22px;
+  /* Evens the lines out instead of filling the first one and dropping whatever
+     is left onto the second. A short headline is exactly where the default
+     leaves a single orphaned word. */
+  text-wrap: balance;
 }
 .hero-sub {
   font-size: 1.15rem;
