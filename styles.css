@@ -892,3 +892,68 @@ textarea:focus-visible {
 @media (min-width: 1100px) { .lockup-tagline { display: block; } }
 
 .footer-tagline { font-weight: 600; color: var(--charcoal); }
+
+/* ==========================================================================
+   DARK HEADER
+   The bar is black, so the wordmark no longer needs a black pill behind it to
+   sit on — it sits straight on the bar. Everything in here supersedes the
+   header rules earlier in this file, which are from the light-bar version.
+   ========================================================================== */
+
+.site-header {
+  background: rgba(17, 17, 17, 0.94);
+  border-bottom-color: rgba(255, 255, 255, 0.10);
+}
+.site-header.is-scrolled {
+  box-shadow: 0 4px 22px rgba(0, 0, 0, 0.32);
+  border-bottom-color: transparent;
+}
+
+/* No pill: no ground, no padding, no radius. The mark IS the element now. */
+.logo {
+  background: none;
+  padding: 0;
+  border-radius: 0;
+}
+.logo:hover { box-shadow: none; transform: translateY(-1px); }
+
+.logo-img {
+  /* Unboxed it can be taller: the bar's height is still set by the CTA button
+     at 52px, so anything up to that costs nothing. */
+  height: 40px;
+  /* drop-shadow, not box-shadow — it follows the letterforms' alpha instead of
+     drawing a rectangle around a transparent PNG. Just enough to lift the mark
+     off the black rather than glow. */
+  filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.34));
+}
+
+.main-nav a { color: rgba(255, 255, 255, 0.80); }
+.main-nav a:hover { color: var(--gold); }
+.main-nav a::after { background: var(--gold); }
+.main-nav a.current { color: var(--gold); }
+
+.lockup-tagline {
+  color: rgba(255, 255, 255, 0.58);
+  border-left-color: rgba(255, 255, 255, 0.18);
+}
+
+.nav-toggle span { background: #fff; }
+
+/* Below 900 the bar is tight. Re-declared here because the earlier 900px block
+   sizes a pill that no longer exists.
+
+   17px looks arbitrary and is not: the wordmark is 5.03:1, so 17px tall is
+   ~86px wide — the exact width the old pill occupied. Any wider and it steals
+   room from the nav, the nav wraps to a second line, and the bar gets taller.
+   Unboxed it still reads BIGGER than before, because the old pill was mostly
+   padding around a 10.8px mark. */
+@media (max-width: 900px) {
+  .logo { padding: 0; }
+  .logo-img { height: 17px; }
+}
+
+/* Below 640 the nav collapses to the hamburger and the mark is the only thing
+   setting the bar's height, so it goes back up to hold the 67px it had. */
+@media (max-width: 640px) {
+  .logo-img { height: 38px; }
+}
