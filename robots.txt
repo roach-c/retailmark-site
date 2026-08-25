@@ -1,0 +1,4 @@
+# STAGING ONLY — DELETE THIS FILE AT LAUNCH.
+# This deployment is a demo. The real site is retailmark.com.
+User-agent: *
+Disallow: /

@@ -28,6 +28,21 @@ A brand appears there when its CRM supplier record is Active, has a logo, and
 has "Show on the public website" ticked. Editing that block by hand works right
 up until the next publish overwrites it.
 
+## Going live on retailmark.com
+
+This deployment is **staging**. Two things must be removed on launch day, and
+nothing else changes:
+
+1. the `<meta name="robots" content="noindex, nofollow">` in `index.html` and
+   `glossary.html`
+2. `robots.txt`
+
+Every path in the site is relative and no absolute URL appears anywhere, so
+the cutover is a DNS change, not a rebuild. `retailmark.com` is already
+RetailMark's own domain — it runs their Microsoft 365 email through Bluehost
+DNS. Pointing the site and the CRM at it means **adding** records, never
+editing the existing MX or SPF ones, so email is untouched.
+
 ## Deploy
 
 Pushing to `main` publishes to GitHub Pages. `server.py` is for local
