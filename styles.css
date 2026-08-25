@@ -856,3 +856,29 @@ textarea:focus-visible {
   .marquee-track { animation: none; transform: none !important; }
   .marquee-set[aria-hidden="true"] { display: none; }
 }
+
+/* --------------------------------------------------------------------------
+   Tagline
+   Justin's, chosen 2026-08-25. It sits beside the wordmark as a lockup, but
+   only from 1100px up: below that the bar is already carrying the logo, four
+   nav links and the CTA, and squeezing a fifth thing in makes the nav wrap —
+   which makes the header taller, which is the one thing it must not do.
+   The footer copy is unconditional, so the line is on every page at every
+   width regardless.
+   -------------------------------------------------------------------------- */
+
+.lockup-tagline {
+  display: none;
+  flex: 0 0 auto;
+  margin-left: 14px;
+  padding-left: 16px;
+  border-left: 1px solid var(--border);
+  font-size: 0.82rem;
+  font-weight: 500;
+  line-height: 1.25;
+  color: var(--gray);
+  white-space: nowrap;
+}
+@media (min-width: 1100px) { .lockup-tagline { display: block; } }
+
+.footer-tagline { font-weight: 600; color: var(--charcoal); }
