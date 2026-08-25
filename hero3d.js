@@ -9,11 +9,7 @@ import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.m
 const canvas = document.getElementById("hero3d");
 if (canvas) {
   const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  // The page is charcoal now, so the shelf had to come UP in value. At its old
-  // 0x2a2a30 it was darker than the ground behind it and simply vanished —
-  // dark-on-dark is not moody, it is invisible. Same for the products: they
-  // are mid-greys so the gold one still reads as the one that matters.
-  const GOLD = 0xe8b923, CREAM = 0xfaf8f3, WOOD = 0x51515c;
+  const GOLD = 0xe8b923, CREAM = 0xfaf8f3, WOOD = 0x2a2a30;
 
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(30, 2, 0.1, 100);
@@ -53,7 +49,7 @@ if (canvas) {
 
   // Products. One slot on the middle shelf is deliberately left empty.
   const boxGeo = new THREE.BoxGeometry(0.72, 1.0, 0.72);
-  const palette = [0x6a6a77, 0x767684, 0x5f5f6b, 0x818190];
+  const palette = [0x3c3c46, 0x4a4a56, 0x33333c, 0x565663];
   const EMPTY = { shelf: 1, slot: 2 };
   const SLOT_X = [-2.7, -1.35, 0, 1.35, 2.7];
 
