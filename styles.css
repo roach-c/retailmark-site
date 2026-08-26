@@ -1211,3 +1211,54 @@ textarea:focus-visible {
    measure and stay centred in the full width. */
 .partners .section-sub,
 .logos-label { margin-left: auto; margin-right: auto; }
+
+/* --------------------------------------------------------------------------
+   Button arrow on hover
+   Borrowed from the current retailmark.com, whose Divi buttons slide an arrow
+   in from the right while the label shifts left to make room. It reads as the
+   button leaning toward the thing it does.
+
+   One thing changed in the borrowing. Divi grows the button — it goes from
+   16px of side padding to 11.2 left and 32 right, about 11px wider — so
+   hovering one button nudges whatever sits beside it. The hero has two side by
+   side, so the padding here shifts by the SAME amount in both directions: the
+   label moves, the arrow gets its room, and the width never changes.
+   -------------------------------------------------------------------------- */
+
+.btn {
+  position: relative;
+  transition: transform .2s var(--ease), box-shadow .2s var(--ease),
+              background .2s var(--ease), color .2s var(--ease),
+              padding .22s var(--ease);
+}
+
+.btn::after {
+  content: "→";
+  position: absolute;
+  right: 14px;
+  opacity: 0;
+  transform: translateX(-7px);
+  font-size: 1.05em;
+  line-height: 1;
+  pointer-events: none;
+  transition: opacity .22s var(--ease), transform .22s var(--ease);
+}
+
+.btn:hover::after,
+.btn:focus-visible::after { opacity: 1; transform: translateX(0); }
+
+/* -8 left, +8 right: the label slides, the width holds still */
+.btn:hover, .btn:focus-visible { padding-left: 14px; padding-right: 30px; }
+.btn-lg:hover, .btn-lg:focus-visible { padding-left: 21px; padding-right: 39px; }
+.btn-sm:hover, .btn-sm:focus-visible { padding-left: 6px; padding-right: 18px; }
+
+/* The submit button is full-width, so its label is centred in a box that never
+   moves; shifting its padding would slide the label off centre for no reason.
+   It gets the arrow only. */
+.btn-block:hover, .btn-block:focus-visible { padding-left: 22px; padding-right: 22px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .btn, .btn::after { transition: none; }
+  .btn:hover, .btn:focus-visible { padding-left: 22px; padding-right: 22px; }
+  .btn-lg:hover, .btn-lg:focus-visible { padding-left: 30px; padding-right: 30px; }
+}
