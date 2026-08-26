@@ -118,6 +118,7 @@ textarea:focus-visible {
 
 /* Header */
 .site-header {
+  /* sticky also makes this the containing block the open menu hangs off */
   position: sticky;
   top: 0;
   background: rgba(255,255,255,0.92);
@@ -167,12 +168,16 @@ textarea:focus-visible {
 }
 .main-nav {
   display: flex;
-  gap: 28px;
+  gap: clamp(18px, 1.7vw, 28px);
   flex: 1;
   justify-content: center;
 }
 .main-nav a {
   position: relative;
+  /* "Why Us" is two words and wrapped to two lines the moment the bar got
+     tight, which reads as a broken header rather than as a full one. The bar
+     runs out of room instead, and the breakpoints below handle that. */
+  white-space: nowrap;
   font-weight: 600;
   font-size: 0.95rem;
   color: var(--charcoal);
@@ -568,17 +573,58 @@ a.service-card:focus-visible {
   .service-grid { grid-template-columns: repeat(2, 1fr); }
 }
 
-/* 860, not 640. Between roughly 640 and 780 the bar tried to hold the logo,
-   five nav links and the CTA with no room for them, and the CTA ran 45px past
-   the viewport — a horizontal scrollbar on every tablet. It has been that way
-   since Glossary made the nav five links. The hamburger now takes over before
-   the bar runs out of room instead of after. */
-@media (max-width: 860px) {
+/* 940, and it has moved twice for the same reason. It was 640, and between
+   roughly 640 and 780 the bar tried to hold the logo, five nav links and the
+   CTA with no room for them, so the CTA ran 45px past the viewport and every
+   tablet got a horizontal scrollbar. 860 fixed that for five links. Home made
+   it six, and the CTA ran 30px over again between 861 and about 940.
+
+   The rule to keep: this number is not a guess about tablets. It is the width
+   at which the bar actually runs out of room, and it has to be re-measured
+   every time a nav link is added or removed. */
+@media (max-width: 940px) {
   .main-nav, .btn-nav { display: none; }
   .nav-toggle { display: flex; }
+
+  /* The open menu is a panel under the bar, not a row inside it.
+     It used to be a row inside it: the JS set display:flex and the nav's own
+     `flex: 1; justify-content: center` laid six links across a 390px header,
+     on top of the wordmark. The links were there and could not be tapped,
+     because the logo sat over them and swallowed the touch. */
+  .main-nav.open {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    flex: none;
+    justify-content: flex-start;
+    /* Solid, not 0.98. Two percent of a cream page under a near-black panel
+       is a five-level difference, which is invisible on a swatch and clearly
+       readable as ghosted headline text once it is spread across a whole
+       panel. A menu is not a place for a translucency effect. */
+    background: #141414;
+    padding: 4px var(--edge) 14px;
+    border-top: 1px solid rgba(255, 255, 255, 0.10);
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.30);
+  }
+  .main-nav.open a {
+    padding: 15px 2px;                 /* a 44px tap target, not a 20px one */
+    font-size: 1.02rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+  .main-nav.open a:last-child { border-bottom: none; }
+  /* the sliding underline is a hover affordance, and there is no hover here */
+  .main-nav.open a::after { display: none; }
+}
+
+@media (max-width: 860px) {
   .service-grid { grid-template-columns: 1fr; }
   .logos-row, .partner-row { gap: 24px; }
   .footer-inner { flex-direction: column; gap: 6px; text-align: center; }
+  .footer-nav { justify-content: center; gap: 14px; margin: 4px 0; }
 }
 
 /* ==========================================================================
@@ -828,6 +874,113 @@ a.service-card:focus-visible {
   .svc-num { font-size: 1.6rem; }
 }
 
+/* --------------------------------------------------------------------------
+   Prose bands (Why Us), platform list (Partners), contact extras
+   -------------------------------------------------------------------------- */
+
+.prose-band { padding: 72px 0; background: #fff; }
+.prose-band.alt { background: var(--cream); }
+.prose { max-width: 720px; }
+.prose h2 { font-size: clamp(1.35rem, 2.4vw, 1.85rem); margin-bottom: 14px; }
+.prose p { margin-bottom: 16px; font-size: 1.02rem; }
+
+.steps { list-style: none; counter-reset: step; padding: 0; margin: 24px 0 0; }
+.steps li {
+  counter-increment: step;
+  position: relative;
+  padding-left: 46px;
+  margin-bottom: 20px;
+  font-size: 1rem;
+}
+.steps li::before {
+  content: counter(step, decimal-leading-zero);
+  position: absolute;
+  left: 0;
+  top: -1px;
+  font-weight: 800;
+  font-size: 0.95rem;
+  color: var(--gold-dark);
+  background: var(--gold-soft);
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.steps.compact li { font-size: 0.94rem; margin-bottom: 14px; padding-left: 40px; }
+.steps.compact li::before { width: 27px; height: 27px; font-size: 0.82rem; }
+
+/* Partners */
+.platform-list { padding: 66px 0 40px; background: #fff; }
+.platform {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 34px;
+  align-items: center;
+  padding: 34px 0;
+  border-top: 1px solid var(--border);
+  scroll-margin-top: 110px;
+}
+.platform:first-child { border-top: none; padding-top: 4px; }
+.platform-mark {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 74px;
+  padding: 12px 18px;
+  background: var(--cream);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+/* six logos from six design teams, so contained rather than sized */
+.platform-mark img { max-width: 100%; max-height: 100%; object-fit: contain; }
+.platform-copy { max-width: 680px; }
+.platform-copy h2 { font-size: 1.22rem; margin-bottom: 8px; }
+.platform-copy p { font-size: 0.97rem; }
+
+.partners-brands { padding: 56px 0 78px; background: var(--cream); }
+.partners-brands h2 { margin-bottom: 8px; }
+.partners-brands .section-sub { margin-bottom: 30px; }
+
+@media (max-width: 700px) {
+  .platform { grid-template-columns: 1fr; gap: 16px; padding: 26px 0; }
+  .platform-mark { height: 62px; max-width: 200px; }
+}
+
+/* Contact page extras */
+/* The location is not a link, but it sits where one does. Everything the
+   label span sets has to be undone, or it renders as a second label:
+   BENTONVILLE, ARKANSAS in 0.78rem caps. */
+.contact-details .plain {
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--black);
+  text-transform: none;
+  letter-spacing: normal;
+  margin-bottom: 0;
+}
+.next-steps { margin-top: 34px; }
+.next-steps h3 { font-size: 1.02rem; margin-bottom: 4px; }
+
+.cta-pair { display: flex; align-items: center; gap: 22px; flex-wrap: wrap; }
+.text-link {
+  font-weight: 700;
+  font-size: 0.94rem;
+  color: var(--gold-dark);
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.2s var(--ease);
+}
+.text-link:hover { border-bottom-color: currentColor; }
+.why .text-link { color: var(--gold); }
+.section-more { margin-top: 26px; text-align: center; }
+
+/* Footer nav: the same links again, which is where a crawler expects to find
+   them and where a person looks after reading to the bottom. */
+.footer-nav { display: flex; flex-wrap: wrap; gap: 18px; }
+.footer-nav a { color: var(--gray); transition: color 0.2s var(--ease); }
+.footer-nav a:hover { color: var(--gold-dark); }
+
 /* the glossary is the whole page here, so it does not need to announce itself
    a second time under the page title */
 .lexicon-page { padding-top: 62px; background: #fff; }
@@ -977,9 +1130,9 @@ a.service-card:focus-visible {
    different lines is what stops the page repeating itself in 3.4rem type a
    hundred pixels apart.
 
-   The lockup sits beside the wordmark, but
-   only from 1100px up: below that the bar is already carrying the logo, four
-   nav links and the CTA, and squeezing a fifth thing in makes the nav wrap —
+   The lockup sits beside the wordmark, but only from 1240px up: below that the
+   bar is already carrying the logo, six nav links and the CTA, and squeezing a
+   further thing in pushes the CTA past the right edge —
    which makes the header taller, which is the one thing it must not do.
    The footer copy is unconditional, so the line is on every page at every
    width regardless.
@@ -997,7 +1150,7 @@ a.service-card:focus-visible {
   color: var(--gray);
   white-space: nowrap;
 }
-@media (min-width: 1100px) { .lockup-tagline { display: block; } }
+@media (min-width: 1240px) { .lockup-tagline { display: block; } }
 
 .footer-tagline { font-weight: 600; color: var(--charcoal); }
 
@@ -1242,7 +1395,7 @@ a.service-card:focus-visible {
   .partners > .container > h2, .partners > .container > .section-sub, .partner-row,
   .contact-copy > *, .contact-form,
   .page-hero .crumbs, .page-hero h1, .page-hero-sub,
-  .lex-group, .svc, .glossary-cta > .container > *,
+  .lex-group, .svc, .platform, .prose > *, .glossary-cta > .container > *,
   .site-footer .container > *
 ):not(.is-in) {
   opacity: 0;
@@ -1268,7 +1421,7 @@ a.service-card:focus-visible {
     .partners > .container > h2, .partners > .container > .section-sub, .partner-row,
     .contact-copy > *, .contact-form,
     .page-hero .crumbs, .page-hero h1, .page-hero-sub,
-    .lex-group, .svc, .glossary-cta > .container > *,
+    .lex-group, .svc, .platform, .prose > *, .glossary-cta > .container > *,
     .site-footer .container > *
   ) {
     opacity: 1 !important;

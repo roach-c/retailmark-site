@@ -31,7 +31,7 @@
 if (!matchMedia('(prefers-reduced-motion: reduce)').matches)
   document.documentElement.classList.add('js-reveal');
 </script>
-<link rel="stylesheet" href="styles.css?v=20260826r">
+<link rel="stylesheet" href="styles.css?v=20260826t">
 </head>
 <body>
 
@@ -42,13 +42,14 @@ if (!matchMedia('(prefers-reduced-motion: reduce)').matches)
     </a>
     <span class="lockup-tagline">Connecting Brands to Retail</span>
     <nav class="main-nav">
+      <a href="#top" class="current" aria-current="page">Home</a>
       <a href="services.html">Services</a>
-      <a href="#why">Why Us</a>
-      <a href="#partners">Partners</a>
+      <a href="why-us.html">Why Us</a>
+      <a href="partners.html">Partners</a>
       <a href="glossary.html">Glossary</a>
-      <a href="#contact">Contact</a>
+      <a href="contact.html">Contact</a>
     </nav>
-    <a href="#contact" class="btn btn-primary btn-nav">Book a Strategy Call</a>
+    <a href="contact.html" class="btn btn-primary btn-nav">Book a Strategy Call</a>
     <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
       <span></span><span></span><span></span>
     </button>
@@ -64,7 +65,7 @@ if (!matchMedia('(prefers-reduced-motion: reduce)').matches)
       <h1>From Opportunity to On&nbsp;Shelf.</h1>
       <p class="hero-sub">Line review to modular reset. Vendor setup to sell-through. RetailMark takes suppliers the whole way into national retail &mdash; and we've sat on the buyer's side of the table, so we know what actually gets a yes.</p>
       <div class="hero-cta">
-        <a href="#contact" class="btn btn-primary btn-lg">Book Your Free Strategy Call</a>
+        <a href="contact.html" class="btn btn-primary btn-lg">Book Your Free Strategy Call</a>
         <a href="#services" class="btn btn-ghost btn-lg">See How It Works</a>
       </div>
       <div class="hero-stats">
@@ -182,7 +183,10 @@ if (!matchMedia('(prefers-reduced-motion: reduce)').matches)
           <li><strong>Custom, not templated.</strong> Every strategy is built around your category, your capacity, and your numbers.</li>
           <li><strong>We speak the buyer's language.</strong> Clear, data-backed communication that matches how Walmart evaluates vendors internally.</li>
         </ul>
-        <a href="#contact" class="btn btn-primary">Talk to Our Team</a>
+        <div class="cta-pair">
+          <a href="contact.html" class="btn btn-primary">Talk to Our Team</a>
+          <a href="why-us.html" class="text-link">The longer answer</a>
+        </div>
       </div>
       <div class="why-card">
         <p class="quote">"We help get your products into Walmart — with the strategy, forecasting, and pitch built the way buyers expect to see it."</p>
@@ -202,6 +206,7 @@ if (!matchMedia('(prefers-reduced-motion: reduce)').matches)
         <img src="assets/platforms/iri.png" alt="IRi" loading="lazy">
         <img src="assets/platforms/atlas.png" alt="Atlas" loading="lazy">
       </div>
+      <p class="section-more"><a href="partners.html" class="text-link">What we do in each of them</a></p>
     </div>
   </section>
 
@@ -279,6 +284,13 @@ if (!matchMedia('(prefers-reduced-motion: reduce)').matches)
 <footer class="site-footer">
   <div class="container footer-inner">
     <span class="footer-tagline">From Opportunity to On Shelf.</span>
+    <nav class="footer-nav" aria-label="Footer">
+      <a href="services.html">Services</a>
+      <a href="why-us.html">Why Us</a>
+      <a href="partners.html">Partners</a>
+      <a href="glossary.html">Glossary</a>
+      <a href="contact.html">Contact</a>
+    </nav>
     <span>&copy; <span id="year"></span> RetailMark. All rights reserved.</span>
     <span class="footer-badge">
       <img src="assets/bentonville-arkansas.png" alt="Bentonville, Arkansas">
@@ -286,8 +298,8 @@ if (!matchMedia('(prefers-reduced-motion: reduce)').matches)
   </div>
 </footer>
 
-<script src="script.js?v=20260826r"></script>
-<script type="module" src="hero3d.js?v=20260826r"></script>
-<script type="module" src="boxspin.js?v=20260826r"></script>
+<script src="script.js?v=20260826t"></script>
+<script type="module" src="hero3d.js?v=20260826t"></script>
+<script type="module" src="boxspin.js?v=20260826t"></script>
 </body>
 </html>

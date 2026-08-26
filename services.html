@@ -31,7 +31,7 @@
 if (!matchMedia('(prefers-reduced-motion: reduce)').matches)
   document.documentElement.classList.add('js-reveal');
 </script>
-<link rel="stylesheet" href="styles.css?v=20260826r">
+<link rel="stylesheet" href="styles.css?v=20260826t">
 </head>
 
 <body>
@@ -43,13 +43,14 @@ if (!matchMedia('(prefers-reduced-motion: reduce)').matches)
     </a>
     <span class="lockup-tagline">Connecting Brands to Retail</span>
     <nav class="main-nav">
-      <a href="services.html" class="current" aria-current="page">Services</a>
-      <a href="index.html#why">Why Us</a>
-      <a href="index.html#partners">Partners</a>
+      <a href="index.html">Home</a>
+      <a href="#top" class="current" aria-current="page">Services</a>
+      <a href="why-us.html">Why Us</a>
+      <a href="partners.html">Partners</a>
       <a href="glossary.html">Glossary</a>
-      <a href="index.html#contact">Contact</a>
+      <a href="contact.html">Contact</a>
     </nav>
-    <a href="index.html#contact" class="btn btn-primary btn-nav">Book a Strategy Call</a>
+    <a href="contact.html" class="btn btn-primary btn-nav">Book a Strategy Call</a>
     <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
       <span></span><span></span><span></span>
     </button>
@@ -211,6 +212,13 @@ if (!matchMedia('(prefers-reduced-motion: reduce)').matches)
 <footer class="site-footer">
   <div class="container footer-inner">
     <span class="footer-tagline">From Opportunity to On Shelf.</span>
+    <nav class="footer-nav" aria-label="Footer">
+      <a href="#top">Services</a>
+      <a href="why-us.html">Why Us</a>
+      <a href="partners.html">Partners</a>
+      <a href="glossary.html">Glossary</a>
+      <a href="contact.html">Contact</a>
+    </nav>
     <span>&copy; <span id="year"></span> RetailMark. All rights reserved.</span>
     <span class="footer-badge">
       <img src="assets/bentonville-arkansas.png" alt="Bentonville, Arkansas">
@@ -218,6 +226,6 @@ if (!matchMedia('(prefers-reduced-motion: reduce)').matches)
   </div>
 </footer>
 
-<script src="script.js?v=20260826r"></script>
+<script src="script.js?v=20260826t"></script>
 </body>
 </html>

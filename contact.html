@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- STAGING ONLY — REMOVE AT LAUNCH ------------------------------------------
+     This is the show-and-tell deployment, not retailmark.com. The noindex
+     keeps it out of Google, which matters for two reasons: an unfinished demo
+     should not be the thing a RetailMark prospect finds, and once the real
+     site is live on retailmark.com a second indexed copy competes with it for
+     its own name. Delete this tag and robots.txt on the day it goes live.
+------------------------------------------------------------------------- -->
+<meta name="robots" content="noindex, nofollow">
+<title>Contact RetailMark | Bentonville, Arkansas</title>
+<meta name="description" content="Book a free strategy call with RetailMark. Phone, email and the form. Based in Bentonville, Arkansas, ten minutes from the home office.">
+<link rel="canonical" href="contact.html">
+<link rel="icon" type="image/x-icon" href="assets/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="assets/favicon-192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
+<meta name="theme-color" content="#1E2024">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script>
+/* Sets the flag the reveal rules hang off, in <head> so the hidden state is
+   in place before first paint. Anything that stops this line running — an
+   error, a blocked script — leaves the page fully visible rather than blank,
+   which is the correct way round for this to fail. */
+if (!matchMedia('(prefers-reduced-motion: reduce)').matches)
+  document.documentElement.classList.add('js-reveal');
+</script>
+<link rel="stylesheet" href="styles.css?v=20260826r">
+</head>
+
+<body>
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a href="index.html" class="logo" aria-label="RetailMark home">
+      <img src="assets/retailmark-wordmark.png" alt="RetailMark" class="logo-img">
+    </a>
+    <span class="lockup-tagline">Connecting Brands to Retail</span>
+    <nav class="main-nav">
+      <a href="index.html">Home</a>
+      <a href="services.html">Services</a>
+      <a href="why-us.html">Why Us</a>
+      <a href="partners.html">Partners</a>
+      <a href="glossary.html">Glossary</a>
+      <a href="#top" class="current" aria-current="page">Contact</a>
+    </nav>
+    <a href="#form" class="btn btn-primary btn-nav">Book a Strategy Call</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<main id="top">
+
+  <section class="page-hero">
+    <div class="container">
+      <div class="crumbs"><a href="index.html">Home</a> <span>/</span> Contact</div>
+      <h1>Let us hear about your product</h1>
+      <p class="page-hero-sub">The first call is free and there is nothing to sign. Tell us
+        what you make and where you are stuck, and we will tell you honestly whether we can
+        help and whether this is the year for it.</p>
+    </div>
+  </section>
+
+  <section class="contact" id="form">
+    <div class="container contact-inner">
+      <div class="contact-copy">
+        <h2>Book your strategy call</h2>
+        <p>We read every message ourselves. Expect a reply within one business day.</p>
+        <div class="contact-details">
+          <div><span>Phone</span><a href="tel:+14793661491">+1 (479) 366-1491</a></div>
+          <div><span>Email</span><a href="mailto:info@retailmark.com">info@retailmark.com</a></div>
+          <div><span>Location</span><span class="plain">Bentonville, Arkansas</span></div>
+        </div>
+
+        <div class="next-steps">
+          <h3>What happens next</h3>
+          <ol class="steps compact">
+            <li>We reply and find thirty minutes that works.</li>
+            <li>On the call: your product, your capacity, your category and the honest read.</li>
+            <li>If it is a fit, you get a plan against the real line review calendar.</li>
+          </ol>
+        </div>
+      </div>
+      <div class="contact-stack">
+        <span class="contact-accent" aria-hidden="true"></span>
+      <form class="contact-form" id="contactForm">
+        <label>Name
+          <input type="text" name="name" required>
+        </label>
+        <label>Email
+          <input type="email" name="email" required>
+        </label>
+        <label>Company
+          <input type="text" name="company">
+        </label>
+        <label>Tell us about your product
+          <textarea name="message" rows="4" required></textarea>
+        </label>
+        <button type="submit" class="btn btn-primary btn-block">Request My Strategy Call</button>
+        <p class="form-note" id="formNote"></p>
+      </form>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <span class="footer-tagline">From Opportunity to On Shelf.</span>
+    <nav class="footer-nav" aria-label="Footer">
+      <a href="services.html">Services</a>
+      <a href="why-us.html">Why Us</a>
+      <a href="partners.html">Partners</a>
+      <a href="glossary.html">Glossary</a>
+      <a href="#top">Contact</a>
+    </nav>
+    <span>&copy; <span id="year"></span> RetailMark. All rights reserved.</span>
+    <span class="footer-badge">
+      <img src="assets/bentonville-arkansas.png" alt="Bentonville, Arkansas">
+    </span>
+  </div>
+</footer>
+
+<script src="script.js?v=20260826t"></script>
+</body>
+</html>

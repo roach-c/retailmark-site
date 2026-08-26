@@ -2,15 +2,29 @@ document.getElementById('year').textContent = new Date().getFullYear();
 
 const navToggle = document.getElementById('navToggle');
 const mainNav = document.querySelector('.main-nav');
+/* The class is the whole state. It used to also set an inline display, which
+   meant the stylesheet could not describe what "open" looks like without an
+   inline style overruling it. */
+const setNav = (open) => {
+  mainNav.classList.toggle('open', open);
+  navToggle.setAttribute('aria-expanded', String(open));
+};
+setNav(false);
 navToggle.addEventListener('click', () => {
-  mainNav.classList.toggle('open');
-  mainNav.style.display = mainNav.classList.contains('open') ? 'flex' : '';
+  setNav(!mainNav.classList.contains('open'));
 });
 mainNav.querySelectorAll('a').forEach((link) => {
-  link.addEventListener('click', () => {
-    mainNav.classList.remove('open');
-    mainNav.style.display = '';
-  });
+  link.addEventListener('click', () => setNav(false));
+});
+/* Tapping the page behind an open menu should close it, which is what every
+   menu does and so the only thing anyone tries. */
+document.addEventListener('click', (e) => {
+  if (!mainNav.classList.contains('open')) return;
+  if (mainNav.contains(e.target) || navToggle.contains(e.target)) return;
+  setNav(false);
+});
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') setNav(false);
 });
 
 // Subtle shadow on the sticky header once the page has scrolled.
@@ -270,7 +284,7 @@ if (form) form.addEventListener('submit', async (e) => {
   /* The nine service sections are a page-length apart, not neighbours in a
      grid, so they get no stagger — a precomputed delay would mean scrolling
      to section seven and then waiting on a queue that is not there. */
-  document.querySelectorAll('.svc').forEach(function (el) { io.observe(el); });
+  document.querySelectorAll('.svc, .platform, .prose > *').forEach(function (el) { io.observe(el); });
 
   GROUPS.forEach(function (group) {
     var n = 0;
@@ -317,7 +331,7 @@ if (form) form.addEventListener('submit', async (e) => {
      has scrolled to yet, so by the time you arrive they have already played.
      That is exactly what made the contact card seem to trigger early. Content
      that is off screen and hidden is not trapped — it is waiting. */
-  var ALL = GROUPS.concat([['.contact-accent', '.contact-form'], ['.svc']]);
+  var ALL = GROUPS.concat([['.contact-accent', '.contact-form'], ['.svc', '.platform', '.prose > *']]);
   function rescueVisible() {
     var h = window.innerHeight || document.documentElement.clientHeight;
     ALL.forEach(function (group) {
