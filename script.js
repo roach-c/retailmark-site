@@ -281,6 +281,23 @@ if (form) form.addEventListener('submit', async (e) => {
     threshold: 0.08
   });
 
+  /* The footer's last row needs its own observer, with no negative bottom
+     margin. The shared one shrinks the viewport bottom by 8% so a section has
+     started before it counts as visible, which is right everywhere except at
+     the end of the document: those elements sit inside that dead 8% at full
+     scroll, and there is nowhere further to scroll to clear it. They stayed
+     at opacity 0 permanently. */
+  var footerIO = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (!e.isIntersecting) return;
+      e.target.classList.add('is-in');
+      footerIO.unobserve(e.target);
+    });
+  }, { rootMargin: '0px', threshold: 0 });
+  document.querySelectorAll('.footer-bottom > *').forEach(function (el) {
+    footerIO.observe(el);
+  });
+
   /* The nine service sections are a page-length apart, not neighbours in a
      grid, so they get no stagger — a precomputed delay would mean scrolling
      to section seven and then waiting on a queue that is not there. */

@@ -1,4 +1,14 @@
-# STAGING ONLY — DELETE THIS FILE AT LAUNCH.
+# STAGING ONLY — REPLACE THIS FILE AT LAUNCH.
 # This deployment is a demo. The real site is retailmark.com.
+#
+# On the day the DNS moves, this whole file becomes:
+#
+#     User-agent: *
+#     Allow: /
+#     Sitemap: https://retailmark.com/sitemap.xml
+#
+# and the <meta name="robots" content="noindex, nofollow"> tag comes out of
+# every page. Until both of those happen, nothing on this site can rank,
+# however good the markup is.
 User-agent: *
 Disallow: /

@@ -35,6 +35,119 @@ NAV = [
 # itself, where it scrolls to the form rather than reloading the same page.
 CTA = ("Book a Strategy Call", "contact.html", "#form")
 
+# The domain this site is going to live on. Schema and social cards need
+# absolute URLs, and this is the one place that decides what they are. The
+# staging build is noindex, so nothing acts on it until the DNS moves.
+ORIGIN = "https://retailmark.com"
+
+# Everything here is already published on the site in plain text. Nothing is
+# invented: no street address, no opening hours, and above all no reviews or
+# star rating. A fabricated AggregateRating is a manual action, not a shortcut.
+BUSINESS = {
+    "name": "RetailMark",
+    "phone": "+1-479-366-1491",
+    "email": "info@retailmark.com",
+    "locality": "Bentonville",
+    "region": "AR",
+    "country": "US",
+    "description": ("A Bentonville, Arkansas sales brokerage that gets consumer "
+                    "brands onto retail shelves, from line review strategy and "
+                    "forecasting through item setup, replenishment and reporting."),
+}
+
+# page -> (social card title, social card description)
+CARDS = {
+    "index.html": ("RetailMark | From Opportunity to On Shelf",
+                   "We get consumer brands onto retail shelves. Strategy, forecasting and the line review deck, built by people who sat on the buying side."),
+    "services.html": ("What RetailMark Does | Services",
+                      "Sales strategy, forecasting, item setup, replenishment, supply chain, reporting, e-commerce, trend management and line review decks."),
+    "why-us.html": ("Why Suppliers Choose RetailMark",
+                    "We sat on the buying side. What that changes about a pitch, a forecast and a line review."),
+    "partners.html": ("Platforms and Brands We Work With",
+                      "Retail Link, Item 360, Nielsen, IRi, Canopy and Atlas: the systems we work in daily, and the brands we represent."),
+    "glossary.html": ("Retail Glossary: Mod, Line Review, OTIF | RetailMark",
+                      "The vocabulary a retail buyer actually uses, defined plainly. Modular, line review, OTIF, MABD, UPSPW and more."),
+    "contact.html": ("Contact RetailMark | Bentonville, Arkansas",
+                     "Book a free strategy call. Phone, email and the form."),
+}
+
+
+def schema_for(page):
+    """Organization and ProfessionalService, once, on the home page.
+
+    Sitewide duplicates of the same @id are how a site ends up telling Google
+    two different things about itself; the live mcrayroofing.com does exactly
+    that and carries two LocalBusiness blocks with the same @id and different
+    phone numbers.
+    """
+    if page != "index.html":
+        return ""
+    b = BUSINESS
+    return f"""
+  <script type="application/ld+json">
+  {{
+    "@context": "https://schema.org",
+    "@graph": [
+      {{
+        "@type": "WebSite",
+        "@id": "{ORIGIN}/#website",
+        "url": "{ORIGIN}/",
+        "name": "{b['name']}",
+        "publisher": {{ "@id": "{ORIGIN}/#organization" }}
+      }},
+      {{
+        "@type": ["Organization", "ProfessionalService"],
+        "@id": "{ORIGIN}/#organization",
+        "name": "{b['name']}",
+        "url": "{ORIGIN}/",
+        "logo": "{ORIGIN}/assets/retailmark-wordmark.png",
+        "image": "{ORIGIN}/assets/retailmark-wordmark.png",
+        "description": "{b['description']}",
+        "telephone": "{b['phone']}",
+        "email": "{b['email']}",
+        "address": {{
+          "@type": "PostalAddress",
+          "addressLocality": "{b['locality']}",
+          "addressRegion": "{b['region']}",
+          "addressCountry": "{b['country']}"
+        }},
+        "areaServed": {{ "@type": "Country", "name": "United States" }},
+        "knowsAbout": [
+          "Walmart supplier strategy", "Line review preparation",
+          "Retail Link", "Item 360", "Demand forecasting",
+          "Replenishment planning", "Retail item setup"
+        ],
+        "contactPoint": {{
+          "@type": "ContactPoint",
+          "contactType": "sales",
+          "telephone": "{b['phone']}",
+          "email": "{b['email']}",
+          "areaServed": "US",
+          "availableLanguage": "English"
+        }}
+      }}
+    ]
+  }}
+  </script>"""
+
+
+def meta_for(page):
+    title, desc = CARDS.get(page, (None, None))
+    if not title:
+        return ""
+    url = f"{ORIGIN}/" if page == "index.html" else f"{ORIGIN}/{page}"
+    return f"""
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="RetailMark">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:url" content="{url}">
+  <meta property="og:title" content="{title}">
+  <meta property="og:description" content="{desc}">
+  <meta property="og:image" content="{ORIGIN}/assets/retailmark-wordmark.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="{title}">
+  <meta name="twitter:description" content="{desc}">{schema_for(page)}"""
+
 HEADER = """<header class="site-header">
   <div class="container header-inner">
     <a href="{home}" class="logo" aria-label="RetailMark home">
@@ -52,15 +165,37 @@ HEADER = """<header class="site-header">
 </header>"""
 
 FOOTER = """<footer class="site-footer">
-  <div class="container footer-inner">
-    <span class="footer-tagline">From Opportunity to On Shelf.</span>
-    <nav class="footer-nav" aria-label="Footer">
+  <div class="container footer-top">
+    <div class="footer-brand">
+      <a href="{home}" class="footer-wordmark">Retail<span>Mark</span></a>
+      <p>RetailMark is a Bentonville, Arkansas sales brokerage that gets consumer
+        brands onto retail shelves, from line review strategy and forecasting
+        through item setup, replenishment and reporting.</p>
+      <span class="footer-badge">
+        <img src="assets/bentonville-arkansas.png" alt="Bentonville, Arkansas">
+      </span>
+    </div>
+
+    <nav class="footer-col" aria-label="Footer">
+      <h2>Quick Links</h2>
 {links}
     </nav>
+
+    <div class="footer-col">
+      <h2>Contact</h2>
+      <ul class="footer-contact">
+        <li><span>Email</span><a href="mailto:info@retailmark.com">info@retailmark.com</a></li>
+        <li><span>Call us</span><a href="tel:+14793661491">+1 (479) 366-1491</a></li>
+        <li><span>Location</span>Bentonville, Arkansas</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="container footer-bottom">
+    <span class="footer-tagline">From Opportunity to On&nbsp;Shelf.</span>
     <span>&copy; <span id="year"></span> RetailMark. All rights reserved.</span>
-    <span class="footer-badge">
-      <img src="assets/bentonville-arkansas.png" alt="Bentonville, Arkansas">
-    </span>
+    <span class="footer-credit">Powered by <a href="https://tetheredcrew.com"
+      target="_blank" rel="noopener">Tethered Crew</a></span>
   </div>
 </footer>"""
 
@@ -83,11 +218,10 @@ def header_for(page):
 def footer_for(page):
     links = ""
     for label, href, self_href in NAV:
-        if label == "Home":
-            continue                      # the wordmark above already is home
         target = self_href if href == page else href
         links += f'      <a href="{target}">{label}</a>\n'
-    return FOOTER.format(links=links.rstrip("\n"))
+    return FOOTER.format(links=links.rstrip("\n"),
+                         home="#top" if page == "index.html" else "index.html")
 
 
 def rewrite(path, check=False):
@@ -95,6 +229,8 @@ def rewrite(path, check=False):
     src = open(path).read()
     out = src
     for pattern, replacement in (
+        (r'<!-- meta:start -->.*?<!-- meta:end -->',
+         "<!-- meta:start -->" + meta_for(page) + "\n  <!-- meta:end -->"),
         (r'<header class="site-header">.*?</header>', header_for(page)),
         (r'<footer class="site-footer">.*?</footer>', footer_for(page)),
     ):
