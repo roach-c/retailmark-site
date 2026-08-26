@@ -21,7 +21,7 @@
      a wide monitor does not strand everything in a narrow column down the
      middle the way a plain centred container would at 724px. */
   --edge: clamp(24px, calc((100vw - 1160px) / 2 + 24px), 260px);
-  --hero-copy: 620px;   /* the hero's left column; the render takes the rest */
+  --hero-copy: clamp(560px, 58vw, 880px);   /* the hero's left column; the render takes the rest */
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
   --shadow-sm: 0 1px 2px rgba(17, 17, 17, 0.04), 0 1px 3px rgba(17, 17, 17, 0.03);
   --shadow-md: 0 8px 24px rgba(17, 17, 17, 0.07), 0 2px 6px rgba(17, 17, 17, 0.04);
@@ -775,33 +775,21 @@ a.service-card:focus-visible {
    on the same left gutter as the logo in the header above it, and a grid holds
    every child in column one. Column two is deliberately empty: it is the room
    the shelf needs to breathe. */
-.hero-canvas{
-  /* Anchored to the copy column, not to a percentage. A percentage width caps
-     out on a wide monitor and leaves a dead gap in the middle of the screen;
-     starting where the copy ends means the render always takes everything left
-     over, at any width.
-     A <canvas> is a replaced element, so left+right with width:auto resolves
-     to its intrinsic size instead of stretching between them. It needs a real
-     width. */
-  position:absolute;top:0;right:0;height:100%;
-  width:calc(100% - var(--edge) - var(--hero-copy) - 14px);
-  z-index:0;pointer-events:none;
-  /* A soft left edge only. This used to dissolve the first 52% of the canvas,
-     back when the headline ran across it — now the copy has its own column and
-     that fade was washing out half the shelf. */
-  -webkit-mask-image:linear-gradient(to right,transparent 0%,#000 14%,#000 100%);
-  mask-image:linear-gradient(to right,transparent 0%,#000 14%,#000 100%);
-}
 /* Full bleed: the hero uses the whole screen width, so the copy sits on the
-   very left gutter and the render gets everything to the right of it. The
-   header does the same, so the logo lands directly above the badge. */
+   very left gutter, directly under the logo in the header above it.
+
+   One column now. It used to be two, the second deliberately empty to give the
+   3D shelf room. The shelf is gone — Justin did not like it, and neither
+   competitor in this market animates a hero — so a second column would just be
+   a dead half-screen. The measure below is what keeps the headline readable
+   instead of running the full width of a monitor. */
 .hero-inner{
   position:relative;z-index:1;
   width:100%;
   max-width:none;margin:0;
   padding-left:var(--edge);padding-right:var(--edge);
   display:grid;
-  grid-template-columns:minmax(0,var(--hero-copy)) minmax(0,1fr);
+  grid-template-columns:minmax(0,var(--hero-copy));
   text-align:left;
 }
 .site-header .header-inner{
@@ -935,20 +923,10 @@ a.service-card:focus-visible {
 .partner-row img:hover{opacity:1;filter:grayscale(0)}
 
 @media (max-width:900px){
-  /* below this the copy would run under the render */
-  .hero-canvas{display:none}
-  /* ...so the empty right-hand column has nothing left to reserve */
-  .hero-inner{grid-template-columns:minmax(0,1fr)}
-
   /* The enlarged mark only fits where there is room for it. Below this the
      header is tight enough that the wider pill steals width from the nav, the
      nav wraps a line early, and a wrapped nav is a taller banner. So every
-     width under 900px keeps the original logo size and behaves exactly as it
-     did before the logo was enlarged.
-     Note the odd numbers: the cropped wordmark is all ink, where the old file
-     was 51% transparent padding. Matching the *old rendered mark* means 11px
-     of cropped image, not the old 22px of mostly-empty image. These values
-     reproduce the original 38x87 pill to the pixel. */
+     width under 900px keeps the original logo size. */
   .logo{padding:13.6px 16.2px}
   .logo{--logo-h:10.8px}
 }

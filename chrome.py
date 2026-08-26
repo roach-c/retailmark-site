@@ -22,12 +22,16 @@ import os
 
 # label, href, and the anchor that href becomes when you are already on the
 # page it points at (None means it is simply a link to itself)
+# Glossary is deliberately not here. Justin asked for the tab to come off — he
+# wants that content as a one-pager sent to suppliers, not a nav item. The page
+# itself is still published and still in the sitemap, because it is one of the
+# only two pages on this site a search engine has any reason to rank; it is
+# just not competing for a slot in a six-item nav any more.
 NAV = [
     ("Home",     "index.html",     "#top"),
     ("Services", "services.html",  "#top"),
     ("Blog",     "blog.html",      "#top"),
     ("Partners", "partners.html",  "#top"),
-    ("Glossary", "glossary.html",  "#top"),
     ("Contact",  "contact.html",   "#top"),
 ]
 
