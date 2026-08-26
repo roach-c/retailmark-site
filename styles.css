@@ -1087,3 +1087,7 @@ textarea:focus-visible {
   display: block;
 }
 @media (max-width: 1100px) { .boxspin { display: none; } }
+
+/* The box can be turned by hand, so it has to look like it can be. */
+.boxspin { cursor: grab; touch-action: pan-y; }
+.boxspin.is-grabbed { cursor: grabbing; }
