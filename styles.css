@@ -1079,11 +1079,11 @@ textarea:focus-visible {
 /* The opening box sits to the right of the statement. It is decorative, so it
    is allowed to disappear entirely when the band gets tight rather than
    squeezing the monogram or the line, which carry the meaning. */
-.boxopen {
+.boxspin {
   flex: 0 0 auto;
   width: clamp(200px, 26vw, 360px);
   height: clamp(150px, 19vw, 250px);
   margin-left: auto;
   display: block;
 }
-@media (max-width: 1100px) { .boxopen { display: none; } }
+@media (max-width: 1100px) { .boxspin { display: none; } }

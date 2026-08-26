@@ -5,11 +5,12 @@
    Degrades quietly: if WebGL is missing, the module fails to load, or the
    visitor prefers reduced motion, the hero simply renders without it. */
 import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js";
+import { makeBox, GOLD as BOX_GOLD, CREAM as BOX_CREAM } from "./box.js";
 
 const canvas = document.getElementById("hero3d");
 if (canvas) {
   const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const GOLD = 0xe8b923, CREAM = 0xfaf8f3, WOOD = 0x2a2a30;
+  const GOLD = BOX_GOLD, CREAM = BOX_CREAM, WOOD = 0x2a2a30;
 
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(30, 2, 0.1, 100);
@@ -65,13 +66,9 @@ if (canvas) {
     });
   });
 
-  // the one that arrives. transparent, because the loop ends by fading it off
-  // the shelf rather than teleporting it back to the floor mid-frame.
-  const hero = new THREE.Mesh(boxGeo, new THREE.MeshStandardMaterial({
-    color: GOLD, roughness: 0.35, metalness: 0.25,
-    emissive: GOLD, emissiveIntensity: 0.16,
-    transparent: true,
-  }));
+  // the one that arrives — from box.js, the same definition the brand band
+  // turns, so the two can never drift apart
+  const { mesh: hero, label } = makeBox(THREE);
   /* How the one that arrives arrives.
 
      It used to rise 3.6 units straight up from below, which meant it passed
@@ -99,13 +96,6 @@ if (canvas) {
 
   hero.position.set(restX, restY, 0);
   group.add(hero);
-
-  const label = new THREE.Mesh(
-    new THREE.PlaneGeometry(0.5, 0.16),
-    new THREE.MeshBasicMaterial({ color: CREAM, transparent: true, opacity: 0.9 })
-  );
-  label.position.set(0, 0.1, 0.37);
-  hero.add(label);
 
   /* ------------------------------------------------------------------
      Framing.
@@ -202,6 +192,13 @@ if (canvas) {
       fit();
     }
   }
+
+  /* resize() first, not fit(). fit() alone runs against the camera's
+     constructor aspect, so the very first painted frame is composed for a
+     canvas shape that does not exist — one frame of the object oversized and
+     clipped before it snaps right. Measured: frame 0 clipped, every frame
+     after was clean. */
+  resize();
   fit();
 
   let running = true, t = 0;
