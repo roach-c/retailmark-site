@@ -231,16 +231,29 @@ textarea:focus-visible {
 .hero-badge {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   background: var(--black);
   color: var(--gold);
-  font-size: 0.78rem;
+  /* Driven by the SAME 24vw as the pill's width below, which is the whole
+     trick: the two then clamp at the same viewport widths and the line fills
+     the same fraction of the pill at every size. Given its own vw coefficient
+     the font hit its floor at 1042 while the pill was still growing from 875,
+     so between those the text sat marooned in a widening bubble — 0.93 full on
+     a phone and 0.82 on a desktop. Measured, it now holds 0.90 to 0.93
+     throughout. Change 24vw in one place and change it in both. */
+  font-size: clamp(0.56rem, 1.026vw, 0.88rem);
   font-weight: 700;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  padding: 7px 16px;
+  white-space: nowrap;
+  padding: 8px clamp(12px, 1.1vw, 16px);
   border-radius: 999px;
   margin-bottom: 26px;
   box-shadow: var(--shadow-md);
+  /* The same width as the wordmark above it, so the two read as one lockup
+     rather than as a mark with a smaller unrelated tag underneath. Identical
+     expression to .hero-logo's width — change one and change both. */
+  width: clamp(210px, 24vw, 330px);
 }
 .hero h1 {
   font-size: clamp(2.1rem, 5vw, 3.4rem);

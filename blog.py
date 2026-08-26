@@ -38,7 +38,7 @@ import sys
 
 ORIGIN = "https://retailmark.com"
 HERE = os.path.dirname(os.path.abspath(__file__))
-ASSET_V = "20260827g"        # keep in step with the ?v= on the other pages
+ASSET_V = "20260827h"        # keep in step with the ?v= on the other pages
 
 
 # --------------------------------------------------------------------------
