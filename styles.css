@@ -831,6 +831,11 @@ a.service-card:focus-visible {
   height: auto;
   margin-bottom: 22px;
   justify-self: start;
+  /* drop-shadow, not box-shadow, for the same reason the header's mark uses it:
+     it follows the letterforms' alpha instead of drawing a rectangle around a
+     transparent PNG. Offset down rather than spread evenly, so it reads as the
+     mark sitting above the cream rather than glowing on it. */
+  filter: drop-shadow(0 3px 8px rgba(17, 17, 17, 0.22));
 }
 
 .logo { --logo-h: 40px; }
