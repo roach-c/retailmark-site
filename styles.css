@@ -957,3 +957,56 @@ textarea:focus-visible {
 @media (max-width: 640px) {
   .logo-img { height: 38px; }
 }
+
+/* --------------------------------------------------------------------------
+   Wordmark -> monogram
+   RetailMark collapses to RM: "etail" and "ark" fade away and the M travels
+   left to meet the R, then the pair recentres.
+
+   All the numbers are in the SVG's viewBox units, which are the wordmark's own
+   pixels, so they hold at any rendered size. They are measured, not eyeballed:
+   the R ends at 171 and the M starts at 749, so 551 is the exact distance the
+   M has to cover to land 26 units after the R — 26 being the wordmark's own
+   gap between the l and the M, so the finished lockup keeps its native kerning.
+   -------------------------------------------------------------------------- */
+
+.rm {
+  width: min(76%, 1200px);
+  height: auto;
+  display: block;
+  overflow: visible;
+}
+.rm-part, .rm-group { transition: none; }
+
+/* The reveal only runs once the section is actually on screen; the class is
+   added by the observer in script.js. Before that it sits as the full wordmark,
+   which is also what anyone without JavaScript keeps. */
+.brandmark.is-revealed .rm-etail,
+.brandmark.is-revealed .rm-ark {
+  animation: rm-drop 900ms cubic-bezier(.4, 0, .2, 1) 700ms forwards;
+}
+.brandmark.is-revealed .rm-m {
+  animation: rm-close 1100ms cubic-bezier(.65, 0, .2, 1) 900ms forwards;
+}
+.brandmark.is-revealed .rm-group {
+  animation: rm-centre 1100ms cubic-bezier(.65, 0, .2, 1) 900ms forwards;
+}
+
+@keyframes rm-drop {
+  to { opacity: 0; }
+}
+@keyframes rm-close {
+  to { transform: translateX(-551px); }
+}
+@keyframes rm-centre {
+  to { transform: translateX(522px); }
+}
+
+/* Motion this large is exactly what a vestibular sensitivity reacts to, and
+   the wordmark is the more informative of the two states anyway. */
+@media (prefers-reduced-motion: reduce) {
+  .brandmark.is-revealed .rm-etail,
+  .brandmark.is-revealed .rm-ark,
+  .brandmark.is-revealed .rm-m,
+  .brandmark.is-revealed .rm-group { animation: none; }
+}

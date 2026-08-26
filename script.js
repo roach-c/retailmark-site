@@ -169,3 +169,26 @@ if (form) form.addEventListener('submit', async (e) => {
     marquee.addEventListener('pointercancel', release);
   });
 })();
+
+/* ---------------------------------------------------------------------------
+   Wordmark -> monogram.
+
+   Runs when the band scrolls into view, and re-arms when it leaves, so it
+   plays again next time rather than being a thing you only ever catch once.
+   The CSS does the animating; this only decides when.
+   --------------------------------------------------------------------------- */
+(function () {
+  var band = document.querySelector('.brandmark');
+  if (!band || !('IntersectionObserver' in window)) return;
+
+  new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting) {
+        band.classList.add('is-revealed');
+      } else {
+        // stripping the class resets the animations to their start
+        band.classList.remove('is-revealed');
+      }
+    });
+  }, { threshold: 0.55 }).observe(band);
+})();
