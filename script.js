@@ -279,6 +279,7 @@ if (form) form.addEventListener('submit', async (e) => {
     ['.contact-copy > *'],
     ['.page-hero .crumbs', '.page-hero h1', '.page-hero-sub'],
     ['.lex-group'],
+    ['.post-card'],
     ['.glossary-cta > .container > *'],
     ['.site-footer .container > *']
   ];

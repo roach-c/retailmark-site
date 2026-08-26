@@ -25,7 +25,7 @@ ORIGIN = "https://retailmark.com"
 PRIORITY = {
     "index.html":     ("1.0", "weekly"),
     "services.html":  ("0.9", "monthly"),
-    "why-us.html":    ("0.8", "monthly"),
+    "blog.html":      ("0.8", "weekly"),
     "contact.html":   ("0.8", "monthly"),
     "partners.html":  ("0.7", "monthly"),
     "glossary.html":  ("0.7", "monthly"),
@@ -35,6 +35,16 @@ here = os.path.dirname(os.path.abspath(__file__))
 stamp = sys.argv[1] if len(sys.argv) > 1 else date.today().isoformat()
 
 rows = ""
+
+# Posts are generated, so they are listed by what is on disk rather than by a
+# table anyone has to remember to update.
+for path in sorted(glob.glob(os.path.join(here, "blog", "*.html"))):
+    name = os.path.basename(path)
+    rows += (f"  <url>\n    <loc>{ORIGIN}/blog/{name}</loc>\n"
+             f"    <lastmod>{stamp}</lastmod>\n"
+             f"    <changefreq>yearly</changefreq>\n"
+             f"    <priority>0.6</priority>\n  </url>\n")
+
 for path in sorted(glob.glob(os.path.join(here, "*.html")),
                    key=lambda p: -float(PRIORITY.get(os.path.basename(p), ("0",))[0])):
     name = os.path.basename(path)

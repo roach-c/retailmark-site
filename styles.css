@@ -1208,6 +1208,115 @@ a.service-card:focus-visible {
 /* Footer nav: the same links again, which is where a crawler expects to find
    them and where a person looks after reading to the bottom. */
 
+/* --------------------------------------------------------------------------
+   Blog
+   The index is a list, not a grid of cards. A weekly post is a headline and a
+   sentence; laid out in three columns each one becomes a small box with a lot
+   of air in it, and eight of them read as a directory rather than as something
+   worth reading. A list puts the headlines in a column so they can be scanned
+   the way anyone actually scans a blog.
+   -------------------------------------------------------------------------- */
+
+.blog-index { padding: 66px 0 88px; background: #fff; }
+
+.post-list { max-width: 760px; }
+
+.post-card {
+  padding: 30px 0;
+  border-top: 1px solid var(--border);
+  scroll-margin-top: 110px;
+}
+.post-card:first-child { border-top: none; padding-top: 6px; }
+.post-card time {
+  display: block;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--gray);
+  margin-bottom: 8px;
+}
+.post-card h2 { font-size: clamp(1.2rem, 2.1vw, 1.6rem); margin-bottom: 8px; }
+.post-card h2 a { color: var(--black); transition: color 0.2s var(--ease); }
+.post-card:hover h2 a { color: var(--gold-dark); }
+.post-card p { font-size: 0.98rem; margin-bottom: 10px; }
+.post-card-more {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--gold-dark);
+}
+.post-empty { color: var(--gray); }
+.post-empty code {
+  background: var(--cream);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 1px 5px;
+  font-size: 0.9em;
+}
+
+/* The post itself. One column, capped at a readable measure — the rest of the
+   site runs to 1400px, which is right for a three-column grid and far too wide
+   for prose. */
+.post { padding: 54px 0 74px; background: #fff; }
+.post h1 { font-size: clamp(1.75rem, 3.4vw, 2.6rem); max-width: 20ch; margin-bottom: 12px; }
+.post-meta {
+  font-size: 0.86rem;
+  color: var(--gray);
+  margin-bottom: 34px;
+}
+.post-meta span { margin: 0 7px; color: var(--gray-light); }
+
+.post-body { max-width: 680px; }
+.post-body p { font-size: 1.06rem; line-height: 1.72; margin-bottom: 22px; }
+.post-body h2 {
+  font-size: clamp(1.2rem, 2.2vw, 1.55rem);
+  margin: 40px 0 14px;
+}
+.post-body h3 { font-size: 1.06rem; margin: 28px 0 10px; }
+.post-body ul, .post-body ol { margin: 0 0 24px; padding-left: 0; list-style: none; }
+.post-body ol { counter-reset: n; }
+.post-body li {
+  position: relative;
+  padding-left: 26px;
+  margin-bottom: 11px;
+  font-size: 1.02rem;
+  line-height: 1.62;
+}
+.post-body ul li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.62em;
+  width: 11px;
+  height: 2px;
+  background: var(--gold);
+}
+.post-body ol li { counter-increment: n; }
+.post-body ol li::before {
+  content: counter(n) ".";
+  position: absolute;
+  left: 0;
+  font-weight: 700;
+  color: var(--gold-dark);
+}
+.post-body blockquote {
+  margin: 0 0 24px;
+  padding-left: 20px;
+  border-left: 3px solid var(--gold);
+}
+.post-body blockquote p { margin: 0; font-size: 1.08rem; }
+.post-body a { color: var(--gold-dark); border-bottom: 1px solid rgba(199,154,21,0.4); }
+.post-body a:hover { border-bottom-color: currentColor; }
+.post-body code {
+  background: var(--cream);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 1px 5px;
+  font-size: 0.92em;
+}
+
+.post-back { margin-top: 44px; font-weight: 700; }
+.post-back a { color: var(--gold-dark); }
+
 /* the glossary is the whole page here, so it does not need to announce itself
    a second time under the page title */
 .lexicon-page { padding-top: 62px; background: #fff; }
@@ -1612,7 +1721,8 @@ a.service-card:focus-visible {
   .partners > .container > h2, .partners > .container > .section-sub, .partner-row,
   .contact-copy > *, .contact-form,
   .page-hero .crumbs, .page-hero h1, .page-hero-sub,
-  .lex-group, .svc, .platform, .prose > *, .glossary-cta > .container > *,
+  .lex-group, .svc, .platform, .prose > *, .post-card,
+  .glossary-cta > .container > *,
   .site-footer .container > *
 ):not(.is-in) {
   opacity: 0;
@@ -1638,7 +1748,8 @@ a.service-card:focus-visible {
     .partners > .container > h2, .partners > .container > .section-sub, .partner-row,
     .contact-copy > *, .contact-form,
     .page-hero .crumbs, .page-hero h1, .page-hero-sub,
-    .lex-group, .svc, .platform, .prose > *, .glossary-cta > .container > *,
+    .lex-group, .svc, .platform, .prose > *, .post-card,
+  .glossary-cta > .container > *,
     .site-footer .container > *
   ) {
     opacity: 1 !important;

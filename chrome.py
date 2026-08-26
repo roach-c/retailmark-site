@@ -25,7 +25,7 @@ import os
 NAV = [
     ("Home",     "index.html",     "#top"),
     ("Services", "services.html",  "#top"),
-    ("Why Us",   "why-us.html",    "#top"),
+    ("Blog",     "blog.html",      "#top"),
     ("Partners", "partners.html",  "#top"),
     ("Glossary", "glossary.html",  "#top"),
     ("Contact",  "contact.html",   "#top"),
@@ -162,10 +162,10 @@ HEADER = """<header class="site-header">
            expands to the full mark once you scroll past the hero; every other
            page just renders it open. See .logo-mark in styles.css. -->
       <svg class="logo-mark" viewBox="0 0 1470 294" aria-hidden="true" focusable="false">
-        <image class="lm-r"     href="assets/rm-r.png"     x="0"    y="0" width="172" height="294"/>
-        <image class="lm-etail" href="assets/rm-etail.png" x="160"  y="0" width="564" height="294"/>
-        <image class="lm-m"     href="assets/rm-m.png"     x="749"  y="0" width="237" height="294"/>
-        <image class="lm-ark"   href="assets/rm-ark.png"   x="1006" y="0" width="464" height="294"/>
+        <image class="lm-r"     href="{up}assets/rm-r.png"     x="0"    y="0" width="172" height="294"/>
+        <image class="lm-etail" href="{up}assets/rm-etail.png" x="160"  y="0" width="564" height="294"/>
+        <image class="lm-m"     href="{up}assets/rm-m.png"     x="749"  y="0" width="237" height="294"/>
+        <image class="lm-ark"   href="{up}assets/rm-ark.png"   x="1006" y="0" width="464" height="294"/>
       </svg>
     </a>
     <span class="lockup-tagline">Connecting Brands to Retail</span>
@@ -187,7 +187,7 @@ FOOTER = """<footer class="site-footer">
         brands onto retail shelves, from line review strategy and forecasting
         through item setup, replenishment and reporting.</p>
       <span class="footer-badge">
-        <img src="assets/bentonville-arkansas.png" alt="Bentonville, Arkansas">
+        <img src="{up}assets/bentonville-arkansas.png" alt="Bentonville, Arkansas">
       </span>
     </div>
 
@@ -215,35 +215,57 @@ FOOTER = """<footer class="site-footer">
 </footer>"""
 
 
+def depth_prefix(page):
+    """'' for a page in the site root, '../' for one a directory down.
+
+    Blog posts live in blog/, and every URL the chrome writes — the nav, the
+    logo slices, the footer badge — is relative. Written verbatim into a post
+    they would resolve against blog/ and 404. This is the one thing that has to
+    know how deep a page sits.
+    """
+    return "../" * page.count("/")
+
+
 def header_for(page):
+    up = depth_prefix(page)
     links = ""
     for label, href, self_href in NAV:
-        if href == page:
+        # A blog post is not blog.html, but it is the Blog section, and a nav
+        # that lights up nothing on a post reads as "you are nowhere".
+        current = href == page or (href == "blog.html" and page.startswith("blog/"))
+        if current and href == page:
             links += (f'      <a href="{self_href}" class="current" '
                       f'aria-current="page">{label}</a>\n')
+        elif current:
+            # links to the section index, so it is a link, not the current page
+            links += f'      <a href="{up}{href}" class="current">{label}</a>\n'
         else:
-            links += f'      <a href="{href}">{label}</a>\n'
+            links += f'      <a href="{up}{href}">{label}</a>\n'
     cta_label, cta_href, cta_self = CTA
-    return HEADER.format(home="#top" if page == "index.html" else "index.html",
+    return HEADER.format(home="#top" if page == "index.html" else f"{up}index.html",
                          links=links.rstrip("\n"),
-                         cta_href=cta_self if page == cta_href else cta_href,
-                         cta_label=cta_label)
+                         cta_href=cta_self if page == cta_href else f"{up}{cta_href}",
+                         cta_label=cta_label,
+                         up=up)
 
 
 def footer_for(page):
+    up = depth_prefix(page)
     links = ""
     for label, href, self_href in NAV:
-        target = self_href if href == page else href
+        target = self_href if href == page else f"{up}{href}"
         links += f'      <a href="{target}">{label}</a>\n'
     return FOOTER.format(links=links.rstrip("\n"),
+                         up=up,
                          # & is escaped: a bare one in an attribute is only
                          # legal when it cannot start a character reference
                          credit=CREDIT_URL.replace("&", "&amp;"),
-                         home="#top" if page == "index.html" else "index.html")
+                         home="#top" if page == "index.html" else f"{up}index.html")
 
 
 def rewrite(path, check=False):
-    page = os.path.basename(path)
+    here = os.path.dirname(os.path.abspath(__file__))
+    page = os.path.relpath(os.path.abspath(path), here)
     src = open(path).read()
     out = src
     for pattern, replacement in (
@@ -265,5 +287,7 @@ def rewrite(path, check=False):
 if __name__ == "__main__":
     check = "--check" in sys.argv
     here = os.path.dirname(os.path.abspath(__file__))
-    for path in sorted(glob.glob(os.path.join(here, "*.html"))):
+    pages = (glob.glob(os.path.join(here, "*.html"))
+             + glob.glob(os.path.join(here, "blog", "*.html")))
+    for path in sorted(pages):
         print(" ", rewrite(path, check))
