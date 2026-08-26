@@ -40,12 +40,10 @@ CTA = ("Book a Strategy Call", "contact.html", "#form")
 # staging build is noindex, so nothing acts on it until the DNS moves.
 ORIGIN = "https://retailmark.com"
 
-# The build credit in the footer. It goes to the retail page rather than the
-# Tethered Crew home page: the people reading this site are retail brokers and
-# suppliers, and that page is written for exactly them, so it answers the
-# question the click is asking. The utm_source says which client site sent
-# them, which is the only way to tell whether these credits do anything.
-CREDIT_URL = ("https://tetheredcrew.com/industries/retail/"
+# The build credit in the footer. The Tethered Crew landing page, not a deep
+# link into it. The utm_source says which client site sent them, which is the
+# only way to tell whether these credits do anything.
+CREDIT_URL = ("https://tetheredcrew.com/"
               "?utm_source=retailmark&utm_medium=footer&utm_campaign=site-credit")
 
 # Everything here is already published on the site in plain text. Nothing is
