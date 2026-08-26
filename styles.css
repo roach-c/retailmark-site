@@ -1166,3 +1166,38 @@ textarea:focus-visible {
     transition: none !important;
   }
 }
+
+/* ==========================================================================
+   ONE LEFT EDGE
+   The site had two. The header, hero and brand band sat on the --edge gutter;
+   every content section sat inside a centred 1160px container. At 1512 that is
+   68px against 200px, so the eye tracks a step in the margin on every scroll —
+   which is exactly what it looked like.
+
+   Everything now starts on --edge. The gutter was already the site's real
+   left: the logo, the headline and the monogram all use it, and moving those
+   right to meet the container would undo the full-bleed layout rather than fix
+   the alignment.
+
+   Content still gets a measure. Without --content-max the three-column grids
+   would be 770px per card on a 2560 monitor, which fixes the margin and breaks
+   the reading.
+   ========================================================================== */
+
+:root { --content-max: 1400px; }
+
+.container {
+  max-width: none;
+  margin: 0;
+  padding: 0 var(--edge);
+}
+
+.service-grid,
+.why-inner,
+.contact-inner,
+.lex-grid { max-width: var(--content-max); }
+
+/* The centred sections have no left edge to align, so they keep their own
+   measure and stay centred in the full width. */
+.partners .section-sub,
+.logos-label { margin-left: auto; margin-right: auto; }
