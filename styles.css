@@ -1193,7 +1193,13 @@ textarea:focus-visible {
 .container {
   max-width: none;
   margin: 0;
-  padding: 0 var(--edge);
+  /* padding-left/right, NOT the shorthand. `padding: 0 var(--edge)` also sets
+     top and bottom to zero, which silently wiped the 14px the header adds for
+     its own height — the bar went from 81px to 53px with nothing in the header
+     rules having changed. A shorthand here reaches every .container on the
+     site, so it only gets to touch the axis it means to. */
+  padding-left: var(--edge);
+  padding-right: var(--edge);
 }
 
 .service-grid,
