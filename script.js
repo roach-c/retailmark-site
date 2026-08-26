@@ -27,6 +27,29 @@ document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') setNav(false);
 });
 
+/* ---- the hero lockup hands the wordmark to the header --------------------
+   Driven off the hero logo's own position rather than a pixel threshold, so
+   it stays correct when the hero reflows: the mark is 210px wide on a phone
+   and 330px on a desktop, and the headline above it wraps differently at
+   every width. A hard-coded scrollY would be wrong at all but one of them.
+
+   rootMargin's top is the header's own height, so the hand-off happens as the
+   hero mark slides under the bar rather than when it clears the viewport. */
+const heroLogo = document.querySelector('.hero-logo');
+if (heroLogo && document.documentElement.classList.contains('hero-lockup')) {
+  const header = document.querySelector('.site-header');
+  const handoff = new IntersectionObserver((entries) => {
+    entries.forEach((e) => {
+      header.classList.toggle('logo-shown', !e.isIntersecting);
+    });
+  }, { rootMargin: `-${Math.round(header.offsetHeight)}px 0px 0px 0px`, threshold: 0 });
+  handoff.observe(heroLogo);
+} else {
+  /* No hero mark on this page, or the flag never got set. Either way the
+     header keeps the logo it has always had. */
+  document.documentElement.classList.remove('hero-lockup');
+}
+
 // Subtle shadow on the sticky header once the page has scrolled.
 const siteHeader = document.querySelector('.site-header');
 const updateHeaderShadow = () => {

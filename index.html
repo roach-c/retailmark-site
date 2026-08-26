@@ -89,8 +89,15 @@
    which is the correct way round for this to fail. */
 if (!matchMedia('(prefers-reduced-motion: reduce)').matches)
   document.documentElement.classList.add('js-reveal');
+
+/* This page carries the wordmark in the hero, so the header starts without
+   one. Set here, in <head>, for the same reason as the line above: hiding it
+   from script.js would show the logo and then take it away on every load.
+   With JS off the class is never added and the header keeps its logo, which
+   is the right way for this to fail. */
+document.documentElement.classList.add('hero-lockup');
 </script>
-<link rel="stylesheet" href="styles.css?v=20260826z">
+<link rel="stylesheet" href="styles.css?v=20260827a">
 </head>
 <body>
 
@@ -120,6 +127,12 @@ if (!matchMedia('(prefers-reduced-motion: reduce)').matches)
   <section class="hero">
     <canvas id="hero3d" class="hero-canvas" aria-hidden="true"></canvas>
     <div class="container hero-inner">
+      <!-- The mark itself, on the page rather than in the bar. The header
+           picks it up once this has scrolled away; see .hero-lockup in
+           script.js. Dark variant, because the shipped wordmark is white for
+           the black header and disappears on the cream hero. -->
+      <img class="hero-logo" src="assets/retailmark-wordmark-dark.png"
+           alt="RetailMark" width="1479" height="294" fetchpriority="high">
       <div class="hero-badge">Built by former Walmart insiders</div>
       <h1>From Opportunity to On&nbsp;Shelf.</h1>
       <p class="hero-sub">Line review to modular reset. Vendor setup to sell-through. RetailMark takes suppliers the whole way into national retail &mdash; and we've sat on the buyer's side of the table, so we know what actually gets a yes.</p>
@@ -386,8 +399,8 @@ if (!matchMedia('(prefers-reduced-motion: reduce)').matches)
   </div>
 </footer>
 
-<script src="script.js?v=20260826z"></script>
-<script type="module" src="hero3d.js?v=20260826z"></script>
-<script type="module" src="boxspin.js?v=20260826z"></script>
+<script src="script.js?v=20260827a"></script>
+<script type="module" src="hero3d.js?v=20260827a"></script>
+<script type="module" src="boxspin.js?v=20260827a"></script>
 </body>
 </html>

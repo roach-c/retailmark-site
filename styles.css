@@ -806,6 +806,50 @@ a.service-card:focus-visible {
    stats rule above the row draws its line across it. */
 .hero-badge{justify-self:start}
 
+/* --------------------------------------------------------------------------
+   Hero lockup, and the hand-off to the header
+   The wordmark sits on the page above the headline, and the header has no
+   logo until you have scrolled past it. One mark on screen at a time.
+
+   The header's logo is hidden with opacity and visibility, never display,
+   because the bar is a flex row: removing the logo from layout would let the
+   nav and the CTA slide left and then jump back, on every scroll.
+   -------------------------------------------------------------------------- */
+
+.hero-logo {
+  display: block;
+  width: clamp(210px, 24vw, 330px);
+  height: auto;
+  margin-bottom: 22px;
+  justify-self: start;
+}
+
+.hero-lockup .site-header .logo,
+.hero-lockup .site-header .lockup-tagline {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-8px);
+  transition: opacity .32s var(--ease), transform .32s var(--ease),
+              visibility 0s linear .32s;
+}
+.hero-lockup .site-header.logo-shown .logo,
+.hero-lockup .site-header.logo-shown .lockup-tagline {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  transition: opacity .32s var(--ease), transform .32s var(--ease),
+              visibility 0s;
+}
+
+/* The hidden logo is still a link with a real box, so it would still take a
+   tab stop and still answer a click on empty space in the bar. */
+.hero-lockup .site-header:not(.logo-shown) .logo { pointer-events: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-lockup .site-header .logo,
+  .hero-lockup .site-header .lockup-tagline { transition: none; transform: none; }
+}
+
 .logos-row,.partner-row{
   display:flex;flex-wrap:wrap;align-items:center;justify-content:center;
   gap:clamp(1.6rem,5vw,3.4rem);
