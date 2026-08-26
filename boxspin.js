@@ -41,7 +41,7 @@ if (canvas && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
   // down on it; near eye level reads as the thing sitting on a shelf in front
   // of you, which is the whole idea of the site.
   const EYE = new THREE.Vector3(0.34, 0.16, 1).normalize();
-  const MARGIN = 1.28;                       // air around it; it is not a portrait
+  const MARGIN = 1.06;                       // just enough air that no angle touches an edge
 
   /* The volume the box sweeps as it turns: a cylinder of the corner radius,
      the box's own height. Fitting the box at rest is not enough — it is widest
