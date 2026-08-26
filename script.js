@@ -240,7 +240,7 @@ if (form) form.addEventListener('submit', async (e) => {
     ['.why-card'],
     ['.partners > .container > h2', '.partners > .container > .section-sub', '.partner-row'],
     ['.contact-copy > *'],
-    ['.contact-form'],
+    ['.contact-accent', '.contact-form'],
     ['.page-hero .crumbs', '.page-hero h1', '.page-hero-sub'],
     ['.lex-group'],
     ['.glossary-cta > .container > *'],

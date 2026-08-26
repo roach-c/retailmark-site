@@ -530,7 +530,12 @@ textarea:focus-visible {
   .service-grid { grid-template-columns: repeat(2, 1fr); }
 }
 
-@media (max-width: 640px) {
+/* 860, not 640. Between roughly 640 and 780 the bar tried to hold the logo,
+   five nav links and the CTA with no room for them, and the CTA ran 45px past
+   the viewport — a horizontal scrollbar on every tablet. It has been that way
+   since Glossary made the nav five links. The hamburger now takes over before
+   the bar runs out of room instead of after. */
+@media (max-width: 860px) {
   .main-nav, .btn-nav { display: none; }
   .nav-toggle { display: flex; }
   .service-grid { grid-template-columns: 1fr; }
@@ -956,9 +961,11 @@ textarea:focus-visible {
   .logo-img { height: 17px; }
 }
 
-/* Below 640 the nav collapses to the hamburger and the mark is the only thing
-   setting the bar's height, so it goes back up to hold the 67px it had. */
-@media (max-width: 640px) {
+/* Wherever the nav has collapsed to the hamburger, the mark is the only thing
+   setting the bar's height, so it comes back up. Keyed to the same 860 as that
+   collapse — left at 640 it produced a 53px bar between 660 and 860, a 17px
+   mark sitting alone next to a hamburger with nothing else in the row. */
+@media (max-width: 860px) {
   .logo-img { height: 38px; }
 }
 
@@ -1261,4 +1268,59 @@ textarea:focus-visible {
   .btn, .btn::after { transition: none; }
   .btn:hover, .btn:focus-visible { padding-left: 22px; padding-right: 22px; }
   .btn-lg:hover, .btn-lg:focus-visible { padding-left: 30px; padding-right: 30px; }
+}
+
+/* --------------------------------------------------------------------------
+   Contact: two panels converging
+   The idea is lifted from the current retailmark.com, where a gold panel
+   slides up from +223px while a dark one slides down from -117px and the two
+   settle into an overlap. Read off their page rather than guessed at.
+
+   What is taken is the MOTION, not the layout: theirs is a gold heading panel
+   over a dark services list, ours is a gold panel behind the form. Copying the
+   arrangement would have meant rebuilding a section that already works.
+   -------------------------------------------------------------------------- */
+
+/* overflow-x: clip, not hidden — clip does not create a scroll container, so
+   the panel can still overhang inside the section without the page gaining a
+   horizontal scrollbar. Which it did at 1000px, where the gutter bottoms out
+   at 24px and the panel's 34px overhang ran off the viewport. */
+.contact { overflow-x: clip; }
+.contact-stack { position: relative; }
+
+.contact-accent {
+  position: absolute;
+  inset: -34px -34px auto auto;      /* peeks out past the form's top-right */
+  width: 62%;
+  height: 58%;
+  background: var(--gold);
+  border-radius: var(--radius-lg);
+  z-index: 0;
+}
+.contact-form { position: relative; z-index: 1; }
+
+/* They arrive from opposite directions and meet. The form travels further and
+   lands last, so the gold is already in place for it to sit against. */
+.js-reveal .contact-accent:not(.is-in) { opacity: 0; transform: translate(46px, -34px); }
+.js-reveal .contact-form:not(.is-in)   { opacity: 0; transform: translateY(52px); }
+
+.js-reveal .contact-accent.is-in,
+.js-reveal .contact-form.is-in {
+  opacity: 1;
+  transform: none;
+  transition: opacity 1.05s cubic-bezier(.16, 1, .3, 1) var(--reveal-delay, 0ms),
+              transform 1.05s cubic-bezier(.16, 1, .3, 1) var(--reveal-delay, 0ms);
+}
+
+/* Below the wide gutters there is less room to overhang into, so the offset
+   comes in rather than being clipped flat against the edge. */
+@media (max-width: 1200px) {
+  .contact-accent { inset: -22px -14px auto auto; }
+}
+@media (max-width: 860px) {
+  /* stacked, the offset panel would just stick out past the page */
+  .contact-accent { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .contact-accent, .contact-form { opacity: 1 !important; transform: none !important; }
 }
