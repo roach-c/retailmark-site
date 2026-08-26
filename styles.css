@@ -847,14 +847,21 @@ textarea:focus-visible {
 }
 .marquee-set li {
   flex: 0 0 auto;
-  width: clamp(150px, 24vw, 260px);   /* about four in view on a laptop */
+  /* The slot only needs to be a little wider than the mark it holds. At 260px
+     around a 132px cap, half of every slot was empty and the strip read as
+     five logos adrift rather than a wall of them. */
+  width: clamp(122px, 11vw, 172px);
   display: grid;
   place-items: center;
-  padding: 0 10px;
+  padding: 0 7px;
 }
 .marquee-set img {
-  max-width: 132px;
-  max-height: 58px;
+  /* min(px, 100%) — the pixel cap keeps a mark from ballooning on a wide
+     screen, the 100% keeps it inside its slot on a narrow one. A bare pixel
+     cap did the first and not the second: at 390px the slot was 122px and the
+     marks were still trying to be 158, so neighbours overlapped. */
+  max-width: min(152px, 100%);
+  max-height: 70px;
   width: auto;
   height: auto;
   object-fit: contain;
