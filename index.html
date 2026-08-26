@@ -23,7 +23,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=20260825d">
+<link rel="stylesheet" href="styles.css?v=20260825f">
 </head>
 <body>
 
@@ -201,20 +201,32 @@
        decorative here: "RetailMark" is already in the header, the headings and
        the footer, so an alt text would just make a screen reader say it a
        fourth time. -->
-  <!-- The wordmark collapsing to the RM monogram. Built as inline SVG over
-       four exact letter slices rather than one image, because a PNG cannot
-       animate its own letterforms. The viewBox is the wordmark's real pixel
-       grid, so every offset below is in the artwork's own coordinates and
-       scales with the element for free. -->
-  <section class="brandmark" aria-hidden="true">
-    <svg class="rm" viewBox="0 0 1479 294" role="img" aria-label="RetailMark">
-      <g class="rm-group">
-        <image class="rm-part rm-r"     href="assets/rm-r.png"     x="0"    y="0" width="172" height="294"/>
-        <image class="rm-part rm-etail" href="assets/rm-etail.png" x="160"  y="0" width="564" height="294"/>
-        <image class="rm-part rm-m"     href="assets/rm-m.png"     x="749"  y="0" width="237" height="294"/>
-        <image class="rm-part rm-ark"   href="assets/rm-ark.png"   x="1006" y="0" width="464" height="294"/>
-      </g>
-    </svg>
+  <!-- The wordmark collapsing to the RM monogram, which then sits left and
+       hands the rest of the band to a statement.
+
+       The viewBox is only 434 wide — the width of the finished RM — while the
+       letters are drawn at their real wordmark coordinates, out to 1470. The
+       SVG overflows visibly, so at rest the full wordmark spills across the
+       whole band, and collapsing it is literally the letters retreating into
+       the box. That is what frees the right-hand side. -->
+  <section class="brandmark">
+    <div class="brandmark-inner">
+      <svg class="rm" viewBox="0 0 434 294" role="img" aria-label="RetailMark">
+        <g class="rm-group">
+          <image class="rm-part rm-r"     href="assets/rm-r.png"     x="0"    y="0" width="172" height="294"/>
+          <image class="rm-part rm-etail" href="assets/rm-etail.png" x="160"  y="0" width="564" height="294"/>
+          <image class="rm-part rm-m"     href="assets/rm-m.png"     x="749"  y="0" width="237" height="294"/>
+          <image class="rm-part rm-ark"   href="assets/rm-ark.png"   x="1006" y="0" width="464" height="294"/>
+        </g>
+      </svg>
+
+      <!-- PLACEHOLDER COPY: Justin's own tagline option 5, standing in until
+           there is a real quote to put here. Swap the text, keep the markup. -->
+      <blockquote class="brandmark-quote">
+        <p>Built for retail. Focused on growth.</p>
+        <cite>RetailMark &middot; Bentonville, Arkansas</cite>
+      </blockquote>
+    </div>
   </section>
 
   <section id="contact" class="contact">
@@ -259,7 +271,7 @@
   </div>
 </footer>
 
-<script src="script.js?v=20260825d"></script>
-<script type="module" src="hero3d.js?v=20260825d"></script>
+<script src="script.js?v=20260825f"></script>
+<script type="module" src="hero3d.js?v=20260825f"></script>
 </body>
 </html>

@@ -959,54 +959,102 @@ textarea:focus-visible {
 }
 
 /* --------------------------------------------------------------------------
-   Wordmark -> monogram
-   RetailMark collapses to RM: "etail" and "ark" fade away and the M travels
-   left to meet the R, then the pair recentres.
+   Wordmark -> monogram, then the band splits in two
+   RetailMark collapses to RM, the letters drifting left as they go, and the
+   monogram settles on the left. The right of the band is then free, and the
+   statement fades up into it.
 
-   All the numbers are in the SVG's viewBox units, which are the wordmark's own
-   pixels, so they hold at any rendered size. They are measured, not eyeballed:
-   the R ends at 171 and the M starts at 749, so 551 is the exact distance the
-   M has to cover to land 26 units after the R — 26 being the wordmark's own
-   gap between the l and the M, so the finished lockup keeps its native kerning.
+   The numbers are the wordmark's own pixels, because the viewBox is its pixel
+   grid. 551 is the exact distance from the M's real position to 26 units after
+   the R, and 26 is the wordmark's own l-to-M gap, so the finished lockup keeps
+   its native kerning instead of a spacing I picked.
    -------------------------------------------------------------------------- */
 
-.rm {
-  width: min(76%, 1200px);
-  height: auto;
+.brandmark {
+  padding: clamp(52px, 7vw, 96px) var(--edge);
+  /* Both of these, and the second is the one that actually matters. The
+     original centred band was a grid with place-items:center. Switching to
+     block is not enough: justify-items applies to block containers too under
+     CSS Box Alignment, and Chromium implements it, so the row stayed
+     shrink-wrapped and centred with display:block computed. Resetting the
+     alignment is the real fix — the monogram starts on the same left gutter
+     as the headline and the header logo. */
   display: block;
+  justify-items: stretch;
+}
+
+.brandmark-inner {
+  display: flex;
+  align-items: center;
+  gap: clamp(30px, 6vw, 88px);
+}
+
+/* The SVG is only as wide as the finished monogram. The letters are drawn well
+   outside it and overflow on purpose, so at rest the wordmark occupies the
+   whole band and the collapse is the letters withdrawing into their own box. */
+.rm {
+  flex: 0 0 auto;
+  height: clamp(58px, 9vw, 152px);
+  width: auto;
   overflow: visible;
 }
-.rm-part, .rm-group { transition: none; }
 
-/* The reveal only runs once the section is actually on screen; the class is
-   added by the observer in script.js. Before that it sits as the full wordmark,
-   which is also what anyone without JavaScript keeps. */
+.brandmark-quote { margin: 0; min-width: 0; }
+.brandmark-quote p {
+  margin: 0 0 12px;
+  font-family: var(--font-head, inherit);
+  font-size: clamp(1.15rem, 2.1vw, 1.9rem);
+  font-weight: 700;
+  line-height: 1.28;
+  letter-spacing: -0.01em;
+  color: #fff;
+  text-wrap: balance;
+}
+.brandmark-quote cite {
+  font-style: normal;
+  font-size: 0.82rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+/* Nothing runs until the band is actually on screen; script.js adds the class.
+   Before that it is the full wordmark, which is also what a visitor without
+   JavaScript keeps — so the statement must be visible by default, not faded. */
 .brandmark.is-revealed .rm-etail,
 .brandmark.is-revealed .rm-ark {
-  animation: rm-drop 900ms cubic-bezier(.4, 0, .2, 1) 700ms forwards;
+  animation: rm-drift 950ms cubic-bezier(.4, 0, .2, 1) 700ms forwards;
 }
 .brandmark.is-revealed .rm-m {
-  animation: rm-close 1100ms cubic-bezier(.65, 0, .2, 1) 900ms forwards;
+  animation: rm-close 1150ms cubic-bezier(.65, 0, .2, 1) 850ms forwards;
 }
-.brandmark.is-revealed .rm-group {
-  animation: rm-centre 1100ms cubic-bezier(.65, 0, .2, 1) 900ms forwards;
+.brandmark.is-revealed .brandmark-quote {
+  animation: rm-quote 800ms cubic-bezier(.16, 1, .3, 1) 1750ms both;
 }
 
-@keyframes rm-drop {
-  to { opacity: 0; }
+/* they fade AND travel left, so the word looks like it is being drawn in
+   rather than simply switched off */
+@keyframes rm-drift {
+  to { opacity: 0; transform: translateX(-90px); }
 }
 @keyframes rm-close {
   to { transform: translateX(-551px); }
 }
-@keyframes rm-centre {
-  to { transform: translateX(522px); }
+@keyframes rm-quote {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: none; }
 }
 
-/* Motion this large is exactly what a vestibular sensitivity reacts to, and
-   the wordmark is the more informative of the two states anyway. */
+@media (max-width: 760px) {
+  .brandmark-inner { flex-direction: column; align-items: flex-start; gap: 26px; }
+}
+
+/* Motion this large is what a vestibular sensitivity reacts to, and the
+   wordmark is the more informative of the two states. The statement is
+   visible either way — it never depends on an animation to appear. */
 @media (prefers-reduced-motion: reduce) {
   .brandmark.is-revealed .rm-etail,
   .brandmark.is-revealed .rm-ark,
   .brandmark.is-revealed .rm-m,
-  .brandmark.is-revealed .rm-group { animation: none; }
+  .brandmark.is-revealed .brandmark-quote { animation: none; }
 }
