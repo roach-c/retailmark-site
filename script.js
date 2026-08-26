@@ -251,7 +251,7 @@ if (form) form.addEventListener('submit', async (e) => {
     ['.services > .container > h2', '.services > .container > .section-sub'],
     ['.service-card'],
     ['.why-copy > *'],
-    ['.why-card'],
+    ['.why-card', '.why-badge'],
     ['.partners > .container > h2', '.partners > .container > .section-sub', '.partner-row'],
     ['.contact-copy > *'],
     ['.page-hero .crumbs', '.page-hero h1', '.page-hero-sub'],

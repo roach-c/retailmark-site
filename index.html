@@ -31,7 +31,7 @@
 if (!matchMedia('(prefers-reduced-motion: reduce)').matches)
   document.documentElement.classList.add('js-reveal');
 </script>
-<link rel="stylesheet" href="styles.css?v=20260826t">
+<link rel="stylesheet" href="styles.css?v=20260826u">
 </head>
 <body>
 
@@ -175,6 +175,12 @@ if (!matchMedia('(prefers-reduced-motion: reduce)').matches)
   </section>
 
   <section id="why" class="why">
+    <!-- The same Bentonville mark the footer carries, at readable size in the
+         dead space this section leaves on a wide screen. Decorative here:
+         the footer states the location on every page, and repeating it to a
+         screen reader adds nothing. -->
+    <img class="why-badge" src="assets/bentonville-arkansas.png" alt="" aria-hidden="true"
+         width="120" height="106" loading="lazy">
     <div class="container why-inner">
       <div class="why-copy">
         <h2>Why suppliers choose RetailMark</h2>
@@ -298,8 +304,8 @@ if (!matchMedia('(prefers-reduced-motion: reduce)').matches)
   </div>
 </footer>
 
-<script src="script.js?v=20260826t"></script>
-<script type="module" src="hero3d.js?v=20260826t"></script>
-<script type="module" src="boxspin.js?v=20260826t"></script>
+<script src="script.js?v=20260826u"></script>
+<script type="module" src="hero3d.js?v=20260826u"></script>
+<script type="module" src="boxspin.js?v=20260826u"></script>
 </body>
 </html>

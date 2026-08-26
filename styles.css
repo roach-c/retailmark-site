@@ -380,7 +380,52 @@ a.service-card:focus-visible {
 }
 
 /* Why */
-.why { background: var(--black); color: #fff; padding: 96px 0; }
+.why {
+  background: var(--black);
+  color: #fff;
+  padding: 96px 0;
+  /* the badge hangs off this, outside the content measure */
+  position: relative;
+}
+
+/* --------------------------------------------------------------------------
+   The Bentonville badge on the Why band
+   It sits in the gutter, not in the grid. The band's content is capped at
+   --content-max and sits on the left edge, so on a wide screen there is a
+   long empty right side and on a laptop there is none at all. Putting the
+   badge in the grid would take its width out of the copy and the quote card
+   at every size, to fill space that only exists at some of them.
+
+   1460 is measured, not chosen. Below 1400 the content already runs to the
+   right gutter and there is no space to sit in at all; 1460 is the first width
+   where the badge clears the content and still keeps a margin from the screen
+   edge. Re-measure it if --content-max, --edge or the badge width changes.
+
+   It also has to sit outside .why-inner. That element carries a transform
+   from the scroll-reveal, and a transform makes an element the containing
+   block for anything absolute inside it, so from in there `right: var(--edge)`
+   pins to the 1400px measure rather than to the section.
+   -------------------------------------------------------------------------- */
+.why-badge { display: none; }
+
+@media (min-width: 1460px) {
+  .why-badge {
+    display: block;
+    position: absolute;
+    /* Anchored to the right end of the content, not to the right end of the
+       screen. Pinned to the gutter it sat 470px clear of the quote card at
+       1920 and 1000px clear at 2560, which reads as something that fell off
+       the layout rather than part of it. */
+    left: calc(min(100vw, var(--content-max)) - var(--edge) + 56px);
+    top: 50%;
+    /* the `translate` property, not `transform`. The scroll-reveal animates
+       transform and settles it to `none`, which silently threw the centring
+       away and dropped the badge half its own height. These two compose. */
+    translate: 0 -50%;
+    width: 136px;
+    height: auto;
+  }
+}
 .why-inner {
   display: grid;
   grid-template-columns: 1.1fr 0.9fr;
@@ -1391,7 +1436,7 @@ a.service-card:focus-visible {
   .hero-badge, .hero h1, .hero-sub, .hero-cta, .hero-stats > div,
   .logos-label, .marquee,
   .services > .container > h2, .services > .container > .section-sub, .service-card,
-  .why-copy > *, .why-card,
+  .why-copy > *, .why-card, .why-badge,
   .partners > .container > h2, .partners > .container > .section-sub, .partner-row,
   .contact-copy > *, .contact-form,
   .page-hero .crumbs, .page-hero h1, .page-hero-sub,
@@ -1417,7 +1462,7 @@ a.service-card:focus-visible {
     .hero-badge, .hero h1, .hero-sub, .hero-cta, .hero-stats > div,
     .logos-label, .marquee,
     .services > .container > h2, .services > .container > .section-sub, .service-card,
-    .why-copy > *, .why-card,
+    .why-copy > *, .why-card, .why-badge,
     .partners > .container > h2, .partners > .container > .section-sub, .partner-row,
     .contact-copy > *, .contact-form,
     .page-hero .crumbs, .page-hero h1, .page-hero-sub,
