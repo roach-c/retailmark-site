@@ -161,11 +161,6 @@ textarea:focus-visible {
   transform: translateY(-1px);
   box-shadow: var(--shadow-sm);
 }
-.logo-img {
-  height: 32px;      /* + 20px of pill padding = 52px, the CTA button's height */
-  width: auto;
-  display: block;
-}
 .main-nav {
   display: flex;
   gap: clamp(18px, 1.7vw, 28px);
@@ -808,46 +803,94 @@ a.service-card:focus-visible {
 
 /* --------------------------------------------------------------------------
    Hero lockup, and the hand-off to the header
-   The wordmark sits on the page above the headline, and the header has no
-   logo until you have scrolled past it. One mark on screen at a time.
+   The wordmark sits on the page above the headline. The header carries only
+   the RM monogram until you have scrolled past it, then opens out into the
+   full mark.
 
-   The header's logo is hidden with opacity and visibility, never display,
-   because the bar is a flex row: removing the logo from layout would let the
-   nav and the CTA slide left and then jump back, on every scroll.
+   It is the same four letter slices the brand band animates, at the same
+   wordmark coordinates, so this is literally the band's collapse played
+   backwards rather than a second drawing of the logo that has to be kept in
+   step with the first.
+
+   Geometry, all in the SVG's user units (294 tall):
+     R      0 .. 172
+     etail  160 .. 724
+     M      749 .. 986      slid -551 it lands at 198 .. 435
+     ark    1006 .. 1470
+   So the closed mark is 435 wide and the open one is 1470, giving the two
+   aspect ratios below: 435/294 = 1.4796 and 1470/294 = 5.
    -------------------------------------------------------------------------- */
 
-.hero-logo {
+.logo { --logo-h: 40px; }
+
+.logo-mark {
+  height: var(--logo-h);
+  /* The SVG box is always the full wordmark, so the artwork never rescales
+     during the transition — the link's own box is what opens and closes, and
+     the letters simply stop being clipped. Scaling the SVG instead would
+     shrink the R and the M as they closed, which is a different animation and
+     a worse one. */
+  width: calc(var(--logo-h) * 5);
   display: block;
-  width: clamp(210px, 24vw, 330px);
-  height: auto;
-  margin-bottom: 22px;
-  justify-self: start;
+  /* flex: none is load bearing. .logo is a flex row, so with the default
+     flex-shrink the SVG obediently shrank to whatever width the link had —
+     which scaled the whole viewBox down and rendered a 30%-size RM instead of
+     a full-size one with the tail clipped off. The SVG must keep its full
+     width and let the parent's overflow do the hiding. */
+  flex: none;
+  /* drop-shadow, not box-shadow: it follows the letterforms' alpha rather than
+     drawing a rectangle around transparent PNGs. */
+  filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.34));
 }
 
-.hero-lockup .site-header .logo,
+/* Open by default. Every page except the home page has no hero wordmark, and
+   with JavaScript off no page does, so the full mark is the resting state and
+   the closed one is the exception. */
+.logo {
+  overflow: hidden;
+  width: calc(var(--logo-h) * 5);
+  flex: 0 0 auto;
+}
+
+.hero-lockup .site-header:not(.logo-shown) .logo {
+  width: calc(var(--logo-h) * 1.4796);
+}
+.hero-lockup .site-header:not(.logo-shown) .lm-etail,
+.hero-lockup .site-header:not(.logo-shown) .lm-ark {
+  opacity: 0;
+  /* they pull left as they fade, so the word reads as being drawn in rather
+     than switched on — the same gesture as the band, reversed */
+  transform: translateX(-90px);
+}
+.hero-lockup .site-header:not(.logo-shown) .lm-m {
+  transform: translateX(-551px);
+}
+
+/* Transitions on the parts, not the parent, so the box and the letters open
+   together. The letters wait for the box to start moving, which is what makes
+   it read as the mark unfolding rather than three things happening at once. */
+.logo { transition: width .52s cubic-bezier(.65, 0, .2, 1); }
+.lm-etail, .lm-ark {
+  transition: opacity .42s ease .12s, transform .52s cubic-bezier(.65, 0, .2, 1) .06s;
+}
+.lm-m { transition: transform .52s cubic-bezier(.65, 0, .2, 1); }
+
 .hero-lockup .site-header .lockup-tagline {
   opacity: 0;
   visibility: hidden;
-  transform: translateY(-8px);
-  transition: opacity .32s var(--ease), transform .32s var(--ease),
-              visibility 0s linear .32s;
+  transition: opacity .32s var(--ease), visibility 0s linear .32s;
 }
-.hero-lockup .site-header.logo-shown .logo,
 .hero-lockup .site-header.logo-shown .lockup-tagline {
   opacity: 1;
   visibility: visible;
-  transform: none;
-  transition: opacity .32s var(--ease), transform .32s var(--ease),
-              visibility 0s;
+  transition: opacity .32s var(--ease) .2s, visibility 0s;
 }
 
-/* The hidden logo is still a link with a real box, so it would still take a
-   tab stop and still answer a click on empty space in the bar. */
-.hero-lockup .site-header:not(.logo-shown) .logo { pointer-events: none; }
-
+/* The mark still opens and closes — it is a state, not decoration — it just
+   arrives there instantly. */
 @media (prefers-reduced-motion: reduce) {
-  .hero-lockup .site-header .logo,
-  .hero-lockup .site-header .lockup-tagline { transition: none; transform: none; }
+  .logo, .lm-etail, .lm-ark, .lm-m,
+  .hero-lockup .site-header .lockup-tagline { transition: none; }
 }
 
 .logos-row,.partner-row{
@@ -877,7 +920,7 @@ a.service-card:focus-visible {
      of cropped image, not the old 22px of mostly-empty image. These values
      reproduce the original 38x87 pill to the pixel. */
   .logo{padding:13.6px 16.2px}
-  .logo-img{height:10.8px}
+  .logo{--logo-h:10.8px}
 }
 @media (max-width:640px){
   .logos-row img{height:34px}
@@ -1345,15 +1388,6 @@ a.service-card:focus-visible {
 }
 .logo:hover { box-shadow: none; transform: translateY(-1px); }
 
-.logo-img {
-  /* Unboxed it can be taller: the bar's height is still set by the CTA button
-     at 52px, so anything up to that costs nothing. */
-  height: 40px;
-  /* drop-shadow, not box-shadow — it follows the letterforms' alpha instead of
-     drawing a rectangle around a transparent PNG. Just enough to lift the mark
-     off the black rather than glow. */
-  filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.34));
-}
 
 .main-nav a { color: rgba(255, 255, 255, 0.80); }
 .main-nav a:hover { color: var(--gold); }
@@ -1376,8 +1410,7 @@ a.service-card:focus-visible {
    Unboxed it still reads BIGGER than before, because the old pill was mostly
    padding around a 10.8px mark. */
 @media (max-width: 900px) {
-  .logo { padding: 0; }
-  .logo-img { height: 17px; }
+  .logo { padding: 0; --logo-h: 17px; }
 }
 
 /* Wherever the nav has collapsed to the hamburger, the mark is the only thing
@@ -1385,7 +1418,7 @@ a.service-card:focus-visible {
    collapse — left at 640 it produced a 53px bar between 660 and 860, a 17px
    mark sitting alone next to a hamburger with nothing else in the row. */
 @media (max-width: 860px) {
-  .logo-img { height: 38px; }
+  .logo { --logo-h: 38px; }
 }
 
 /* --------------------------------------------------------------------------

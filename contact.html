@@ -52,7 +52,16 @@ if (!matchMedia('(prefers-reduced-motion: reduce)').matches)
 <header class="site-header">
   <div class="container header-inner">
     <a href="index.html" class="logo" aria-label="RetailMark home">
-      <img src="assets/retailmark-wordmark.png" alt="RetailMark" class="logo-img">
+      <!-- The wordmark as its four letter slices, the same ones the brand band
+           animates. The home page opens with only the R and the M showing and
+           expands to the full mark once you scroll past the hero; every other
+           page just renders it open. See .logo-mark in styles.css. -->
+      <svg class="logo-mark" viewBox="0 0 1470 294" aria-hidden="true" focusable="false">
+        <image class="lm-r"     href="assets/rm-r.png"     x="0"    y="0" width="172" height="294"/>
+        <image class="lm-etail" href="assets/rm-etail.png" x="160"  y="0" width="564" height="294"/>
+        <image class="lm-m"     href="assets/rm-m.png"     x="749"  y="0" width="237" height="294"/>
+        <image class="lm-ark"   href="assets/rm-ark.png"   x="1006" y="0" width="464" height="294"/>
+      </svg>
     </a>
     <span class="lockup-tagline">Connecting Brands to Retail</span>
     <nav class="main-nav">
