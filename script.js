@@ -240,7 +240,6 @@ if (form) form.addEventListener('submit', async (e) => {
     ['.why-card'],
     ['.partners > .container > h2', '.partners > .container > .section-sub', '.partner-row'],
     ['.contact-copy > *'],
-    ['.contact-accent', '.contact-form'],
     ['.page-hero .crumbs', '.page-hero h1', '.page-hero-sub'],
     ['.lex-group'],
     ['.glossary-cta > .container > *'],
@@ -279,17 +278,58 @@ if (form) form.addEventListener('submit', async (e) => {
     });
   });
 
+  /* ---- the contact card waits longer ----------------------------------
+     The generic trigger is 8% of the element, which for a 581px form means it
+     fires when 46px of it has cleared the fold — so a 2.4s animation is over
+     before you have scrolled to the thing. This one needs a quarter of the
+     card inside a viewport shortened by 25%, which lands when the card is
+     genuinely on screen rather than merely beginning to exist.
+
+     Both panels are driven off ONE trigger, the wrapper, rather than watched
+     separately. They are different heights and sit at different offsets, so
+     observed individually they would cross their own thresholds at different
+     moments and the two halves of a converge would start apart. */
+  var stack = document.querySelector('.contact-stack');
+  if (stack) {
+    var pair = stack.querySelectorAll('.contact-accent, .contact-form');
+    var lateIO = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        pair.forEach(function (el) { el.classList.add('is-in'); });
+        lateIO.unobserve(e.target);
+      });
+    }, { rootMargin: '0px 0px -25% 0px', threshold: 0.25 });
+    lateIO.observe(stack);
+  }
+
   /* A safety net for anything the observer never reports on — an element with
-     no height at load, or a browser that misses one. After five seconds
-     anything still hidden is simply shown. A page that permanently withholds
-     its own content because of an animation is worse than no animation. */
-  setTimeout(function () {
-    GROUPS.forEach(function (group) {
+     no height at load, or a browser that misses one. A page that permanently
+     withholds its own content because of an animation is worse than no
+     animation.
+
+     It only rescues what is ON SCREEN. Revealing everything on a timer looks
+     like a fix but is its own bug: it fires the animations of sections nobody
+     has scrolled to yet, so by the time you arrive they have already played.
+     That is exactly what made the contact card seem to trigger early. Content
+     that is off screen and hidden is not trapped — it is waiting. */
+  var ALL = GROUPS.concat([['.contact-accent', '.contact-form']]);
+  function rescueVisible() {
+    var h = window.innerHeight || document.documentElement.clientHeight;
+    ALL.forEach(function (group) {
       group.forEach(function (sel) {
         document.querySelectorAll(sel).forEach(function (el) {
-          if (!el.classList.contains('is-in')) { el.classList.add('is-in'); io.unobserve(el); }
+          if (el.classList.contains('is-in')) return;
+          var r = el.getBoundingClientRect();
+          if (r.top < h && r.bottom > 0) { el.classList.add('is-in'); io.unobserve(el); }
         });
       });
     });
-  }, 5000);
+  }
+  setTimeout(rescueVisible, 5000);
+  // and again whenever scrolling stops, for anything scrolled past while stuck
+  var idle;
+  window.addEventListener('scroll', function () {
+    clearTimeout(idle);
+    idle = setTimeout(rescueVisible, 1200);
+  }, { passive: true });
 })();
