@@ -267,6 +267,11 @@ if (form) form.addEventListener('submit', async (e) => {
     threshold: 0.08
   });
 
+  /* The nine service sections are a page-length apart, not neighbours in a
+     grid, so they get no stagger — a precomputed delay would mean scrolling
+     to section seven and then waiting on a queue that is not there. */
+  document.querySelectorAll('.svc').forEach(function (el) { io.observe(el); });
+
   GROUPS.forEach(function (group) {
     var n = 0;
     group.forEach(function (sel) {
@@ -312,7 +317,7 @@ if (form) form.addEventListener('submit', async (e) => {
      has scrolled to yet, so by the time you arrive they have already played.
      That is exactly what made the contact card seem to trigger early. Content
      that is off screen and hidden is not trapped — it is waiting. */
-  var ALL = GROUPS.concat([['.contact-accent', '.contact-form']]);
+  var ALL = GROUPS.concat([['.contact-accent', '.contact-form'], ['.svc']]);
   function rescueVisible() {
     var h = window.innerHeight || document.documentElement.clientHeight;
     ALL.forEach(function (group) {

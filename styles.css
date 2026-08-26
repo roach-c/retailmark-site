@@ -336,6 +336,44 @@ textarea:focus-visible {
 .service-card h3 { transition: color 0.2s var(--ease); }
 .service-card p { font-size: 0.92rem; }
 
+/* The cards are links now, so they have to look like one before the cursor
+   arrives. The arrow is the affordance a hover-lift alone does not give a
+   touch screen, where there is no hover at all. */
+a.service-card {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+  position: relative;
+}
+a.service-card h3 { color: var(--black); }
+a.service-card:hover h3, a.service-card:focus-visible h3 { color: var(--gold-dark); }
+a.service-card::after {
+  content: "\2192";
+  position: absolute;
+  right: 26px;
+  bottom: 22px;
+  font-size: 1.05rem;
+  line-height: 1;
+  color: var(--gold-dark);
+  opacity: 0;
+  transform: translateX(-6px);
+  transition: opacity 0.25s var(--ease), transform 0.25s var(--ease);
+}
+a.service-card:hover::after, a.service-card:focus-visible::after {
+  opacity: 1;
+  transform: none;
+}
+a.service-card p { padding-right: 28px; }   /* keeps the arrow off the last line */
+a.service-card:focus-visible {
+  outline: 2px solid var(--gold-dark);
+  outline-offset: 3px;
+}
+
+/* Coarse pointers never hover, so the arrow is simply always there. */
+@media (hover: none) {
+  a.service-card::after { opacity: 0.55; transform: none; }
+}
+
 /* Why */
 .why { background: var(--black); color: #fff; padding: 96px 0; }
 .why-inner {
@@ -735,6 +773,60 @@ textarea:focus-visible {
 /* the nav entry for the page you are already on */
 .main-nav a.current { color: var(--gold-dark); }
 .main-nav a.current::after { right: 0; }
+
+/* --------------------------------------------------------------------------
+   Services detail page
+   Nine sections on one page rather than nine thin pages: nine near-identical
+   pages compete with each other for the same search, and in a site with no
+   build step they are also nine copies of the header to keep in sync.
+   -------------------------------------------------------------------------- */
+
+.services-detail { padding: 72px 0 84px; background: #fff; }
+
+.svc {
+  display: grid;
+  grid-template-columns: 92px 1fr;
+  gap: 26px;
+  padding: 42px 0;
+  border-top: 1px solid var(--border);
+  /* the header is fixed, so an anchor jump would otherwise land under it */
+  scroll-margin-top: 110px;
+}
+.svc:first-child { border-top: none; padding-top: 8px; }
+
+.svc-num {
+  font-size: 2.6rem;
+  font-weight: 800;
+  line-height: 1;
+  color: var(--gold);
+  letter-spacing: -0.02em;
+}
+.svc-body { max-width: 720px; }
+.svc h2 { font-size: clamp(1.35rem, 2.4vw, 1.85rem); margin-bottom: 12px; }
+.svc-lede { font-size: 1.04rem; margin-bottom: 20px; }
+
+.svc-list { list-style: none; padding: 0; margin: 0; }
+.svc-list li {
+  position: relative;
+  padding-left: 26px;
+  margin-bottom: 11px;
+  font-size: 0.97rem;
+  color: var(--gray-dark, var(--gray));
+}
+.svc-list li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.55em;
+  width: 11px;
+  height: 2px;
+  background: var(--gold);
+}
+
+@media (max-width: 700px) {
+  .svc { grid-template-columns: 1fr; gap: 10px; padding: 34px 0; }
+  .svc-num { font-size: 1.6rem; }
+}
 
 /* the glossary is the whole page here, so it does not need to announce itself
    a second time under the page title */
@@ -1150,7 +1242,7 @@ textarea:focus-visible {
   .partners > .container > h2, .partners > .container > .section-sub, .partner-row,
   .contact-copy > *, .contact-form,
   .page-hero .crumbs, .page-hero h1, .page-hero-sub,
-  .lex-group, .glossary-cta > .container > *,
+  .lex-group, .svc, .glossary-cta > .container > *,
   .site-footer .container > *
 ):not(.is-in) {
   opacity: 0;
@@ -1176,7 +1268,7 @@ textarea:focus-visible {
     .partners > .container > h2, .partners > .container > .section-sub, .partner-row,
     .contact-copy > *, .contact-form,
     .page-hero .crumbs, .page-hero h1, .page-hero-sub,
-    .lex-group, .glossary-cta > .container > *,
+    .lex-group, .svc, .glossary-cta > .container > *,
     .site-footer .container > *
   ) {
     opacity: 1 !important;
