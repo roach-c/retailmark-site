@@ -40,6 +40,14 @@ CTA = ("Book a Strategy Call", "contact.html", "#form")
 # staging build is noindex, so nothing acts on it until the DNS moves.
 ORIGIN = "https://retailmark.com"
 
+# The build credit in the footer. It goes to the retail page rather than the
+# Tethered Crew home page: the people reading this site are retail brokers and
+# suppliers, and that page is written for exactly them, so it answers the
+# question the click is asking. The utm_source says which client site sent
+# them, which is the only way to tell whether these credits do anything.
+CREDIT_URL = ("https://tetheredcrew.com/industries/retail/"
+              "?utm_source=retailmark&utm_medium=footer&utm_campaign=site-credit")
+
 # Everything here is already published on the site in plain text. Nothing is
 # invented: no street address, no opening hours, and above all no reviews or
 # star rating. A fabricated AggregateRating is a manual action, not a shortcut.
@@ -194,7 +202,7 @@ FOOTER = """<footer class="site-footer">
   <div class="container footer-bottom">
     <span class="footer-tagline">From Opportunity to On&nbsp;Shelf.</span>
     <span>&copy; <span id="year"></span> RetailMark. All rights reserved.</span>
-    <span class="footer-credit">Powered by <a href="https://tetheredcrew.com"
+    <span class="footer-credit">Powered by <a href="{credit}"
       target="_blank" rel="noopener">Tethered Crew</a></span>
   </div>
 </footer>"""
@@ -221,6 +229,9 @@ def footer_for(page):
         target = self_href if href == page else href
         links += f'      <a href="{target}">{label}</a>\n'
     return FOOTER.format(links=links.rstrip("\n"),
+                         # & is escaped: a bare one in an attribute is only
+                         # legal when it cannot start a character reference
+                         credit=CREDIT_URL.replace("&", "&amp;"),
                          home="#top" if page == "index.html" else "index.html")
 
 

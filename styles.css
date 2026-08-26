@@ -619,12 +619,18 @@ a.service-card:focus-visible {
    with keywords, which is the pattern Google treats as a credit rather than as
    a link scheme. */
 .footer-credit a {
-  color: var(--gray);
+  color: var(--charcoal);
   font-weight: 600;
-  border-bottom: 1px solid transparent;
+  /* A resting underline, faint. Sat in grey with no rule it was the same
+     colour and weight as the copyright line beside it, so the one thing on
+     the page that is meant to be clicked did not look clickable. */
+  border-bottom: 1px solid rgba(107, 107, 111, 0.4);
   transition: color 0.2s var(--ease), border-color 0.2s var(--ease);
 }
-.footer-credit a:hover { color: var(--gold-dark); border-bottom-color: currentColor; }
+.footer-credit a:hover, .footer-credit a:focus-visible {
+  color: var(--gold-dark);
+  border-bottom-color: currentColor;
+}
 
 @media (max-width: 940px) {
   .footer-top { grid-template-columns: 1fr 1fr; gap: 36px; }
