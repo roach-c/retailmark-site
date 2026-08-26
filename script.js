@@ -247,7 +247,7 @@ if (form) form.addEventListener('submit', async (e) => {
     ['.site-footer .container > *']
   ];
 
-  var STEP = 84;      // ms between neighbours in a group
+  var STEP = 101;     // ms between neighbours in a group
   var CAP = 6;        // stop stacking delay past this, or late cards crawl in
 
   if (!('IntersectionObserver' in window)) {
