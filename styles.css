@@ -12,11 +12,15 @@
   --radius: 10px;
   --radius-lg: 16px;
   --max-width: 1160px;
-  /* The gutter for full-bleed rows: header and hero share it so they line up.
-     It scales with the viewport rather than sitting at a fixed 52px, because a
-     fixed gutter leaves the copy stranded on the far left of a wide monitor
-     with a canyon between it and the render. */
-  --edge: clamp(24px, 4.5vw, 110px);
+  /* The one gutter every row on the site starts from.
+
+     It reproduces what the old centred 1160px container gave a section — at
+     1512 that is exactly 200px, at 1200 exactly 44px — so unifying the site on
+     this line brings the header, hero and brand band IN to meet the sections,
+     rather than pushing the sections out to the screen edges. Capped at 260 so
+     a wide monitor does not strand everything in a narrow column down the
+     middle the way a plain centred container would at 724px. */
+  --edge: clamp(24px, calc((100vw - 1160px) / 2 + 24px), 260px);
   --hero-copy: 620px;   /* the hero's left column; the render takes the rest */
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
   --shadow-sm: 0 1px 2px rgba(17, 17, 17, 0.04), 0 1px 3px rgba(17, 17, 17, 0.03);

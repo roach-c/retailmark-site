@@ -21,13 +21,20 @@ if (canvas && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-  // the hero's lighting, so the box reads as the same object under the same
-  // light rather than a differently lit twin
-  scene.add(new THREE.AmbientLight(0xffffff, 0.55));
-  const key = new THREE.DirectionalLight(0xffffff, 1.15);
+  /* Brighter than the hero's rig, on purpose. The box is the same object with
+     the same material — but the hero sits on cream, which throws light back at
+     it, while this one sits on near-black that returns nothing. Under the
+     hero's lighting it measured (168,132,12) against the brand's (232,185,35):
+     the same gold, reading as olive. So the LIGHT is corrected here rather
+     than the colour, which would have meant two different golds on one page. */
+  scene.add(new THREE.AmbientLight(0xffffff, 1.4));
+  const key = new THREE.DirectionalLight(0xffffff, 1.7);
   key.position.set(5, 8, 6);
   scene.add(key);
-  const warm = new THREE.PointLight(GOLD, 8, 10);
+  const fill = new THREE.DirectionalLight(0xffffff, 0.7);
+  fill.position.set(-4, 1, 3);          // stands in for the bounce the cream gives the hero
+  scene.add(fill);
+  const warm = new THREE.PointLight(GOLD, 12, 10);
   warm.position.set(-2.2, 1.4, 2.2);
   scene.add(warm);
 
