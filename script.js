@@ -215,3 +215,81 @@ if (form) form.addEventListener('submit', async (e) => {
     });
   }, { threshold: 0.55 }).observe(band);
 })();
+
+/* ---------------------------------------------------------------------------
+   Scroll reveals.
+
+   Each piece fades and lifts into place the first time it is scrolled to, then
+   is left alone — the observer stops watching it. Re-animating on every pass
+   reads as a page that cannot settle rather than as polish.
+
+   The selector list mirrors the one in styles.css. CSS decides what starts
+   hidden; this decides what gets watched. An element in one list and not the
+   other either never appears or never moves, so keep them in step.
+   --------------------------------------------------------------------------- */
+(function () {
+  if (!document.documentElement.classList.contains('js-reveal')) return;
+
+  var GROUPS = [
+    ['.hero-badge', '.hero h1', '.hero-sub', '.hero-cta'],
+    ['.hero-stats > div'],
+    ['.logos-label', '.marquee'],
+    ['.services > .container > h2', '.services > .container > .section-sub'],
+    ['.service-card'],
+    ['.why-copy > *'],
+    ['.why-card'],
+    ['.partners > .container > h2', '.partners > .container > .section-sub', '.partner-row'],
+    ['.contact-copy > *'],
+    ['.contact-form'],
+    ['.page-hero .crumbs', '.page-hero h1', '.page-hero-sub'],
+    ['.lex-group'],
+    ['.glossary-cta > .container > *'],
+    ['.site-footer .container > *']
+  ];
+
+  var STEP = 70;      // ms between neighbours in a group
+  var CAP = 6;        // stop stacking delay past this, or late cards crawl in
+
+  if (!('IntersectionObserver' in window)) {
+    // no observer: show everything rather than leave the page half-blank
+    document.documentElement.classList.remove('js-reveal');
+    return;
+  }
+
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (!e.isIntersecting) return;
+      e.target.classList.add('is-in');
+      io.unobserve(e.target);          // first time only
+    });
+  }, {
+    // a little early, so a section has started before it is fully in view
+    rootMargin: '0px 0px -8% 0px',
+    threshold: 0.08
+  });
+
+  GROUPS.forEach(function (group) {
+    var n = 0;
+    group.forEach(function (sel) {
+      document.querySelectorAll(sel).forEach(function (el) {
+        el.style.setProperty('--reveal-delay', Math.min(n, CAP) * STEP + 'ms');
+        n++;
+        io.observe(el);
+      });
+    });
+  });
+
+  /* A safety net for anything the observer never reports on — an element with
+     no height at load, or a browser that misses one. After five seconds
+     anything still hidden is simply shown. A page that permanently withholds
+     its own content because of an animation is worse than no animation. */
+  setTimeout(function () {
+    GROUPS.forEach(function (group) {
+      group.forEach(function (sel) {
+        document.querySelectorAll(sel).forEach(function (el) {
+          if (!el.classList.contains('is-in')) { el.classList.add('is-in'); io.unobserve(el); }
+        });
+      });
+    });
+  }, 5000);
+})();

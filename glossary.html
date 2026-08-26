@@ -23,7 +23,15 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=20260826e">
+<script>
+/* Sets the flag the reveal rules hang off, in <head> so the hidden state is
+   in place before first paint. Anything that stops this line running — an
+   error, a blocked script — leaves the page fully visible rather than blank,
+   which is the correct way round for this to fail. */
+if (!matchMedia('(prefers-reduced-motion: reduce)').matches)
+  document.documentElement.classList.add('js-reveal');
+</script>
+<link rel="stylesheet" href="styles.css?v=20260826f">
 </head>
 <body>
 
@@ -159,6 +167,6 @@
   </div>
 </footer>
 
-<script src="script.js?v=20260826e"></script>
+<script src="script.js?v=20260826f"></script>
 </body>
 </html>

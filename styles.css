@@ -1105,3 +1105,64 @@ textarea:focus-visible {
 /* The box can be turned by hand, so it has to look like it can be. */
 .boxspin { cursor: grab; touch-action: pan-y; }
 .boxspin.is-grabbed { cursor: grabbing; }
+
+/* ==========================================================================
+   SCROLL REVEALS
+   Each piece fades and lifts into place the first time it is scrolled to, and
+   then stays put. Once, not on every pass — a section that re-animates every
+   time you scroll past it stops reading as polish and starts reading as a
+   page that cannot settle.
+
+   The selector list below is mirrored in script.js. Keep the two in step: CSS
+   decides what starts hidden, script.js decides what gets watched, and an
+   element in one list but not the other either never appears or never moves.
+
+   Nothing is hidden until the inline script in <head> sets .js-reveal on the
+   document. That ordering is the whole safety net: if the script never runs,
+   no rule below ever matches and the page is simply a normal page. It is in
+   the head rather than with the rest of the JS so the hidden state is in place
+   before first paint, instead of content appearing and then being taken away.
+   ========================================================================== */
+
+.js-reveal :is(
+  .hero-badge, .hero h1, .hero-sub, .hero-cta, .hero-stats > div,
+  .logos-label, .marquee,
+  .services > .container > h2, .services > .container > .section-sub, .service-card,
+  .why-copy > *, .why-card,
+  .partners > .container > h2, .partners > .container > .section-sub, .partner-row,
+  .contact-copy > *, .contact-form,
+  .page-hero .crumbs, .page-hero h1, .page-hero-sub,
+  .lex-group, .glossary-cta > .container > *,
+  .site-footer .container > *
+):not(.is-in) {
+  opacity: 0;
+  transform: translateY(18px);
+}
+
+.js-reveal .is-in {
+  opacity: 1;
+  transform: none;
+  /* the delay is the stagger, set per element by script.js */
+  transition: opacity .62s cubic-bezier(.16, 1, .3, 1) var(--reveal-delay, 0ms),
+              transform .62s cubic-bezier(.16, 1, .3, 1) var(--reveal-delay, 0ms);
+}
+
+/* Reveal-on-scroll is motion, and a page where everything slides is exactly
+   what a vestibular sensitivity reacts to. Everything is simply present. */
+@media (prefers-reduced-motion: reduce) {
+  .js-reveal :is(
+    .hero-badge, .hero h1, .hero-sub, .hero-cta, .hero-stats > div,
+    .logos-label, .marquee,
+    .services > .container > h2, .services > .container > .section-sub, .service-card,
+    .why-copy > *, .why-card,
+    .partners > .container > h2, .partners > .container > .section-sub, .partner-row,
+    .contact-copy > *, .contact-form,
+    .page-hero .crumbs, .page-hero h1, .page-hero-sub,
+    .lex-group, .glossary-cta > .container > *,
+    .site-footer .container > *
+  ) {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
