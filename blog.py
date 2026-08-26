@@ -36,7 +36,8 @@ import os
 import re
 import sys
 
-ORIGIN = "https://retailmark.com"
+# one definition, in chrome.py — see the note there about launch day
+from chrome import ORIGIN
 HERE = os.path.dirname(os.path.abspath(__file__))
 ASSET_V = "20260827h"        # keep in step with the ?v= on the other pages
 

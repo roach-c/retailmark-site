@@ -35,10 +35,19 @@ NAV = [
 # itself, where it scrolls to the form rather than reloading the same page.
 CTA = ("Book a Strategy Call", "contact.html", "#form")
 
-# The domain this site is going to live on. Schema and social cards need
-# absolute URLs, and this is the one place that decides what they are. The
-# staging build is noindex, so nothing acts on it until the DNS moves.
-ORIGIN = "https://retailmark.com"
+# Where the site is actually served from. Schema and social cards need absolute
+# URLs and this is the one place that decides them — blog.py and sitemap.py
+# import it from here rather than keeping their own copy.
+#
+# It has to be the host the pages are really on, not the one they are going to.
+# Pointed at retailmark.com while the site lived on the preview domain, every
+# card image 404'd, so iMessage fell back to scraping the page, found the
+# transparent wordmark, and rendered a link as a cropped logo on grey.
+#
+# ON LAUNCH DAY: change this one line to https://retailmark.com, then
+#   python3 blog.py && python3 chrome.py && python3 sitemap.py
+LAUNCH_ORIGIN = "https://retailmark.com"
+ORIGIN = "https://retailmark.tetheredcrew.com"
 
 # The build credit in the footer. The Tethered Crew landing page, not a deep
 # link into it. The utm_source says which client site sent them, which is the
@@ -149,10 +158,14 @@ def meta_for(page):
   <meta property="og:url" content="{url}">
   <meta property="og:title" content="{title}">
   <meta property="og:description" content="{desc}">
-  <meta property="og:image" content="{ORIGIN}/assets/retailmark-wordmark.png">
+  <meta property="og:image" content="{ORIGIN}/assets/og-card.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="RetailMark — omnichannel supplier solutions, Bentonville, Arkansas">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="{title}">
-  <meta name="twitter:description" content="{desc}">{schema_for(page)}"""
+  <meta name="twitter:description" content="{desc}">
+  <meta name="twitter:image" content="{ORIGIN}/assets/og-card.png">{schema_for(page)}"""
 
 HEADER = """<header class="site-header">
   <div class="container header-inner">

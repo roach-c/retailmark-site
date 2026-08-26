@@ -19,7 +19,8 @@ import os
 import sys
 from datetime import date
 
-ORIGIN = "https://retailmark.com"
+# one definition, in chrome.py — see the note there about launch day
+from chrome import ORIGIN
 
 # priority is a hint, and only relative values within one site mean anything
 PRIORITY = {
