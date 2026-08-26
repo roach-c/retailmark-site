@@ -91,8 +91,8 @@ if (canvas && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
   resize();
   fit();
 
-  const CYCLE = 5.0;      // one turn every five seconds
-  const TURN = 1.9;       // of which this much is actually turning
+  const CYCLE = 6.0;      // one turn every five seconds
+  const TURN = 2.28;       // of which this much is actually turning
   const TAU = Math.PI * 2;
   const smooth = (v) => v * v * (3 - 2 * v);
   const cyclePos = (t) => (t < TURN ? smooth(t / TURN) : 1) * TAU;
@@ -166,17 +166,17 @@ if (canvas && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       angle += step > 0 ? step : 0;
     } else if (mode === 'coast') {
       angle += vel * dt;
-      vel *= Math.pow(0.06, dt);            // ~94% shed per second
+      vel *= Math.pow(0.06, dt / 1.2);            // ~94% shed per second
       if (Math.abs(vel) < 0.25) { mode = 'settle'; settleFrom = angle; settleT = 0; }
     } else if (mode === 'settle') {
-      settleT = Math.min(settleT + dt / 0.7, 1);
+      settleT = Math.min(settleT + dt / 0.84, 1);
       angle = settleFrom + (nearestFront(settleFrom) - settleFrom) * smooth(settleT);
       if (settleT >= 1) { angle = nearestFront(angle); mode = 'auto'; }
     }
 
     box.rotation.y = angle;
     // a breath of drift so the resting pose is not dead still
-    box.rotation.x = Math.sin(ms / 3400) * 0.04;
+    box.rotation.x = Math.sin(ms / 4080) * 0.04;
 
     renderer.render(scene, camera);
   }

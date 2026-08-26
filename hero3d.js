@@ -216,12 +216,12 @@ if (canvas) {
      All of it happens at z = APPROACH_Z until beat 2, which is what keeps the
      box clear of the shelf: the planks end at z = 1.0 and the box's back face
      never comes closer than 1.34 until it is already above the plank. */
-  const FADE_IN_T = 0.55;     // materialises on the floor
-  const LIFT_T = 1.15;        // floor -> shelf height, spinning
-  const GLIDE_T = 1.6;        // in over the plank — the slowest beat on purpose
-  const DROP_T = 0.5;         // set down
-  const HOLD_T = 2.4;         // sits there, done
-  const FADE_OUT_T = 0.6;     // and fades off the shelf, leaving the slot empty
+  const FADE_IN_T = 0.66;     // materialises on the floor
+  const LIFT_T = 1.38;        // floor -> shelf height, spinning
+  const GLIDE_T = 1.92;        // in over the plank — the slowest beat on purpose
+  const DROP_T = 0.6;         // set down
+  const HOLD_T = 2.88;         // sits there, done
+  const FADE_OUT_T = 0.72;     // and fades off the shelf, leaving the slot empty
   const CYCLE = FADE_IN_T + LIFT_T + GLIDE_T + DROP_T + HOLD_T + FADE_OUT_T;
   const ARRIVE = FADE_IN_T + LIFT_T + GLIDE_T + DROP_T;
 
@@ -253,7 +253,7 @@ if (canvas) {
       // a small rebound the instant it touches down, then nothing
       const landed = t - ARRIVE;
       const settle = drop >= 1
-        ? Math.sin(landed * 7) * Math.exp(-landed * 3.4) * 0.035
+        ? Math.sin(landed * 5.83) * Math.exp(-landed * 2.83) * 0.035
         : 0;
 
       // Rises to hover height, then beat 3 takes the hover back off again.
@@ -280,7 +280,7 @@ if (canvas) {
       label.material.opacity = LABEL_OPACITY * opacity;
       hero.visible = opacity > 0.002;
 
-      group.rotation.y = -0.22 + Math.sin(ms / 6000) * 0.07;
+      group.rotation.y = -0.22 + Math.sin(ms / 7200) * 0.07;
     } else {
       hero.position.set(restX, restY, 0);
       hero.rotation.y = 0;

@@ -103,9 +103,9 @@ if (form) form.addEventListener('submit', async (e) => {
 
     marquee.classList.add('is-live');       // hands the transform to us
 
-    var BASE = 58;        // px/sec, the resting speed
+    var BASE = 48;        // px/sec, the resting speed
     var MAX = 1400;       // however hard it is pushed, it stays watchable
-    var EASE = 1.1;       // seconds to settle back toward BASE
+    var EASE = 1.32;       // seconds to settle back toward BASE
     var offset = 0, speed = BASE, last = 0, drag = null;
 
     function span() { return set.getBoundingClientRect().width; }
@@ -247,7 +247,7 @@ if (form) form.addEventListener('submit', async (e) => {
     ['.site-footer .container > *']
   ];
 
-  var STEP = 70;      // ms between neighbours in a group
+  var STEP = 84;      // ms between neighbours in a group
   var CAP = 6;        // stop stacking delay past this, or late cards crawl in
 
   if (!('IntersectionObserver' in window)) {
