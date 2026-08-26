@@ -821,6 +821,18 @@ a.service-card:focus-visible {
    aspect ratios below: 435/294 = 1.4796 and 1470/294 = 5.
    -------------------------------------------------------------------------- */
 
+/* The hero wordmark. Its intrinsic width is 1479px, so without an explicit
+   width here it renders at that and only the global img{max-width:100%} keeps
+   it inside the page — which means it looks catastrophic while still passing
+   an overflow check. Measure the rendered width, not the scrollbar. */
+.hero-logo {
+  display: block;
+  width: clamp(210px, 24vw, 330px);
+  height: auto;
+  margin-bottom: 22px;
+  justify-self: start;
+}
+
 .logo { --logo-h: 40px; }
 
 .logo-mark {
