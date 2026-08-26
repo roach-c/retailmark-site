@@ -173,21 +173,44 @@ if (form) form.addEventListener('submit', async (e) => {
 /* ---------------------------------------------------------------------------
    Wordmark -> monogram.
 
-   Runs when the band scrolls into view, and re-arms when it leaves, so it
-   plays again next time rather than being a thing you only ever catch once.
-   The CSS does the animating; this only decides when.
+   The wordmark starts centred in the band and travels left as it collapses,
+   finishing as RM on the left gutter with the rest of the band free.
+
+   The starting offset has to be measured rather than written into the CSS: it
+   is (how much room is spare) / 2, and both the band's width and the
+   wordmark's rendered width change with the viewport. It is expressed in SVG
+   user units, because a CSS transform on an SVG child works in the local
+   coordinate system — so it is divided by the scale the SVG is drawn at.
    --------------------------------------------------------------------------- */
 (function () {
   var band = document.querySelector('.brandmark');
-  if (!band || !('IntersectionObserver' in window)) return;
+  var svg = band && band.querySelector('.rm');
+  if (!band || !svg) return;
 
+  var VIEWBOX = 434;    // the SVG's own width: the finished RM
+  var FULL = 1470;      // where the wordmark actually ends, out past the box
+
+  function measure() {
+    var inner = band.querySelector('.brandmark-inner');
+    var room = inner.getBoundingClientRect().width;
+    var scale = svg.getBoundingClientRect().width / VIEWBOX;
+    if (!scale) return;
+    // spare room, halved, converted from pixels into user units
+    var start = (room / scale - FULL) / 2;
+    band.style.setProperty('--rm-x', Math.max(0, start).toFixed(1));
+  }
+
+  measure();
+  window.addEventListener('resize', measure, { passive: true });
+
+  if (!('IntersectionObserver' in window)) return;
   new IntersectionObserver(function (entries) {
     entries.forEach(function (e) {
       if (e.isIntersecting) {
+        measure();                       // in case it resized while off screen
         band.classList.add('is-revealed');
       } else {
-        // stripping the class resets the animations to their start
-        band.classList.remove('is-revealed');
+        band.classList.remove('is-revealed');   // resets it for the next pass
       }
     });
   }, { threshold: 0.55 }).observe(band);
