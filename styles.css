@@ -11,6 +11,16 @@
   --card-dark: #1a1a1e;
   --card-border: #35353a;
   --on-dark-muted: #C9C9CC;
+
+  /* Glass. Deliberately only three of these: backdrop-filter makes the browser
+     sample and blur what is behind the element on every frame it moves, so it
+     is cheap on a handful of things and expensive on a grid of nine. It also
+     only SHOWS where something varied sits behind it — over a flat fill it is
+     an invisible cost. Both are why it is on the ghost button, the contact
+     form and the quote card, and nowhere else. */
+  --glass-blur: blur(14px) saturate(1.35);
+  --glass-light: rgba(255, 255, 255, 0.55);
+  --glass-dark: rgba(255, 255, 255, 0.045);
   --charcoal: #222226;
   --gold: #E8B923;
   --gold-light: #F5D566;
@@ -117,9 +127,14 @@ textarea:focus-visible {
   transform: translateY(0);
   box-shadow: var(--shadow-sm);
 }
+/* Over the hero's radial gradient, so there is something for it to pick up.
+   Transparent before; frosted now, which is the difference between an outline
+   and an object. */
 .btn-ghost {
-  background: transparent;
-  border-color: var(--black);
+  background: var(--glass-light);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border-color: rgba(var(--ink-rgb), 0.55);
   color: var(--black);
 }
 .btn-ghost:hover {
@@ -462,8 +477,10 @@ a.service-card:focus-visible {
 .why-list li { color: #C9C9CC; font-size: 0.98rem; }
 .why-list strong { color: #fff; display: block; margin-bottom: 3px; }
 .why-card {
-  background: linear-gradient(160deg, var(--charcoal), var(--card-dark));
-  border: 1px solid var(--card-border);
+  background: var(--glass-dark);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid rgba(255, 255, 255, 0.11);
   border-radius: var(--radius-lg);
   padding: 38px;
   box-shadow: 0 30px 60px rgba(0,0,0,0.35);
@@ -525,9 +542,14 @@ a.service-card:focus-visible {
   transition: color 0.2s var(--ease);
 }
 .contact-details a:hover { color: var(--gold-dark); }
+/* The gold accent panel sits behind this form's top-right corner. Solid white
+   hid it; frosted, the gold reads through the glass, which is the one place on
+   the page where the effect has something worth showing. */
 .contact-form {
-  background: #fff;
-  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid rgba(255, 255, 255, 0.8);
   border-radius: var(--radius-lg);
   padding: 32px;
   display: flex;
@@ -1395,6 +1417,17 @@ a.service-card:focus-visible {
 
 @media (prefers-reduced-motion: reduce) {
   .site-header.adaptive { transition: none; }
+}
+
+/* Firefox only shipped backdrop-filter on by default recently and it is still
+   absent in some builds. Without it these three would render as their
+   translucent backgrounds with nothing blurred behind — the form would be a
+   washed-out white box over gold, and the ghost button would lose its edge.
+   So where it is unsupported they go back to being solid. */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .btn-ghost { background: transparent; }
+  .contact-form { background: #fff; }
+  .why-card { background: linear-gradient(160deg, var(--charcoal), var(--card-dark)); }
 }
 
 /* --------------------------------------------------------------------------
