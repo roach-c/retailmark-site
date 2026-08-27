@@ -140,6 +140,18 @@ def apply(name):
     recolour(os.path.join(MASTERS, "retailmark-wordmark.png"),
              os.path.join(A, "retailmark-wordmark-dark.png"), p["ink"], p["accent"])
 
+    # Derived, not hand-specified: five more tokens all sit a fixed step off
+    # the ink, so a new palette only ever has to name two real colours.
+    ink = tuple(int(p["ink"][i:i + 2], 16) for i in (1, 3, 5))
+    step = lambda n: "#%02X%02X%02X" % tuple(min(255, v + n) for v in ink)
+    derived = {
+        "--ink-rgb": f"{ink[0]}, {ink[1]}, {ink[2]}",
+        "--ink-raised": step(3),
+        "--card-dark": step(9),
+        "--card-border": step(36),
+        "--on-dark-muted": "#%02X%02X%02X" % tuple(min(255, v + 190) for v in ink),
+    }
+
     css = os.path.join(HERE, "styles.css")
     s = open(css).read()
     for tok, val in (("--black", p["ink"]), ("--charcoal", p["charcoal"]),
@@ -148,6 +160,8 @@ def apply(name):
                      ("--gray", p["gray"]), ("--gray-light", p["gray_light"]),
                      ("--border", p["border"])):
         s = re.sub(rf'(  {re.escape(tok)}: )#[0-9A-Fa-f]{{6}};', rf'\g<1>{val};', s, count=1)
+    for tok, val in derived.items():
+        s = re.sub(rf'(  {re.escape(tok)}: )[^;]+;', rf'\g<1>{val};', s, count=1)
     acc = tuple(int(p["accent"][i:i + 2], 16) for i in (1, 3, 5))
     dark = tuple(int(p["dark"][i:i + 2], 16) for i in (1, 3, 5))
     s = re.sub(r'rgba\(232,\s*185,\s*35,', f'rgba({acc[0]}, {acc[1]}, {acc[2]},', s)

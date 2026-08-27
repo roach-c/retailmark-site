@@ -1,14 +1,14 @@
 :root {
-  --black: #111111;
-  --charcoal: #222226;
-  --gold: #E8B923;
-  --gold-light: #F5D566;
-  --gold-dark: #C79A15;
-  --gold-soft: rgba(232, 185, 35, 0.12);
-  --cream: #FAF8F3;
-  --gray: #6B6B6F;
-  --gray-light: #9A9A9E;
-  --border: #E8E6DF;
+  --black: #1A1310;
+  --charcoal: #2A211B;
+  --gold: #B08D4F;
+  --gold-light: #C6AD80;
+  --gold-dark: #8A6C35;
+  --gold-soft: rgba(204, 90, 49, 0.12);
+  --cream: #FAF7F1;
+  --gray: #6E655B;
+  --gray-light: #9C9287;
+  --border: #E9E1D5;
   --radius: 10px;
   --radius-lg: 16px;
   --max-width: 1160px;
@@ -23,10 +23,10 @@
   --edge: clamp(24px, calc((100vw - 1160px) / 2 + 24px), 260px);
   --hero-copy: clamp(560px, 58vw, 880px);   /* the hero's left column; the render takes the rest */
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
-  --shadow-sm: 0 1px 2px rgba(17, 17, 17, 0.04), 0 1px 3px rgba(17, 17, 17, 0.03);
-  --shadow-md: 0 8px 24px rgba(17, 17, 17, 0.07), 0 2px 6px rgba(17, 17, 17, 0.04);
-  --shadow-lg: 0 24px 48px rgba(17, 17, 17, 0.14), 0 8px 16px rgba(17, 17, 17, 0.06);
-  --shadow-gold: 0 10px 24px rgba(199, 154, 21, 0.28);
+  --shadow-sm: 0 1px 2px rgba(var(--ink-rgb), 0.04), 0 1px 3px rgba(var(--ink-rgb), 0.03);
+  --shadow-md: 0 8px 24px rgba(var(--ink-rgb), 0.07), 0 2px 6px rgba(var(--ink-rgb), 0.04);
+  --shadow-lg: 0 24px 48px rgba(var(--ink-rgb), 0.14), 0 8px 16px rgba(var(--ink-rgb), 0.06);
+  --shadow-gold: 0 10px 24px rgba(141, 109, 15, 0.28);
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -128,7 +128,7 @@ textarea:focus-visible {
   transition: box-shadow 0.25s var(--ease), border-color 0.25s var(--ease);
 }
 .site-header.is-scrolled {
-  box-shadow: 0 4px 20px rgba(17, 17, 17, 0.06);
+  box-shadow: 0 4px 20px rgba(var(--ink-rgb), 0.06);
   border-bottom-color: transparent;
 }
 .header-inner {
@@ -221,8 +221,8 @@ textarea:focus-visible {
   display: flex;
   align-items: center;
   background:
-    radial-gradient(circle at 85% 0%, rgba(232,185,35,0.18), transparent 55%),
-    radial-gradient(circle at 0% 100%, rgba(232,185,35,0.08), transparent 45%),
+    radial-gradient(circle at 85% 0%, rgba(204, 90, 49,0.18), transparent 55%),
+    radial-gradient(circle at 0% 100%, rgba(204, 90, 49,0.08), transparent 45%),
     var(--cream);
   position: relative;
   overflow: hidden;
@@ -325,7 +325,7 @@ textarea:focus-visible {
 .service-card:hover {
   box-shadow: var(--shadow-lg);
   transform: translateY(-4px);
-  border-color: rgba(232, 185, 35, 0.4);
+  border-color: rgba(204, 90, 49, 0.4);
 }
 .service-icon {
   display: inline-flex;
@@ -741,7 +741,7 @@ a.service-card:focus-visible {
        is a five-level difference, which is invisible on a swatch and clearly
        readable as ghosted headline text once it is spread across a whole
        panel. A menu is not a place for a translucency effect. */
-    background: #141414;
+    background: var(--ink-raised);
     padding: 4px var(--edge) 14px;
     border-top: 1px solid rgba(255, 255, 255, 0.10);
     box-shadow: 0 18px 40px rgba(0, 0, 0, 0.30);
@@ -836,7 +836,7 @@ a.service-card:focus-visible {
      it follows the letterforms' alpha instead of drawing a rectangle around a
      transparent PNG. Offset down rather than spread evenly, so it reads as the
      mark sitting above the cream rather than glowing on it. */
-  filter: drop-shadow(0 3px 8px rgba(17, 17, 17, 0.22));
+  filter: drop-shadow(0 3px 8px rgba(var(--ink-rgb), 0.22));
 }
 
 .logo { --logo-h: 40px; }
@@ -1024,7 +1024,7 @@ a.service-card:focus-visible {
 
 .page-hero {
   background:
-    radial-gradient(circle at 88% 0%, rgba(232,185,35,0.16), transparent 58%),
+    radial-gradient(circle at 88% 0%, rgba(204, 90, 49,0.16), transparent 58%),
     var(--cream);
   padding: 66px 0 54px;
   border-bottom: 1px solid var(--border);
@@ -1295,7 +1295,7 @@ a.service-card:focus-visible {
   border-left: 3px solid var(--gold);
 }
 .post-body blockquote p { margin: 0; font-size: 1.08rem; }
-.post-body a { color: var(--gold-dark); border-bottom: 1px solid rgba(199,154,21,0.4); }
+.post-body a { color: var(--gold-dark); border-bottom: 1px solid rgba(141, 109, 15,0.4); }
 .post-body a:hover { border-bottom-color: currentColor; }
 .post-body code {
   background: var(--cream);
@@ -1489,7 +1489,7 @@ a.service-card:focus-visible {
    ========================================================================== */
 
 .site-header {
-  background: rgba(17, 17, 17, 0.94);
+  background: rgba(var(--ink-rgb), 0.94);
   border-bottom-color: rgba(255, 255, 255, 0.10);
 }
 .site-header.is-scrolled {
@@ -1895,3 +1895,4 @@ a.service-card:focus-visible {
 @media (prefers-reduced-motion: reduce) {
   .contact-accent, .contact-form { opacity: 1 !important; transform: none !important; }
 }
+--on-dark-muted: #C9C9CC;
