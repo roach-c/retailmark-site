@@ -33,15 +33,17 @@ SKIP = {
         "grainy at 2.2x, and the sign in it reads WALTON",
 }
 
-# Anything needing more than this much enlargement to fill the strip will look
-# soft however good the original composition is. Measured, not guessed: the
-# four named above are dropped on their own merits; this catches anything
-# enlarged past the point where the strip stops looking sharp.
-MAX_UPSCALE = 2.6
+# Anything needing more than this much enlargement will look soft however good
+# the original composition is. It is tighter than the vertical version could
+# afford: cropping landscape sources to landscape bands needs barely any
+# enlargement, so the bar can be raised rather than lowered to keep six.
+MAX_UPSCALE = 1.9
 OUT = os.path.join(HERE, "assets", "bentonville")
-W, H = 900, 1500           # 3:5. The panel is three tall strips, so a wide
-                           # crop here would be cropped hard a second time by
-                           # object-fit and lose most of the picture.
+W, H = 1400, 540           # 2.6:1. The block is three horizontal bands, and
+                           # the sources are landscape, so this crops with the
+                           # grain of the photographs instead of against it.
+                           # The vertical version threw away most of every
+                           # frame and needed far more enlargement to do it.
 
 def slug(name):
     s = os.path.splitext(os.path.basename(name))[0].lower()

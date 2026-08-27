@@ -1219,8 +1219,13 @@ a.service-card:focus-visible {
 
 /* --------------------------------------------------------------------------
    Hero slideshow
-   Three tall strips side by side, from Caleb's sketch, standing where the 3D
-   shelf used to be.
+   Three horizontal bands, stacked, standing where the 3D shelf used to be.
+
+   The sketch had them as vertical strips and they were, until the photographs
+   argued otherwise: every source is landscape, so a tall narrow crop threw
+   most of each frame away and needed two to four times the enlargement to do
+   it. Rows crop with the grain of the pictures. Same block, same idea, turned
+   ninety degrees.
 
    Each strip owns its own photographs and cycles them independently. The three
    sets are disjoint, which is what actually guarantees two strips never show
@@ -1252,13 +1257,16 @@ a.service-card:focus-visible {
     justify-self: start;
     align-self: center;
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
     gap: 10px;
     width: 100%;
-    aspect-ratio: 1 / 1.12;
   }
 
-  .shot-col {
+  .shot-row {
+    /* the band's own ratio, matching the crop, so the container's height
+       follows the pictures rather than the pictures being squeezed to fit a
+       height picked in advance */
+    aspect-ratio: 2.6 / 1;
     display: grid;
     overflow: hidden;
     border-radius: 6px;
@@ -1266,7 +1274,7 @@ a.service-card:focus-visible {
     background: var(--charcoal);
     box-shadow: var(--shadow-md);
   }
-  .shot-col img {
+  .shot-row img {
     grid-area: 1 / 1;
     width: 100%;
     height: 100%;
@@ -1278,82 +1286,39 @@ a.service-card:focus-visible {
     opacity: 0;
     transition: opacity 1.25s var(--ease);
   }
-  .shot-col img.on { opacity: 1; }
+  .shot-row img.on { opacity: 1; }
   /* before the script runs, and if it never does, show the first of each */
-  html:not(.has-js-shots) .shot-col img:first-child { opacity: 1; }
+  html:not(.has-js-shots) .shot-row img:first-child { opacity: 1; }
 }
 
 @media (prefers-reduced-motion: reduce) {
   /* No cycling. One photograph in each strip, held. */
-  .shot-col img { transition: none; }
+  .shot-row img { transition: none; }
 }
 
 /* --------------------------------------------------------------------------
-   Adaptive header
-   The bar reads whatever section is passing under it and flips its own text to
-   suit: light type over a dark section, dark type over a light one. That is
-   what makes it survive a page it was not designed against — a new dark band,
-   a reordered page, a palette swap.
+   Header
+   Solid and dark at every scroll position, including at the top of the home
+   page over the cream hero. Caleb asked for the contrast and he is right: a
+   near-transparent bar over a pale hero has almost no edge, and the page
+   opens with nothing separating the nav from the headline.
 
-   The solid bar stays as the resting state and the no-JS state, so a browser
-   that never runs script.js gets the readable version rather than white text
-   on cream. .adaptive is only added once the script has confirmed it can
-   actually measure what is underneath.
+   This replaces an adaptive version that sampled the section under the bar and
+   flipped its type light or dark to suit. That existed to solve a bar with no
+   background at all; a bar that always has one does not need it. The
+   data-tone attributes stay on the sections — they cost nothing and they are
+   the hard part if the adaptive behaviour is ever wanted back.
+
+   The base .site-header rule already carries the dark background. What is left
+   here is only the part that keeps the bar legible where it meets a dark
+   section, which is where a solid dark bar would otherwise dissolve.
    -------------------------------------------------------------------------- */
 
-.site-header.adaptive {
-  background: rgba(var(--ink-rgb), 0.055);
-  backdrop-filter: blur(14px) saturate(1.4);
-  -webkit-backdrop-filter: blur(14px) saturate(1.4);
-  border-bottom-color: rgba(var(--ink-rgb), 0.07);
-  transition: background .3s var(--ease), border-color .3s var(--ease);
-}
-
-/* over a dark section: the bar itself darkens and the type goes light */
-.site-header.adaptive[data-under="dark"] {
-  background: rgba(var(--ink-rgb), 0.72);
-  border-bottom-color: rgba(255, 255, 255, 0.10);
-}
-.site-header.adaptive[data-under="dark"] .main-nav a { color: rgba(255, 255, 255, 0.82); }
-.site-header.adaptive[data-under="dark"] .main-nav a:hover,
-.site-header.adaptive[data-under="dark"] .main-nav a.current { color: var(--gold); }
-.site-header.adaptive[data-under="dark"] .main-nav a::after { background: var(--gold); }
-.site-header.adaptive[data-under="dark"] .lockup-tagline { color: rgba(255, 255, 255, 0.5); }
-.site-header.adaptive[data-under="dark"] .nav-toggle span { background: #fff; }
-.site-header.adaptive[data-under="dark"] .logo-mark { filter: drop-shadow(0 0 5px rgba(255,255,255,0.3)); }
-
-/* over a light section: dark type, and the wordmark inverts so its white half
-   does not vanish. The mark is one file; inverting is cheaper and safer than
-   shipping and syncing a second one. */
-.site-header.adaptive[data-under="light"] .main-nav a { color: var(--charcoal); }
-.site-header.adaptive[data-under="light"] .main-nav a:hover,
-.site-header.adaptive[data-under="light"] .main-nav a.current { color: var(--gold-ink); }
-.site-header.adaptive[data-under="light"] .main-nav a::after { background: var(--gold-ink); }
-.site-header.adaptive[data-under="light"] .lockup-tagline { color: var(--gray); }
-.site-header.adaptive[data-under="light"] .nav-toggle span { background: var(--black); }
-/* Per slice, not per mark. Inverting the whole SVG turned the gold half a
-   blue-orange (invert takes #E8B923 to #1746DC, and no amount of hue-rotate
-   brings that back to gold). The wordmark already splits into an ink half —
-   r and etail — and a gold half, so the ink half is simply driven to black,
-   which brightness(0) does exactly while leaving alpha alone, and the gold
-   half is darkened just enough to hold on a light ground. */
-.site-header.adaptive[data-under="light"] .lm-r,
-.site-header.adaptive[data-under="light"] .lm-etail { filter: brightness(0); }
-.site-header.adaptive[data-under="light"] .lm-m,
-.site-header.adaptive[data-under="light"] .lm-ark { filter: saturate(1.25) brightness(0.82); }
-.site-header.adaptive[data-under="light"] .logo-mark { filter: none; }
-
-/* The open mobile panel is always its own dark surface, whatever is behind the
-   bar, or its links would inherit the light-section colours and disappear.
-   The current-page link needs saying separately: over a light section it is
-   --gold-dark, which is chosen to read on cream and is far too dim on the
-   panel's near-black. */
-.site-header.adaptive .main-nav.open a { color: rgba(255, 255, 255, 0.88); }
-.site-header.adaptive .main-nav.open a.current,
-.site-header.adaptive .main-nav.open a:hover { color: var(--gold); }
-
-@media (prefers-reduced-motion: reduce) {
-  .site-header.adaptive { transition: none; }
+.site-header {
+  /* Against the cream hero the border is invisible and unnecessary; against a
+     dark band it is the only thing separating the two. Light enough to read on
+     black, weak enough to disappear on cream. */
+  border-bottom: 1px solid rgba(255, 255, 255, 0.09);
 }
 
 /* --------------------------------------------------------------------------

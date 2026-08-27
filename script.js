@@ -51,14 +51,13 @@ if (heroLogo && document.documentElement.classList.contains('hero-lockup')) {
 }
 
 /* ---- the hero slideshow -------------------------------------------------
-   Three strips, each cycling its own photographs.
+   Three bands, each cycling its own photographs.
 
    The three sets are disjoint in the markup, so no two strips can ever show
-   the same picture; the script never has to reason about it. They change a
-   third of the interval apart, so something is always moving and the whole
-   block never flips at once.
+   the same picture; the script never has to reason about it. They change a third of the interval
+   apart, so something is always moving and the block never flips at once.
 
-   Each strip waits for its own first two frames to decode before it starts. A
+   Each band waits for its own first two frames to decode before it starts. A
    timer alone can fade to an image that has not loaded, which reads as a flash
    of the backing colour rather than a cross-fade.
 
@@ -68,7 +67,7 @@ if (heroLogo && document.documentElement.classList.contains('hero-lockup')) {
 (function () {
   var wrap = document.querySelector('.hero-shots');
   if (!wrap) return;
-  var cols = [].slice.call(wrap.querySelectorAll('.shot-col'));
+  var cols = [].slice.call(wrap.querySelectorAll('.shot-row'));
   if (!cols.length) return;
 
   var still = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -134,54 +133,6 @@ if (heroLogo && document.documentElement.classList.contains('hero-lockup')) {
   document.addEventListener('visibilitychange', function () {
     document.hidden ? stop() : start();
   });
-})();
-
-/* ---- the bar reads what is under it ------------------------------------
-   Sections carry data-tone. The bar samples the tone of whichever one is
-   crossing its lower edge and sets data-under, and the stylesheet does the
-   rest. Anything unmarked counts as light, so a section added later is
-   readable rather than invisible.
-
-   elementFromPoint rather than an IntersectionObserver: the question is not
-   "is this section visible" but "what is at this exact pixel", and a sticky
-   bar over overlapping sections answers that far more directly. It runs
-   inside requestAnimationFrame so a fast scroll costs one read per frame.
-
-   .adaptive is added only here, once this has actually run, so no-JS keeps
-   the solid bar rather than a transparent one with unreadable text. */
-(function () {
-  var header = document.querySelector('.site-header');
-  if (!header || !document.querySelector('[data-tone]')) return;
-
-  header.classList.add('adaptive');
-  var ticking = false, last = '';
-
-  function sample() {
-    ticking = false;
-    var y = header.getBoundingClientRect().bottom - 2;
-    var x = Math.round(innerWidth / 2);
-    // the bar is on top at that pixel, so ask what is behind it
-    var prev = header.style.pointerEvents;
-    header.style.pointerEvents = 'none';
-    var el = document.elementFromPoint(x, y);
-    header.style.pointerEvents = prev;
-
-    var tone = 'light';
-    for (var n = el; n; n = n.parentElement) {
-      if (n.dataset && n.dataset.tone) { tone = n.dataset.tone; break; }
-    }
-    if (tone !== last) { last = tone; header.setAttribute('data-under', tone); }
-  }
-
-  function onScroll() {
-    if (ticking) return;
-    ticking = true;
-    requestAnimationFrame(sample);
-  }
-  addEventListener('scroll', onScroll, { passive: true });
-  addEventListener('resize', onScroll);
-  addEventListener('load', sample);
-  sample();
 })();
 
 // Subtle shadow on the sticky header once the page has scrolled.
