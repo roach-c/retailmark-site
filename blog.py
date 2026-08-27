@@ -39,7 +39,7 @@ import sys
 # one definition, in chrome.py — see the note there about launch day
 from chrome import ORIGIN
 HERE = os.path.dirname(os.path.abspath(__file__))
-ASSET_V = "20260828d"        # keep in step with the ?v= on the other pages
+ASSET_V = "20260828e"        # keep in step with the ?v= on the other pages
 
 
 # --------------------------------------------------------------------------

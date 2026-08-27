@@ -1409,6 +1409,11 @@ a.service-card:focus-visible {
   background: var(--black);
   color: #fff;
   padding: clamp(30px, 3.6vw, 46px) 0;
+  /* Centred, unlike most of the page. The site aligns to one left gutter, but
+     this band's neighbour below — the brand marquee and its label — is centred
+     too, and two centred bands running together read as one deliberate block
+     where a left-aligned one between them read as a mistake. */
+  text-align: center;
 }
 .retail-label {
   font-size: 0.72rem;
@@ -1424,6 +1429,7 @@ a.service-card:focus-visible {
   margin: 0;
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: 12px clamp(20px, 3.4vw, 52px);
   font-size: clamp(1.05rem, 2.2vw, 1.85rem);
   font-weight: 800;
@@ -1444,8 +1450,9 @@ a.service-card:focus-visible {
 .retail-note {
   color: rgba(255, 255, 255, 0.62);
   font-size: 0.94rem;
+  /* the measure stays; auto margins are what centre it inside the band */
   max-width: 60ch;
-  margin-top: 18px;
+  margin: 18px auto 0;
 }
 
 @media (max-width: 560px) {
