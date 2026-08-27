@@ -445,8 +445,8 @@ a.service-card:focus-visible {
 .why-list li { color: #C9C9CC; font-size: 0.98rem; }
 .why-list strong { color: #fff; display: block; margin-bottom: 3px; }
 .why-card {
-  background: linear-gradient(160deg, var(--charcoal), #1a1a1e);
-  border: 1px solid #35353a;
+  background: linear-gradient(160deg, var(--charcoal), var(--card-dark));
+  border: 1px solid var(--card-border);
   border-radius: var(--radius-lg);
   padding: 38px;
   box-shadow: 0 30px 60px rgba(0,0,0,0.35);
