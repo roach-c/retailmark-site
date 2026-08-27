@@ -20,6 +20,24 @@ import glob
 from PIL import Image, ImageOps
 
 HERE = os.path.dirname(os.path.abspath(__file__))
+
+# Dropped, with the reason, so a rerun cannot quietly bring them back.
+SKIP = {
+    "Welcome-Center-Exterior-2.jpeg":
+        "crops to a lone M in a strip, and it is Walmart's visitor centre",
+    "images.jpeg":
+        "596x335 source, enlarged 4.5x to fill the strip — visibly mushy",
+    "00biz-walmart-cool-rebrand-01-tfwz-articleLarge.webp":
+        "600x400 source, enlarged 3.8x, and Walmart property",
+    "shutterstock-1366855787.webp":
+        "grainy at 2.2x, and the sign in it reads WALTON",
+}
+
+# Anything needing more than this much enlargement to fill the strip will look
+# soft however good the original composition is. Measured, not guessed: the
+# four named above are dropped on their own merits; this catches anything
+# enlarged past the point where the strip stops looking sharp.
+MAX_UPSCALE = 2.6
 OUT = os.path.join(HERE, "assets", "bentonville")
 W, H = 900, 1500           # 3:5. The panel is three tall strips, so a wide
                            # crop here would be cropped hard a second time by
@@ -43,6 +61,16 @@ def main(src):
 
     made = []
     for f in files:
+        base = os.path.basename(f)
+        if base in SKIP:
+            print(f"  skipped {base[:42]:42}  {SKIP[base]}")
+            continue
+        probe = Image.open(f)
+        probe = ImageOps.exif_transpose(probe)
+        up = max(W / probe.width, H / probe.height)
+        if up > MAX_UPSCALE:
+            print(f"  skipped {base[:42]:42}  would need {up:.1f}x enlargement")
+            continue
         im = Image.open(f)
         # honour the EXIF rotation flag before cropping, or a portrait shot
         # gets centre-cropped along the wrong axis
