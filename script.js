@@ -50,6 +50,54 @@ if (heroLogo && document.documentElement.classList.contains('hero-lockup')) {
   document.documentElement.classList.remove('hero-lockup');
 }
 
+/* ---- the bar reads what is under it ------------------------------------
+   Sections carry data-tone. The bar samples the tone of whichever one is
+   crossing its lower edge and sets data-under, and the stylesheet does the
+   rest. Anything unmarked counts as light, so a section added later is
+   readable rather than invisible.
+
+   elementFromPoint rather than an IntersectionObserver: the question is not
+   "is this section visible" but "what is at this exact pixel", and a sticky
+   bar over overlapping sections answers that far more directly. It runs
+   inside requestAnimationFrame so a fast scroll costs one read per frame.
+
+   .adaptive is added only here, once this has actually run, so no-JS keeps
+   the solid bar rather than a transparent one with unreadable text. */
+(function () {
+  var header = document.querySelector('.site-header');
+  if (!header || !document.querySelector('[data-tone]')) return;
+
+  header.classList.add('adaptive');
+  var ticking = false, last = '';
+
+  function sample() {
+    ticking = false;
+    var y = header.getBoundingClientRect().bottom - 2;
+    var x = Math.round(innerWidth / 2);
+    // the bar is on top at that pixel, so ask what is behind it
+    var prev = header.style.pointerEvents;
+    header.style.pointerEvents = 'none';
+    var el = document.elementFromPoint(x, y);
+    header.style.pointerEvents = prev;
+
+    var tone = 'light';
+    for (var n = el; n; n = n.parentElement) {
+      if (n.dataset && n.dataset.tone) { tone = n.dataset.tone; break; }
+    }
+    if (tone !== last) { last = tone; header.setAttribute('data-under', tone); }
+  }
+
+  function onScroll() {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(sample);
+  }
+  addEventListener('scroll', onScroll, { passive: true });
+  addEventListener('resize', onScroll);
+  addEventListener('load', sample);
+  sample();
+})();
+
 // Subtle shadow on the sticky header once the page has scrolled.
 const siteHeader = document.querySelector('.site-header');
 const updateHeaderShadow = () => {

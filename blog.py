@@ -39,7 +39,7 @@ import sys
 # one definition, in chrome.py — see the note there about launch day
 from chrome import ORIGIN
 HERE = os.path.dirname(os.path.abspath(__file__))
-ASSET_V = "20260827n"        # keep in step with the ?v= on the other pages
+ASSET_V = "20260827t"        # keep in step with the ?v= on the other pages
 
 
 # --------------------------------------------------------------------------
@@ -167,7 +167,7 @@ def post_page(p):
     return head(f"{p['title']} | RetailMark", p["description"],
                 f"{ORIGIN}/blog/{p['slug']}.html", extra="../") + f"""
 <main id="top">
-  <article class="post">
+  <article class="post" data-tone="light">
     <div class="container">
       <div class="crumbs"><a href="../index.html">Home</a> <span>/</span>
         <a href="../blog.html">Blog</a> <span>/</span> {html.escape(p['title'])}</div>
@@ -184,7 +184,7 @@ def post_page(p):
   </article>
 </main>
 
-<section class="glossary-cta">
+<section class="glossary-cta" data-tone="dark">
   <div class="container">
     <h2>Getting a product onto a shelf?</h2>
     <p>The first conversation is free, and it is usually the useful one.</p>
@@ -227,7 +227,7 @@ def index_page(posts):
                 f"{ORIGIN}/blog.html") + f"""
 <main id="top">
 
-  <section class="page-hero">
+  <section class="page-hero" data-tone="light">
     <div class="container">
       <div class="crumbs"><a href="index.html">Home</a> <span>/</span> Blog</div>
       <h1>Notes from the buyer's side</h1>
@@ -236,7 +236,7 @@ def index_page(posts):
     </div>
   </section>
 
-  <section class="blog-index">
+  <section class="blog-index" data-tone="light">
     <div class="container">
 {body}
     </div>

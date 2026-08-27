@@ -101,7 +101,7 @@ if (!matchMedia('(prefers-reduced-motion: reduce)').matches)
    is the right way for this to fail. */
 document.documentElement.classList.add('hero-lockup');
 </script>
-<link rel="stylesheet" href="styles.css?v=20260827n">
+<link rel="stylesheet" href="styles.css?v=20260827t">
 </head>
 <body>
 
@@ -136,7 +136,7 @@ document.documentElement.classList.add('hero-lockup');
 
 <main id="top">
 
-  <section class="hero">
+  <section class="hero" data-tone="light">
     <div class="container hero-inner">
       <!-- The mark itself, on the page rather than in the bar. The header
            picks it up once this has scrolled away; see .hero-lockup in
@@ -167,7 +167,7 @@ document.documentElement.classList.add('hero-lockup');
        the hero's "Omnichannel Supplier Solutions" badge with nothing on the
        page supporting it. Placed here so the proof reads in order: where we
        sell, then who we sell. -->
-  <section class="retail-band" id="retailers">
+  <section class="retail-band" id="retailers" data-tone="dark">
     <div class="container">
       <p class="retail-label">Where we sell</p>
       <ul class="retail-list">
@@ -182,7 +182,7 @@ document.documentElement.classList.add('hero-lockup');
     </div>
   </section>
 
-  <section class="logos-strip">
+  <section class="logos-strip" data-tone="light">
     <div class="container">
       <p class="logos-label">Brands we've helped reach the shelf</p>
       <!-- brands:start -->
@@ -226,7 +226,7 @@ document.documentElement.classList.add('hero-lockup');
     </div>
   </section>
 
-  <section id="services" class="services">
+  <section id="services" class="services" data-tone="light">
     <div class="container">
       <h2>What we handle, end to end</h2>
       <p class="section-sub">Everything between "we have a great product" and a reorder. Most suppliers
@@ -281,7 +281,7 @@ document.documentElement.classList.add('hero-lockup');
     </div>
   </section>
 
-  <section id="why" class="why">
+  <section id="why" class="why" data-tone="dark">
     <!-- The same Bentonville mark the footer carries, at readable size in the
          dead space this section leaves on a wide screen. Decorative here:
          the footer states the location on every page, and repeating it to a
@@ -307,7 +307,7 @@ document.documentElement.classList.add('hero-lockup');
     </div>
   </section>
 
-  <section id="partners" class="partners">
+  <section id="partners" class="partners" data-tone="light">
     <div class="container">
       <h2>Platforms we work in daily</h2>
       <p class="section-sub">We build inside the same systems your buyer already trusts.</p>
@@ -335,7 +335,7 @@ document.documentElement.classList.add('hero-lockup');
        SVG overflows visibly, so at rest the full wordmark spills across the
        whole band, and collapsing it is literally the letters retreating into
        the box. That is what frees the right-hand side. -->
-  <section class="brandmark">
+  <section class="brandmark" data-tone="dark">
     <div class="brandmark-inner">
       <svg class="rm" viewBox="0 0 434 294" role="img" aria-label="RetailMark">
         <g class="rm-group">
@@ -359,7 +359,7 @@ document.documentElement.classList.add('hero-lockup');
     </div>
   </section>
 
-  <section id="contact" class="contact">
+  <section id="contact" class="contact" data-tone="light">
     <div class="container contact-inner">
       <div class="contact-copy">
         <h2>Ready to get your products on the shelf?</h2>
@@ -433,7 +433,7 @@ document.documentElement.classList.add('hero-lockup');
   </div>
 </footer>
 
-<script src="script.js?v=20260827n"></script>
-<script type="module" src="boxspin.js?v=20260827n"></script>
+<script src="script.js?v=20260827t"></script>
+<script type="module" src="boxspin.js?v=20260827t"></script>
 </body>
 </html>

@@ -15,6 +15,12 @@
   --gold: #E8B923;
   --gold-light: #F5D566;
   --gold-dark: #C79A15;
+  /* The same gold taken down until it clears 4.5:1 on cream. --gold-dark is
+     2.45:1 there, which is fine as a border or an underline and is not fine as
+     text — and the adaptive header puts the current-page link in it the moment
+     the bar passes over a light section. Used only where the accent has to be
+     read as type on a light ground. */
+  --gold-ink: #81650D;
   --gold-soft: rgba(232, 185, 35, 0.12);
   --cream: #FAF8F3;
   --gray: #6B6B6F;
@@ -1209,6 +1215,74 @@ a.service-card:focus-visible {
 
 /* Footer nav: the same links again, which is where a crawler expects to find
    them and where a person looks after reading to the bottom. */
+
+/* --------------------------------------------------------------------------
+   Adaptive header
+   The bar reads whatever section is passing under it and flips its own text to
+   suit: light type over a dark section, dark type over a light one. That is
+   what makes it survive a page it was not designed against — a new dark band,
+   a reordered page, a palette swap.
+
+   The solid bar stays as the resting state and the no-JS state, so a browser
+   that never runs script.js gets the readable version rather than white text
+   on cream. .adaptive is only added once the script has confirmed it can
+   actually measure what is underneath.
+   -------------------------------------------------------------------------- */
+
+.site-header.adaptive {
+  background: rgba(var(--ink-rgb), 0.055);
+  backdrop-filter: blur(14px) saturate(1.4);
+  -webkit-backdrop-filter: blur(14px) saturate(1.4);
+  border-bottom-color: rgba(var(--ink-rgb), 0.07);
+  transition: background .3s var(--ease), border-color .3s var(--ease);
+}
+
+/* over a dark section: the bar itself darkens and the type goes light */
+.site-header.adaptive[data-under="dark"] {
+  background: rgba(var(--ink-rgb), 0.72);
+  border-bottom-color: rgba(255, 255, 255, 0.10);
+}
+.site-header.adaptive[data-under="dark"] .main-nav a { color: rgba(255, 255, 255, 0.82); }
+.site-header.adaptive[data-under="dark"] .main-nav a:hover,
+.site-header.adaptive[data-under="dark"] .main-nav a.current { color: var(--gold); }
+.site-header.adaptive[data-under="dark"] .main-nav a::after { background: var(--gold); }
+.site-header.adaptive[data-under="dark"] .lockup-tagline { color: rgba(255, 255, 255, 0.5); }
+.site-header.adaptive[data-under="dark"] .nav-toggle span { background: #fff; }
+.site-header.adaptive[data-under="dark"] .logo-mark { filter: drop-shadow(0 0 5px rgba(255,255,255,0.3)); }
+
+/* over a light section: dark type, and the wordmark inverts so its white half
+   does not vanish. The mark is one file; inverting is cheaper and safer than
+   shipping and syncing a second one. */
+.site-header.adaptive[data-under="light"] .main-nav a { color: var(--charcoal); }
+.site-header.adaptive[data-under="light"] .main-nav a:hover,
+.site-header.adaptive[data-under="light"] .main-nav a.current { color: var(--gold-ink); }
+.site-header.adaptive[data-under="light"] .main-nav a::after { background: var(--gold-ink); }
+.site-header.adaptive[data-under="light"] .lockup-tagline { color: var(--gray); }
+.site-header.adaptive[data-under="light"] .nav-toggle span { background: var(--black); }
+/* Per slice, not per mark. Inverting the whole SVG turned the gold half a
+   blue-orange (invert takes #E8B923 to #1746DC, and no amount of hue-rotate
+   brings that back to gold). The wordmark already splits into an ink half —
+   r and etail — and a gold half, so the ink half is simply driven to black,
+   which brightness(0) does exactly while leaving alpha alone, and the gold
+   half is darkened just enough to hold on a light ground. */
+.site-header.adaptive[data-under="light"] .lm-r,
+.site-header.adaptive[data-under="light"] .lm-etail { filter: brightness(0); }
+.site-header.adaptive[data-under="light"] .lm-m,
+.site-header.adaptive[data-under="light"] .lm-ark { filter: saturate(1.25) brightness(0.82); }
+.site-header.adaptive[data-under="light"] .logo-mark { filter: none; }
+
+/* The open mobile panel is always its own dark surface, whatever is behind the
+   bar, or its links would inherit the light-section colours and disappear.
+   The current-page link needs saying separately: over a light section it is
+   --gold-dark, which is chosen to read on cream and is far too dim on the
+   panel's near-black. */
+.site-header.adaptive .main-nav.open a { color: rgba(255, 255, 255, 0.88); }
+.site-header.adaptive .main-nav.open a.current,
+.site-header.adaptive .main-nav.open a:hover { color: var(--gold); }
+
+@media (prefers-reduced-motion: reduce) {
+  .site-header.adaptive { transition: none; }
+}
 
 /* --------------------------------------------------------------------------
    Retailer band
