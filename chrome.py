@@ -22,6 +22,10 @@ import os
 
 # label, href, and the anchor that href becomes when you are already on the
 # page it points at (None means it is simply a link to itself)
+# Blog is deliberately not here either. Justin does not want to publish
+# weekly, so the tab came off and the generated pages were deleted; see
+# _unpublished/README.md for what it takes to bring it back.
+#
 # Glossary is deliberately not here. Justin asked for the tab to come off — he
 # wants that content as a one-pager sent to suppliers, not a nav item. The page
 # itself is still published and still in the sitemap, because it is one of the
@@ -30,7 +34,6 @@ import os
 NAV = [
     ("Home",     "index.html",     "#top"),
     ("Services", "services.html",  "#top"),
-    ("Blog",     "blog.html",      "#top"),
     ("Partners", "partners.html",  "#top"),
     ("Contact",  "contact.html",   "#top"),
 ]
@@ -40,8 +43,8 @@ NAV = [
 CTA = ("Book a Strategy Call", "contact.html", "#form")
 
 # Where the site is actually served from. Schema and social cards need absolute
-# URLs and this is the one place that decides them — blog.py and sitemap.py
-# import it from here rather than keeping their own copy.
+# URLs and this is the one place that decides them — sitemap.py imports it
+# from here rather than keeping its own copy.
 #
 # It has to be the host the pages are really on, not the one they are going to.
 # Pointed at retailmark.com while the site lived on the preview domain, every
@@ -49,7 +52,7 @@ CTA = ("Book a Strategy Call", "contact.html", "#form")
 # transparent wordmark, and rendered a link as a cropped logo on grey.
 #
 # ON LAUNCH DAY: change this one line to https://retailmark.com, then
-#   python3 blog.py && python3 chrome.py && python3 sitemap.py
+#   python3 chrome.py && python3 sitemap.py
 LAUNCH_ORIGIN = "https://retailmark.com"
 ORIGIN = "https://retailmark.tetheredcrew.com"
 
@@ -241,10 +244,11 @@ FOOTER = """<footer class="site-footer">
 def depth_prefix(page):
     """'' for a page in the site root, '../' for one a directory down.
 
-    Blog posts live in blog/, and every URL the chrome writes — the nav, the
-    logo slices, the footer badge — is relative. Written verbatim into a post
-    they would resolve against blog/ and 404. This is the one thing that has to
-    know how deep a page sits.
+    Every URL the chrome writes — the nav, the logo slices, the footer badge —
+    is relative, so a page in a subdirectory needs them prefixed or they
+    resolve against that directory and 404. Nothing sits in a subdirectory
+    today; this exists because the blog did, and it is the one thing that would
+    have to be right again the moment anything else does.
     """
     return "../" * page.count("/")
 
@@ -253,15 +257,10 @@ def header_for(page):
     up = depth_prefix(page)
     links = ""
     for label, href, self_href in NAV:
-        # A blog post is not blog.html, but it is the Blog section, and a nav
-        # that lights up nothing on a post reads as "you are nowhere".
-        current = href == page or (href == "blog.html" and page.startswith("blog/"))
-        if current and href == page:
+        current = href == page
+        if current:
             links += (f'      <a href="{self_href}" class="current" '
                       f'aria-current="page">{label}</a>\n')
-        elif current:
-            # links to the section index, so it is a link, not the current page
-            links += f'      <a href="{up}{href}" class="current">{label}</a>\n'
         else:
             links += f'      <a href="{up}{href}">{label}</a>\n'
     cta_label, cta_href, cta_self = CTA
@@ -319,7 +318,5 @@ def rewrite(path, check=False):
 if __name__ == "__main__":
     check = "--check" in sys.argv
     here = os.path.dirname(os.path.abspath(__file__))
-    pages = (glob.glob(os.path.join(here, "*.html"))
-             + glob.glob(os.path.join(here, "blog", "*.html")))
-    for path in sorted(pages):
+    for path in sorted(glob.glob(os.path.join(here, "*.html"))):
         print(" ", rewrite(path, check))
