@@ -159,13 +159,30 @@ def apply(name):
                      ("--gold-dark", p["dark"]), ("--cream", p["cream"]),
                      ("--gray", p["gray"]), ("--gray-light", p["gray_light"]),
                      ("--border", p["border"])):
-        s = re.sub(rf'(  {re.escape(tok)}: )#[0-9A-Fa-f]{{6}};', rf'\g<1>{val};', s, count=1)
+        s, n = re.subn(rf'(  {re.escape(tok)}: )#[0-9A-Fa-f]{{6}};', rf'\g<1>{val};', s, count=1)
+        # Loudly. A silent miss here is what left the stylesheet on a half
+        # applied palette and, worse, let a later pass add every
+        # rgba(var(--ink-rgb),...) usage without ever adding the declaration —
+        # which computes to transparent and took the header's background away.
+        if n != 1:
+            raise SystemExit(f"palette: could not find the {tok} declaration in styles.css")
     for tok, val in derived.items():
-        s = re.sub(rf'(  {re.escape(tok)}: )[^;]+;', rf'\g<1>{val};', s, count=1)
+        s, n = re.subn(rf'(  {re.escape(tok)}: )[^;]+;', rf'\g<1>{val};', s, count=1)
+        if n != 1:
+            raise SystemExit(f"palette: could not find the {tok} declaration in styles.css")
     acc = tuple(int(p["accent"][i:i + 2], 16) for i in (1, 3, 5))
     dark = tuple(int(p["dark"][i:i + 2], 16) for i in (1, 3, 5))
     s = re.sub(r'rgba\(232,\s*185,\s*35,', f'rgba({acc[0]}, {acc[1]}, {acc[2]},', s)
     s = re.sub(r'rgba\(199,\s*154,\s*21,', f'rgba({dark[0]}, {dark[1]}, {dark[2]},', s)
+    # Nothing may be used without being declared. This is the check that would
+    # have caught the transparent header on the spot.
+    declared = set(re.findall(r'(--[a-z0-9-]+)\s*:', s))
+    used = set(re.findall(r'var\((--[a-z0-9-]+)\s*\)', s))
+    runtime = {"--reveal-delay", "--rm-x", "--items", "--d"}
+    missing = sorted(used - declared - runtime)
+    if missing:
+        raise SystemExit(f"palette: these are used but never declared: {missing}")
+
     open(css, "w").write(s)
     return p
 

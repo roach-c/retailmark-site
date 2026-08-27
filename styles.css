@@ -1,14 +1,25 @@
 :root {
-  --black: #1A1310;
-  --charcoal: #2A211B;
-  --gold: #B08D4F;
-  --gold-light: #C6AD80;
-  --gold-dark: #8A6C35;
-  --gold-soft: rgba(204, 90, 49, 0.12);
-  --cream: #FAF7F1;
-  --gray: #6E655B;
-  --gray-light: #9C9287;
-  --border: #E9E1D5;
+  --black: #111111;
+  /* The ink as an rgb triple, because rgba() cannot take a hex custom
+     property. Every rgba(var(--ink-rgb), ...) below depends on this line
+     existing: an rgba() whose variable is undefined is invalid at
+     computed-value time, which resolves to transparent rather than falling
+     back to an earlier declaration. That is exactly how the header lost its
+     background and put white nav text on a cream hero. */
+  --ink-rgb: 17, 17, 17;
+  --ink-raised: #141414;
+  --card-dark: #1a1a1e;
+  --card-border: #35353a;
+  --on-dark-muted: #C9C9CC;
+  --charcoal: #222226;
+  --gold: #E8B923;
+  --gold-light: #F5D566;
+  --gold-dark: #C79A15;
+  --gold-soft: rgba(232, 185, 35, 0.12);
+  --cream: #FAF8F3;
+  --gray: #6B6B6F;
+  --gray-light: #9A9A9E;
+  --border: #E8E6DF;
   --radius: 10px;
   --radius-lg: 16px;
   --max-width: 1160px;
@@ -26,7 +37,7 @@
   --shadow-sm: 0 1px 2px rgba(var(--ink-rgb), 0.04), 0 1px 3px rgba(var(--ink-rgb), 0.03);
   --shadow-md: 0 8px 24px rgba(var(--ink-rgb), 0.07), 0 2px 6px rgba(var(--ink-rgb), 0.04);
   --shadow-lg: 0 24px 48px rgba(var(--ink-rgb), 0.14), 0 8px 16px rgba(var(--ink-rgb), 0.06);
-  --shadow-gold: 0 10px 24px rgba(141, 109, 15, 0.28);
+  --shadow-gold: 0 10px 24px rgba(199, 154, 21, 0.28);
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -221,8 +232,8 @@ textarea:focus-visible {
   display: flex;
   align-items: center;
   background:
-    radial-gradient(circle at 85% 0%, rgba(204, 90, 49,0.18), transparent 55%),
-    radial-gradient(circle at 0% 100%, rgba(204, 90, 49,0.08), transparent 45%),
+    radial-gradient(circle at 85% 0%, rgba(232, 185, 35,0.18), transparent 55%),
+    radial-gradient(circle at 0% 100%, rgba(232, 185, 35,0.08), transparent 45%),
     var(--cream);
   position: relative;
   overflow: hidden;
@@ -325,7 +336,7 @@ textarea:focus-visible {
 .service-card:hover {
   box-shadow: var(--shadow-lg);
   transform: translateY(-4px);
-  border-color: rgba(204, 90, 49, 0.4);
+  border-color: rgba(232, 185, 35, 0.4);
 }
 .service-icon {
   display: inline-flex;
@@ -1024,7 +1035,7 @@ a.service-card:focus-visible {
 
 .page-hero {
   background:
-    radial-gradient(circle at 88% 0%, rgba(204, 90, 49,0.16), transparent 58%),
+    radial-gradient(circle at 88% 0%, rgba(232, 185, 35,0.16), transparent 58%),
     var(--cream);
   padding: 66px 0 54px;
   border-bottom: 1px solid var(--border);
@@ -1352,7 +1363,7 @@ a.service-card:focus-visible {
   border-left: 3px solid var(--gold);
 }
 .post-body blockquote p { margin: 0; font-size: 1.08rem; }
-.post-body a { color: var(--gold-dark); border-bottom: 1px solid rgba(141, 109, 15,0.4); }
+.post-body a { color: var(--gold-dark); border-bottom: 1px solid rgba(199, 154, 21,0.4); }
 .post-body a:hover { border-bottom-color: currentColor; }
 .post-body code {
   background: var(--cream);
