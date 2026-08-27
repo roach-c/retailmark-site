@@ -135,6 +135,73 @@ if (heroLogo && document.documentElement.classList.contains('hero-lockup')) {
   });
 })();
 
+/* ---- the black band behind the glass bar --------------------------------
+   Measured rather than typed. The header is 81px with the full nav and
+   shorter once it collapses to the hamburger, so a hard-coded band height
+   leaves a black sliver under the bar at one size and a stripe of cream over
+   the black at another. */
+(function () {
+  var header = document.querySelector('.site-header');
+  var band = document.querySelector('.hero-band');
+  if (!header || !band) return;
+  function fit() {
+    document.documentElement.style.setProperty(
+      '--bar-h', Math.round(header.getBoundingClientRect().height) + 'px');
+  }
+  fit();
+  addEventListener('resize', fit);
+  addEventListener('load', fit);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
+})();
+
+/* ---- the bar reads what is under it ------------------------------------
+   Sections carry data-tone. The bar samples the tone of whichever one is
+   crossing its lower edge and sets data-under, and the stylesheet does the
+   rest. Anything unmarked counts as light, so a section added later is
+   readable rather than invisible.
+
+   elementFromPoint rather than an IntersectionObserver: the question is not
+   "is this section visible" but "what is at this exact pixel", and a sticky
+   bar over overlapping sections answers that far more directly. It runs
+   inside requestAnimationFrame so a fast scroll costs one read per frame.
+
+   .adaptive is added only here, once this has actually run, so no-JS keeps
+   the solid bar rather than a transparent one with unreadable text. */
+(function () {
+  var header = document.querySelector('.site-header');
+  if (!header || !document.querySelector('[data-tone]')) return;
+
+  header.classList.add('adaptive');
+  var ticking = false, last = '';
+
+  function sample() {
+    ticking = false;
+    var y = header.getBoundingClientRect().bottom - 2;
+    var x = Math.round(innerWidth / 2);
+    // the bar is on top at that pixel, so ask what is behind it
+    var prev = header.style.pointerEvents;
+    header.style.pointerEvents = 'none';
+    var el = document.elementFromPoint(x, y);
+    header.style.pointerEvents = prev;
+
+    var tone = 'light';
+    for (var n = el; n; n = n.parentElement) {
+      if (n.dataset && n.dataset.tone) { tone = n.dataset.tone; break; }
+    }
+    if (tone !== last) { last = tone; header.setAttribute('data-under', tone); }
+  }
+
+  function onScroll() {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(sample);
+  }
+  addEventListener('scroll', onScroll, { passive: true });
+  addEventListener('resize', onScroll);
+  addEventListener('load', sample);
+  sample();
+})();
+
 // Subtle shadow on the sticky header once the page has scrolled.
 const siteHeader = document.querySelector('.site-header');
 const updateHeaderShadow = () => {
