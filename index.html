@@ -100,8 +100,9 @@ if (!matchMedia('(prefers-reduced-motion: reduce)').matches)
    With JS off the class is never added and the header keeps its logo, which
    is the right way for this to fail. */
 document.documentElement.classList.add('hero-lockup');
+document.documentElement.classList.add('has-js-shots');
 </script>
-<link rel="stylesheet" href="styles.css?v=20260827t">
+<link rel="stylesheet" href="styles.css?v=20260827w">
 </head>
 <body>
 
@@ -138,28 +139,49 @@ document.documentElement.classList.add('hero-lockup');
 
   <section class="hero" data-tone="light">
     <div class="container hero-inner">
-      <!-- The mark itself, on the page rather than in the bar. The header
-           picks it up once this has scrolled away; see .hero-lockup in
-           script.js. Dark variant, because the shipped wordmark is white for
-           the black header and disappears on the cream hero. -->
-      <img class="hero-logo" src="assets/retailmark-wordmark-dark.png"
-           alt="RetailMark" width="1479" height="294" fetchpriority="high">
-      <div class="hero-badge">Omnichannel Supplier Solutions</div>
-      <h1>From Opportunity to On&nbsp;Shelf.</h1>
-      <p class="hero-sub">A Bentonville brokerage taking food brands into Walmart, Sam&rsquo;s Club,
-        TJ&nbsp;Maxx, HomeGoods and Marshalls &mdash; as an extension of your team, from the first
-        line review through replenishment and the reorder. We have sat on the buyer's side of the
-        table, so we know what actually gets a yes.</p>
-      <div class="hero-cta">
-        <a href="contact.html" class="btn btn-primary btn-lg">Book Your Free Strategy Call</a>
-        <a href="#services" class="btn btn-ghost btn-lg">See How It Works</a>
+      <div class="hero-copy">
+        <!-- The mark itself, on the page rather than in the bar. The header
+             picks it up once this has scrolled away; see .hero-lockup in
+             script.js. Dark variant, because the shipped wordmark is white for
+             the black header and disappears on the cream hero. -->
+        <img class="hero-logo" src="assets/retailmark-wordmark-dark.png"
+             alt="RetailMark" width="1479" height="294" fetchpriority="high">
+        <div class="hero-badge">Omnichannel Supplier Solutions</div>
+        <h1>From Opportunity to On&nbsp;Shelf.</h1>
+        <p class="hero-sub">A Bentonville brokerage taking food brands into Walmart, Sam&rsquo;s Club,
+          TJ&nbsp;Maxx, HomeGoods and Marshalls &mdash; as an extension of your team, from the first
+          line review through replenishment and the reorder. We have sat on the buyer's side of the
+          table, so we know what actually gets a yes.</p>
+        <div class="hero-cta">
+          <a href="contact.html" class="btn btn-primary btn-lg">Book Your Free Strategy Call</a>
+          <a href="#services" class="btn btn-ghost btn-lg">See How It Works</a>
+        </div>
+        <div class="hero-stats">
+          <div><strong>28 brands</strong><span>Represented today</span></div>
+          <div><strong>Bentonville, AR</strong><span>Ten minutes from the home office</span></div>
+          <div><strong>Buyer-side</strong><span>Our own team, not outside consultants</span></div>
+        </div>
+
+        <!-- Bentonville, cycling in the space the 3D shelf used to hold.
+             Decorative: the photographs carry nothing the copy does not, so
+             alt="" rather than ten descriptions a screen reader must sit
+             through. Greyscale is a CSS filter, not baked into the files. -->
       </div>
-      <div class="hero-stats">
-        <div><strong>28 brands</strong><span>Represented today</span></div>
-        <div><strong>Bentonville, AR</strong><span>Ten minutes from the home office</span></div>
-        <div><strong>Buyer-side</strong><span>Our own team, not outside consultants</span></div>
+
+      <div class="hero-shots" aria-hidden="true">
+        <img src="assets/bentonville/00biz-walmart-cool-rebrand-01-tfwz-articlela.webp" alt="" aria-hidden="true" fetchpriority="high" width="1000" height="1250">
+        <img src="assets/bentonville/1940-1532185170.webp" alt="" aria-hidden="true" loading="lazy" width="1000" height="1250">
+        <img src="assets/bentonville/27352-bentonville-356w-preview-c7a80d2f46a44.webp" alt="" aria-hidden="true" loading="lazy" width="1000" height="1250">
+        <img src="assets/bentonville/central-avenue-at-night.webp" alt="" aria-hidden="true" loading="lazy" width="1000" height="1250">
+        <img src="assets/bentonville/flintco-walmart-fitness-center-exterior7.webp" alt="" aria-hidden="true" loading="lazy" width="1000" height="1250">
+        <img src="assets/bentonville/rendering-of-wide-view-of-office-spaces.webp" alt="" aria-hidden="true" loading="lazy" width="1000" height="1250">
+        <img src="assets/bentonville/welcome-center-exterior-2.webp" alt="" aria-hidden="true" loading="lazy" width="1000" height="1250">
+        <img src="assets/bentonville/images.webp" alt="" aria-hidden="true" loading="lazy" width="1000" height="1250">
+        <img src="assets/bentonville/shutterstock-1366855787.webp" alt="" aria-hidden="true" loading="lazy" width="1000" height="1250">
+        <img src="assets/bentonville/sunrise-on-the-bentonville-arkansas-water-to.webp" alt="" aria-hidden="true" loading="lazy" width="1000" height="1250">
       </div>
     </div>
+
   </section>
 
   <!-- The five banners RetailMark actually sells into, from the CRM's Retailer
@@ -278,6 +300,7 @@ document.documentElement.classList.add('hero-lockup');
           <p>Buyer-ready decks with clear communication that make your case in the room.</p>
         </a>
       </div>
+
     </div>
   </section>
 
@@ -433,7 +456,7 @@ document.documentElement.classList.add('hero-lockup');
   </div>
 </footer>
 
-<script src="script.js?v=20260827t"></script>
-<script type="module" src="boxspin.js?v=20260827t"></script>
+<script src="script.js?v=20260827w"></script>
+<script type="module" src="boxspin.js?v=20260827w"></script>
 </body>
 </html>

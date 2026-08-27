@@ -38,7 +38,7 @@
      a wide monitor does not strand everything in a narrow column down the
      middle the way a plain centred container would at 724px. */
   --edge: clamp(24px, calc((100vw - 1160px) / 2 + 24px), 260px);
-  --hero-copy: clamp(560px, 58vw, 880px);   /* the hero's left column; the render takes the rest */
+  --hero-copy: clamp(440px, 44vw, 620px);   /* the hero copy column; the photo panel takes the rest */   /* the hero's left column; the render takes the rest */
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
   --shadow-sm: 0 1px 2px rgba(var(--ink-rgb), 0.04), 0 1px 3px rgba(var(--ink-rgb), 0.03);
   --shadow-md: 0 8px 24px rgba(var(--ink-rgb), 0.07), 0 2px 6px rgba(var(--ink-rgb), 0.04);
@@ -808,12 +808,13 @@ a.service-card:focus-visible {
   display:grid;
   grid-template-columns:minmax(0,var(--hero-copy));
   text-align:left;
+  align-items:center;
 }
 .site-header .header-inner{
   max-width:none;
   padding-left:var(--edge);padding-right:var(--edge);
 }
-.hero-inner > *{grid-column:1}
+.hero-copy{grid-column:1}
 /* The badge is a pill: as a grid item it would stretch to the column width and
    stop looking like one. Everything else is meant to fill the column — the
    stats rule above the row draws its line across it. */
@@ -1215,6 +1216,72 @@ a.service-card:focus-visible {
 
 /* Footer nav: the same links again, which is where a crawler expects to find
    them and where a person looks after reading to the bottom. */
+
+/* --------------------------------------------------------------------------
+   Hero slideshow
+   Bentonville, cycling in the space the 3D shelf used to occupy.
+
+   Every frame is stacked in one grid cell and cross-faded on opacity alone.
+   Animating opacity is compositor work; anything that changes layout would
+   make the headline beside it judder on every change.
+
+   Below 1000px the panel is not shown at all. The hero copy needs the full
+   width there, and a photo squeezed under a headline is a photo nobody reads
+   the page past.
+   -------------------------------------------------------------------------- */
+
+.hero-shots { display: none; }
+
+@media (min-width: 1000px) {
+  /* A capped second column, not 1fr. With 1fr the panel is pushed to the far
+     right gutter, which on a 2560 monitor leaves a quarter of the screen of
+     nothing between the headline and the photograph. Capped, it sits beside
+     the copy at every width and the slack collects harmlessly to its right. */
+  .hero-inner {
+    grid-template-columns: minmax(0, var(--hero-copy)) minmax(0, 460px);
+    column-gap: clamp(32px, 5vw, 90px);
+  }
+  /* Two grid items now, not nine. The panel spans grid-row 1/-1, and with the
+     copy as loose children every one of them became its own row that the tall
+     panel then stretched — the wordmark and the badge ended up half a screen
+     apart. One wrapper, one row, nothing to inflate. */
+  .hero-copy { grid-column: 1; }
+
+  .hero-shots {
+    grid-column: 2;
+    grid-row: 1 / -1;
+    justify-self: start;
+    align-self: center;
+    display: grid;
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+    /* the ground behind the fade, so a frame never dissolves to page cream */
+    background: var(--charcoal);
+  }
+  .hero-shots img {
+    grid-area: 1 / 1;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* Greyscale here rather than baked into the files: one asset serves either
+       decision, and this is one line to remove where re-exporting ten images
+       is not. The slight lift stops the darker frames going muddy. */
+    filter: grayscale(1) contrast(1.06) brightness(1.02);
+    opacity: 0;
+    transition: opacity 1.15s var(--ease);
+  }
+  .hero-shots img.on { opacity: 1; }
+  /* first paint, before the script has run: show frame one rather than a hole */
+  html:not(.has-js-shots) .hero-shots img:first-child { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* No cycling. One photograph, held. */
+  .hero-shots img { transition: none; }
+}
 
 /* --------------------------------------------------------------------------
    Adaptive header

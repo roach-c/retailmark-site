@@ -50,6 +50,72 @@ if (heroLogo && document.documentElement.classList.contains('hero-lockup')) {
   document.documentElement.classList.remove('hero-lockup');
 }
 
+/* ---- the hero slideshow -------------------------------------------------
+   Cross-fades through the Bentonville photographs.
+
+   It only starts once the first two frames have actually decoded. Starting on
+   a timer means the first transition can land on an image that has not loaded,
+   which shows as a flash of the charcoal ground rather than a cross-fade.
+
+   It stops when the hero is off screen. A slideshow nobody is looking at is
+   a timer, a decode and a repaint every few seconds, on a laptop battery. */
+(function () {
+  var wrap = document.querySelector('.hero-shots');
+  if (!wrap) return;
+  var shots = [].slice.call(wrap.querySelectorAll('img'));
+  if (shots.length < 2) { if (shots[0]) shots[0].classList.add('on'); return; }
+
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    shots[0].classList.add('on');
+    return;
+  }
+
+  var HOLD = 4200;
+  var i = 0, timer = null, running = false;
+
+  function show(n) {
+    shots[i].classList.remove('on');
+    i = n;
+    shots[i].classList.add('on');
+    // decode the next one during the hold, not at the moment it is needed
+    var nxt = shots[(i + 1) % shots.length];
+    if (nxt.decode) nxt.decode().catch(function () {});
+  }
+
+  function start() {
+    if (running) return;
+    running = true;
+    timer = setInterval(function () { show((i + 1) % shots.length); }, HOLD);
+  }
+  function stop() {
+    running = false;
+    clearInterval(timer);
+  }
+
+  function begin() {
+    shots[0].classList.add('on');
+    start();
+  }
+
+  // wait for the first two to decode
+  var ready = shots.slice(0, 2).map(function (im) {
+    if (im.decode) return im.decode().catch(function () {});
+    return im.complete ? Promise.resolve()
+                       : new Promise(function (r) { im.onload = im.onerror = r; });
+  });
+  Promise.all(ready).then(begin);
+
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(function (es) {
+      es.forEach(function (e) { e.isIntersecting ? start() : stop(); });
+    }, { threshold: 0 }).observe(wrap);
+  }
+  // a hidden tab still fires setInterval in some browsers
+  document.addEventListener('visibilitychange', function () {
+    document.hidden ? stop() : start();
+  });
+})();
+
 /* ---- the bar reads what is under it ------------------------------------
    Sections carry data-tone. The bar samples the tone of whichever one is
    crossing its lower edge and sets data-under, and the stylesheet does the
