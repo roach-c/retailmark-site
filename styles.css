@@ -1285,7 +1285,10 @@ a.service-card:focus-visible {
     grid-column: 2;
     grid-row: 1 / -1;
     justify-self: start;
-    align-self: center;
+    /* start, not center: its top lines up with the top of the wordmark, which
+       is the first thing in the copy column. Centred it floated against the
+       middle of the copy and lined up with nothing. */
+    align-self: start;
     display: grid;
     grid-template-rows: repeat(3, 1fr);
     gap: 10px;
@@ -1823,8 +1826,12 @@ a.service-card:focus-visible {
      the slack all pooled into one void before the box. Distributing it puts
      the monogram on the left edge, the box on the right, and the statement
      centred in what is left. */
-  justify-content: space-between;
-  gap: clamp(28px, 4vw, 64px);
+  /* Was space-between, for a row of three. With the box gone that pushed the
+     monogram and the statement to opposite ends of the band with a canyon
+     between them. They sit together on the left now, on the same gutter as
+     everything else, and the slack collects to the right. */
+  justify-content: flex-start;
+  gap: clamp(28px, 5vw, 88px);
 }
 
 /* The SVG is only as wide as the finished monogram. The letters are drawn well
@@ -1916,27 +1923,6 @@ a.service-card:focus-visible {
   .brandmark.is-revealed .brandmark-quote { animation: none; }
 }
 
-/* The opening box sits to the right of the statement. It is decorative, so it
-   is allowed to disappear entirely when the band gets tight rather than
-   squeezing the monogram or the line, which carry the meaning. */
-.boxspin {
-  flex: 0 0 auto;
-  /* Squarer and larger than before. The old 360x250 canvas held a box that
-     filled about a third of it, which read as a small object lost in a big
-     frame rather than as the anchor for this side of the band. */
-  /* Square, because the box is. A wide canvas around a roughly square object
-     fits it by height and leaves a hundred pixels of empty canvas on either
-     side — which is dead space in the row that no amount of gap tuning can
-     close, because it is inside the element. */
-  width: clamp(175px, 16vw, 245px);
-  height: clamp(175px, 16vw, 245px);
-  display: block;
-}
-@media (max-width: 1100px) { .boxspin { display: none; } }
-
-/* The box can be turned by hand, so it has to look like it can be. */
-.boxspin { cursor: grab; touch-action: pan-y; }
-.boxspin.is-grabbed { cursor: grabbing; }
 
 /* ==========================================================================
    SCROLL REVEALS
