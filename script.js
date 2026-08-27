@@ -270,6 +270,7 @@ if (form) form.addEventListener('submit', async (e) => {
   var GROUPS = [
     ['.hero-badge', '.hero h1', '.hero-sub', '.hero-cta'],
     ['.hero-stats > div'],
+    ['.retail-band .container > *'],
     ['.logos-label', '.marquee'],
     ['.services > .container > h2', '.services > .container > .section-sub'],
     ['.service-card'],

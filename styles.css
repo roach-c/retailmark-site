@@ -1200,6 +1200,63 @@ a.service-card:focus-visible {
    them and where a person looks after reading to the bottom. */
 
 /* --------------------------------------------------------------------------
+   Retailer band
+   Set as type, not as logos. RetailMark is a brokerage, not an affiliate, and
+   putting five retailers' marks on the page implies an endorsement none of
+   them has given — the same reason there is no Walmart logo anywhere on this
+   site. Their names in RetailMark's own typeface say the true thing.
+   -------------------------------------------------------------------------- */
+
+.retail-band {
+  background: var(--black);
+  color: #fff;
+  padding: clamp(30px, 3.6vw, 46px) 0;
+}
+.retail-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 16px;
+}
+.retail-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px clamp(20px, 3.4vw, 52px);
+  font-size: clamp(1.05rem, 2.2vw, 1.85rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+/* A hairline between names rather than a bullet: at this weight a dot reads as
+   punctuation inside the name next to it. */
+.retail-list li { position: relative; }
+.retail-list li + li::before {
+  content: "";
+  position: absolute;
+  left: calc(clamp(20px, 3.4vw, 52px) / -2);
+  top: 0.32em;
+  bottom: 0.28em;
+  width: 1px;
+  background: rgba(255, 255, 255, 0.22);
+}
+.retail-note {
+  color: rgba(255, 255, 255, 0.62);
+  font-size: 0.94rem;
+  max-width: 60ch;
+  margin-top: 18px;
+}
+
+@media (max-width: 560px) {
+  .retail-list { gap: 8px 16px; font-size: 1rem; }
+  .retail-list li + li::before { display: none; }
+  .retail-list li:not(:last-child)::after { content: " \00b7"; color: rgba(255,255,255,0.3); }
+}
+
+/* --------------------------------------------------------------------------
    Blog
    The index is a list, not a grid of cards. A weekly post is a headline and a
    sentence; laid out in three columns each one becomes a small box with a lot
@@ -1708,7 +1765,7 @@ a.service-card:focus-visible {
   .hero-badge, .hero h1, .hero-sub, .hero-cta, .hero-stats > div,
   .logos-label, .marquee,
   .services > .container > h2, .services > .container > .section-sub, .service-card,
-  .why-copy > *, .why-card, .why-badge,
+  .why-copy > *, .why-card, .why-badge, .retail-band .container > *,
   .partners > .container > h2, .partners > .container > .section-sub, .partner-row,
   .contact-copy > *, .contact-form,
   .page-hero .crumbs, .page-hero h1, .page-hero-sub,
@@ -1735,7 +1792,7 @@ a.service-card:focus-visible {
     .hero-badge, .hero h1, .hero-sub, .hero-cta, .hero-stats > div,
     .logos-label, .marquee,
     .services > .container > h2, .services > .container > .section-sub, .service-card,
-    .why-copy > *, .why-card, .why-badge,
+    .why-copy > *, .why-card, .why-badge, .retail-band .container > *,
     .partners > .container > h2, .partners > .container > .section-sub, .partner-row,
     .contact-copy > *, .contact-form,
     .page-hero .crumbs, .page-hero h1, .page-hero-sub,
