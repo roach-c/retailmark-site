@@ -56,8 +56,13 @@ def main(src):
     if not files:
         raise SystemExit(f"no images in {src}")
     os.makedirs(OUT, exist_ok=True)
-    for old in glob.glob(os.path.join(OUT, "*")):
-        os.remove(old)
+    # Only the files this script produces. It used to clear the whole
+    # directory, which deleted SOURCES.md — the note recording that these
+    # photographs are not cleared for publication. Losing that note is worse
+    # than losing a picture, and nothing complained either way.
+    for old in glob.glob(os.path.join(OUT, "*.webp")) + [os.path.join(OUT, "manifest.json")]:
+        if os.path.exists(old):
+            os.remove(old)
 
     made = []
     for f in files:
