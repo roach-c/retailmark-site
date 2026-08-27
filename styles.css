@@ -127,23 +127,42 @@ textarea:focus-visible {
   transform: translateY(0);
   box-shadow: var(--shadow-sm);
 }
-/* Over the hero's radial gradient, so there is something for it to pick up.
-   Transparent before; frosted now, which is the difference between an outline
-   and an object. */
+/* The frost alone did nothing here. The hero behind this button is very nearly
+   flat cream, and a blur with nothing to blur is just a pale fill — Caleb
+   spotted that it did not read as glass at all.
+
+   Glass is legible because of what it does to light, not because of the blur:
+   a bright edge along the top where it catches, and colour thrown onto the
+   surface beneath it. So the frost stays for the browsers that show it, and
+   the gold glow underneath plus the inset highlight along the top do the
+   actual work. Those two need nothing behind them to be visible. */
 .btn-ghost {
   background: var(--glass-light);
   backdrop-filter: var(--glass-blur);
   -webkit-backdrop-filter: var(--glass-blur);
-  border-color: rgba(var(--ink-rgb), 0.55);
+  border-color: rgba(var(--ink-rgb), 0.42);
   color: var(--black);
+  box-shadow:
+    /* colour cast onto the page beneath, as a pane of tinted glass would */
+    0 8px 22px -6px rgba(232, 185, 35, 0.55),
+    0 2px 6px rgba(var(--ink-rgb), 0.06),
+    /* the lit top edge, which is the part the eye reads as glass */
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
 }
 .btn-ghost:hover {
   background: var(--black);
   color: #fff;
   transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
+  /* the glow warms and spreads as it lifts, rather than being swapped for a
+     neutral shadow that would read as a different button */
+  box-shadow:
+    0 12px 28px -6px rgba(232, 185, 35, 0.7),
+    0 4px 10px rgba(var(--ink-rgb), 0.14);
 }
-.btn-ghost:active { transform: translateY(0); box-shadow: none; }
+.btn-ghost:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 12px -4px rgba(232, 185, 35, 0.5);
+}
 .btn-lg { padding: 15px 30px; font-size: 1rem; }
 .btn-block { width: 100%; }
 .btn-nav { display: inline-flex; }
@@ -1425,7 +1444,8 @@ a.service-card:focus-visible {
    washed-out white box over gold, and the ghost button would lose its edge.
    So where it is unsupported they go back to being solid. */
 @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-  .btn-ghost { background: transparent; }
+  /* the glow and the lit edge survive; only the frost is lost */
+  .btn-ghost { background: rgba(255, 255, 255, 0.72); }
   .contact-form { background: #fff; }
   .why-card { background: linear-gradient(160deg, var(--charcoal), var(--card-dark)); }
 }
