@@ -51,66 +51,86 @@ if (heroLogo && document.documentElement.classList.contains('hero-lockup')) {
 }
 
 /* ---- the hero slideshow -------------------------------------------------
-   Cross-fades through the Bentonville photographs.
+   Three strips, each cycling its own photographs.
 
-   It only starts once the first two frames have actually decoded. Starting on
-   a timer means the first transition can land on an image that has not loaded,
-   which shows as a flash of the charcoal ground rather than a cross-fade.
+   The three sets are disjoint in the markup, so no two strips can ever show
+   the same picture; the script never has to reason about it. They change a
+   third of the interval apart, so something is always moving and the whole
+   block never flips at once.
 
-   It stops when the hero is off screen. A slideshow nobody is looking at is
-   a timer, a decode and a repaint every few seconds, on a laptop battery. */
+   Each strip waits for its own first two frames to decode before it starts. A
+   timer alone can fade to an image that has not loaded, which reads as a flash
+   of the backing colour rather than a cross-fade.
+
+   It stops when the hero leaves the viewport and when the tab is hidden. A
+   slideshow nobody is looking at is a timer, a decode and a repaint every few
+   seconds, on someone's battery. */
 (function () {
   var wrap = document.querySelector('.hero-shots');
   if (!wrap) return;
-  var shots = [].slice.call(wrap.querySelectorAll('img'));
-  if (shots.length < 2) { if (shots[0]) shots[0].classList.add('on'); return; }
+  var cols = [].slice.call(wrap.querySelectorAll('.shot-col'));
+  if (!cols.length) return;
 
-  if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    shots[0].classList.add('on');
-    return;
-  }
+  var still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var HOLD = 5400;                       // one strip changes every HOLD/3
 
-  var HOLD = 4200;
-  var i = 0, timer = null, running = false;
+  var strips = cols.map(function (col, ci) {
+    var shots = [].slice.call(col.querySelectorAll('img'));
+    return {
+      shots: shots,
+      i: 0,
+      timer: null,
+      offset: ci * (HOLD / cols.length),
+      show: function (n) {
+        if (this.shots.length < 2) return;
+        this.shots[this.i].classList.remove('on');
+        this.i = n;
+        this.shots[this.i].classList.add('on');
+        var nxt = this.shots[(this.i + 1) % this.shots.length];
+        if (nxt.decode) nxt.decode().catch(function () {});
+      }
+    };
+  });
 
-  function show(n) {
-    shots[i].classList.remove('on');
-    i = n;
-    shots[i].classList.add('on');
-    // decode the next one during the hold, not at the moment it is needed
-    var nxt = shots[(i + 1) % shots.length];
-    if (nxt.decode) nxt.decode().catch(function () {});
-  }
+  strips.forEach(function (s) { if (s.shots[0]) s.shots[0].classList.add('on'); });
+  if (still) return;
 
+  var running = false, starts = [];
   function start() {
     if (running) return;
     running = true;
-    timer = setInterval(function () { show((i + 1) % shots.length); }, HOLD);
+    strips.forEach(function (s) {
+      if (s.shots.length < 2) return;
+      starts.push(setTimeout(function () {
+        s.show((s.i + 1) % s.shots.length);
+        s.timer = setInterval(function () {
+          s.show((s.i + 1) % s.shots.length);
+        }, HOLD);
+      }, s.offset));
+    });
   }
   function stop() {
     running = false;
-    clearInterval(timer);
+    starts.forEach(clearTimeout); starts = [];
+    strips.forEach(function (s) { clearInterval(s.timer); s.timer = null; });
   }
 
-  function begin() {
-    shots[0].classList.add('on');
-    start();
-  }
-
-  // wait for the first two to decode
-  var ready = shots.slice(0, 2).map(function (im) {
-    if (im.decode) return im.decode().catch(function () {});
-    return im.complete ? Promise.resolve()
-                       : new Promise(function (r) { im.onload = im.onerror = r; });
+  // only begin once the first frames are actually decoded
+  var first = [];
+  strips.forEach(function (s) {
+    s.shots.slice(0, 2).forEach(function (im) {
+      first.push(im.decode ? im.decode().catch(function () {})
+        : (im.complete ? Promise.resolve()
+           : new Promise(function (r) { im.onload = im.onerror = r; })));
+    });
   });
-  Promise.all(ready).then(begin);
+  Promise.all(first).then(start);
 
   if ('IntersectionObserver' in window) {
     new IntersectionObserver(function (es) {
       es.forEach(function (e) { e.isIntersecting ? start() : stop(); });
     }, { threshold: 0 }).observe(wrap);
   }
-  // a hidden tab still fires setInterval in some browsers
   document.addEventListener('visibilitychange', function () {
     document.hidden ? stop() : start();
   });

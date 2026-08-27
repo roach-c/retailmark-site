@@ -21,7 +21,9 @@ from PIL import Image, ImageOps
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(HERE, "assets", "bentonville")
-W, H = 1000, 1250          # 4:5, at 2x the panel's largest rendered size
+W, H = 900, 1500           # 3:5. The panel is three tall strips, so a wide
+                           # crop here would be cropped hard a second time by
+                           # object-fit and lose most of the picture.
 
 def slug(name):
     s = os.path.splitext(os.path.basename(name))[0].lower()
