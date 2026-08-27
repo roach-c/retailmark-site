@@ -171,7 +171,13 @@ def meta_for(page):
   <meta name="twitter:description" content="{desc}">
   <meta name="twitter:image" content="{ORIGIN}/assets/og-card.png">{schema_for(page)}"""
 
-HEADER = """<header class="site-header">
+HEADER = """<!-- The black the glass bar sits on. Every page, not just the home page:
+     the bar is translucent, so without this it takes its colour from whatever
+     is beneath and nearly vanishes over a pale page hero. Its height is set
+     from the header's own measured height by script.js. -->
+<div class="bar-band" data-tone="dark" aria-hidden="true"></div>
+
+<header class="site-header">
   <div class="container header-inner">
     <a href="{home}" class="logo" aria-label="RetailMark home">
       <!-- The wordmark as its four letter slices, the same ones the brand band
@@ -288,7 +294,16 @@ def rewrite(path, check=False):
     for pattern, replacement in (
         (r'<!-- meta:start -->.*?<!-- meta:end -->',
          "<!-- meta:start -->" + meta_for(page) + "\n  <!-- meta:end -->"),
-        (r'<header class="site-header">.*?</header>', header_for(page)),
+        # the optional leading band is part of what gets replaced; without it
+        # each run would prepend a second one and they would stack up
+        # The comment AND the div, or each run leaves the old comment in place
+        # and prepends a fresh one. They stacked four deep before this was
+        # noticed, because --check reporting "would update" on an unchanged
+        # file looks like nothing at all.
+        (r'(?:<!-- The black the glass bar sits on\.[\s\S]*?-->\s*)?'
+         r'(?:<div class="bar-band"[^>]*></div>\s*)?'
+         r'<header class="site-header">[\s\S]*?</header>',
+         header_for(page)),
         (r'<footer class="site-footer">.*?</footer>', footer_for(page)),
     ):
         if not re.search(pattern, out, re.S):

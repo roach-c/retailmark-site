@@ -52,6 +52,12 @@ if (!matchMedia('(prefers-reduced-motion: reduce)').matches)
 </head>
 <body>
 
+<!-- The black the glass bar sits on. Every page, not just the home page:
+     the bar is translucent, so without this it takes its colour from whatever
+     is beneath and nearly vanishes over a pale page hero. Its height is set
+     from the header's own measured height by script.js. -->
+<div class="bar-band" data-tone="dark" aria-hidden="true"></div>
+
 <header class="site-header">
   <div class="container header-inner">
     <a href="index.html" class="logo" aria-label="RetailMark home">

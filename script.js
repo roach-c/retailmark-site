@@ -142,7 +142,7 @@ if (heroLogo && document.documentElement.classList.contains('hero-lockup')) {
    the black at another. */
 (function () {
   var header = document.querySelector('.site-header');
-  var band = document.querySelector('.hero-band');
+  var band = document.querySelector('.bar-band');
   if (!header || !band) return;
   function fit() {
     document.documentElement.style.setProperty(

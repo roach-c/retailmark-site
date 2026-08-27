@@ -1271,7 +1271,7 @@ a.service-card:focus-visible {
    the bar or a stripe of cream over the black.
    -------------------------------------------------------------------------- */
 
-.hero-band {
+.bar-band {
   /* Out of flow and pinned to the top of the document, so it is BEHIND the
      sticky bar rather than a strip underneath it. In flow it sat below the
      header, adding 81px of black to the page; pulled back up with a negative

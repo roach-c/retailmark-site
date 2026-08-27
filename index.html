@@ -102,9 +102,15 @@ if (!matchMedia('(prefers-reduced-motion: reduce)').matches)
 document.documentElement.classList.add('hero-lockup');
 document.documentElement.classList.add('has-js-shots');
 </script>
-<link rel="stylesheet" href="styles.css?v=20260828h">
+<link rel="stylesheet" href="styles.css?v=20260828i">
 </head>
 <body>
+
+<!-- The black the glass bar sits on. Every page, not just the home page:
+     the bar is translucent, so without this it takes its colour from whatever
+     is beneath and nearly vanishes over a pale page hero. Its height is set
+     from the header's own measured height by script.js. -->
+<div class="bar-band" data-tone="dark" aria-hidden="true"></div>
 
 <header class="site-header">
   <div class="container header-inner">
@@ -136,13 +142,6 @@ document.documentElement.classList.add('has-js-shots');
 </header>
 
 <main id="top">
-
-  <!-- The band the glass header sits over. Its own element with its own tone,
-       rather than a gradient on the hero, because the header samples what is
-       physically under it to decide whether its type goes light or dark — a
-       painted-on gradient is invisible to that, and the bar would render for a
-       cream hero while sitting on black. -->
-  <div class="hero-band" data-tone="dark" aria-hidden="true"></div>
 
   <section class="hero" data-tone="light">
     <div class="container hero-inner">
@@ -462,6 +461,6 @@ document.documentElement.classList.add('has-js-shots');
   </div>
 </footer>
 
-<script src="script.js?v=20260828h"></script>
+<script src="script.js?v=20260828i"></script>
 </body>
 </html>
