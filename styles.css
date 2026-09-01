@@ -369,7 +369,11 @@ textarea:focus-visible {
   background: #fff;
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 28px;
+  /* No padding: the photo is a banner and has to reach the card's own edges.
+     The title block below supplies its own. overflow:hidden is what makes the
+     photo take the border-radius, and what keeps the hover zoom inside it. */
+  padding: 0;
+  overflow: hidden;
   box-shadow: var(--shadow-sm);
   transition: box-shadow 0.25s var(--ease), transform 0.25s var(--ease), border-color 0.25s var(--ease);
 }
@@ -378,18 +382,51 @@ textarea:focus-visible {
   transform: translateY(-4px);
   border-color: rgba(232, 185, 35, 0.4);
 }
+
+/* The photo. aspect-ratio holds the row heights level before the image has
+   loaded, so nine cards do not reflow one at a time on a slow connection. */
+.service-media {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: var(--gold-soft);   /* what shows while the WebP is in flight */
+}
+.service-media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* Same treatment the Bentonville strip and the platform logos get: grey at
+     rest so nine different stock photos read as one set rather than nine
+     moods, colour on hover so the card answers the cursor. */
+  filter: grayscale(1) contrast(1.04);
+  transform: scale(1.001);        /* pre-promotes the layer; kills the 1px
+                                     seam some WebKit builds show on zoom */
+  transition: filter 0.35s var(--ease), transform 0.5s var(--ease);
+}
+.service-card:hover .service-media img,
+.service-card:focus-visible .service-media img {
+  filter: grayscale(0) contrast(1);
+  transform: scale(1.05);
+}
+
+/* The number rides on the photo now. Absolute, so it does not push the title
+   down, and the scrim behind it is what keeps it legible over a dark frame. */
 .service-icon {
+  position: absolute;
+  top: 12px;
+  left: 12px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   width: 34px;
   height: 34px;
   border-radius: 8px;
-  background: var(--gold-soft);
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.18);
   font-weight: 800;
   color: var(--gold-dark);
   font-size: 0.85rem;
-  margin-bottom: 16px;
   transition: background 0.25s var(--ease), transform 0.25s var(--ease);
 }
 .service-card:hover .service-icon {
@@ -397,10 +434,15 @@ textarea:focus-visible {
   color: var(--black);
   transform: scale(1.06);
 }
-.service-card h3 { transition: color 0.2s var(--ease); }
-.service-card p { font-size: 0.92rem; }
+.service-card h3 {
+  margin: 0;
+  padding: 18px 46px 20px 22px;   /* right side is the arrow's lane */
+  font-size: 1.06rem;
+  line-height: 1.25;
+  transition: color 0.2s var(--ease);
+}
 
-/* The cards are links now, so they have to look like one before the cursor
+/* The cards are links, so they have to look like one before the cursor
    arrives. The arrow is the affordance a hover-lift alone does not give a
    touch screen, where there is no hover at all. */
 a.service-card {
@@ -414,8 +456,10 @@ a.service-card:hover h3, a.service-card:focus-visible h3 { color: var(--gold-dar
 a.service-card::after {
   content: "\2192";
   position: absolute;
-  right: 26px;
-  bottom: 22px;
+  right: 20px;
+  /* Pinned to the title row, not the card: the card's bottom is now wherever
+     the longest title in the row put it. */
+  bottom: 20px;
   font-size: 1.05rem;
   line-height: 1;
   color: var(--gold-dark);
@@ -427,7 +471,6 @@ a.service-card:hover::after, a.service-card:focus-visible::after {
   opacity: 1;
   transform: none;
 }
-a.service-card p { padding-right: 28px; }   /* keeps the arrow off the last line */
 a.service-card:focus-visible {
   outline: 2px solid var(--gold-dark);
   outline-offset: 3px;
@@ -436,6 +479,14 @@ a.service-card:focus-visible {
 /* Coarse pointers never hover, so the arrow is simply always there. */
 @media (hover: none) {
   a.service-card::after { opacity: 0.55; transform: none; }
+}
+
+/* The hover zoom is the one bit of motion in the card. Greyscale-to-colour is
+   a colour change, not movement, so it stays. */
+@media (prefers-reduced-motion: reduce) {
+  .service-media img,
+  .service-card:hover .service-media img,
+  .service-card:focus-visible .service-media img { transform: none; }
 }
 
 /* Why */

@@ -1,0 +1,68 @@
+{
+  "license": "Pexels License \u2014 free for commercial use, no attribution required",
+  "photos": [
+    {
+      "slug": "sales-strategy",
+      "pexels_id": 7693692,
+      "page": "https://www.pexels.com/photo/7693692/",
+      "file": "assets/services/sales-strategy.webp",
+      "kb": 61.5
+    },
+    {
+      "slug": "forecasting-analytics",
+      "pexels_id": 577210,
+      "page": "https://www.pexels.com/photo/577210/",
+      "file": "assets/services/forecasting-analytics.webp",
+      "kb": 24.1
+    },
+    {
+      "slug": "item-creation",
+      "pexels_id": 7843978,
+      "page": "https://www.pexels.com/photo/7843978/",
+      "file": "assets/services/item-creation.webp",
+      "kb": 27.5
+    },
+    {
+      "slug": "replenishment-planning",
+      "pexels_id": 4487364,
+      "page": "https://www.pexels.com/photo/4487364/",
+      "file": "assets/services/replenishment-planning.webp",
+      "kb": 102.8
+    },
+    {
+      "slug": "supply-chain-planning",
+      "pexels_id": 17653244,
+      "page": "https://www.pexels.com/photo/17653244/",
+      "file": "assets/services/supply-chain-planning.webp",
+      "kb": 63.0
+    },
+    {
+      "slug": "reporting",
+      "pexels_id": 7605981,
+      "page": "https://www.pexels.com/photo/7605981/",
+      "file": "assets/services/reporting.webp",
+      "kb": 35.1
+    },
+    {
+      "slug": "e-commerce",
+      "pexels_id": 6956903,
+      "page": "https://www.pexels.com/photo/6956903/",
+      "file": "assets/services/e-commerce.webp",
+      "kb": 18.7
+    },
+    {
+      "slug": "trend-management",
+      "pexels_id": 11608887,
+      "page": "https://www.pexels.com/photo/11608887/",
+      "file": "assets/services/trend-management.webp",
+      "kb": 76.0
+    },
+    {
+      "slug": "pitch-deck-development",
+      "pexels_id": 9034728,
+      "page": "https://www.pexels.com/photo/9034728/",
+      "file": "assets/services/pitch-deck-development.webp",
+      "kb": 17.1
+    }
+  ]
+}
