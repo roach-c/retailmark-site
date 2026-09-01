@@ -32,6 +32,21 @@
      read as type on a light ground. */
   --gold-ink: #81650D;
   --gold-soft: rgba(232, 185, 35, 0.12);
+  /* The cycling word in the hero headline. --gold is 1.74:1 on cream and
+     --gold-dark is 2.45:1 — both fail the 3:1 that large display type needs,
+     and this is the biggest, boldest thing on the page. --gold-ink (5.21:1)
+     passes but reads olive-brown and throws away the point of an accent. This
+     is 3.47:1: the brightest gold that still clears the bar. */
+  --gold-hero: #A87F0E;
+
+  /* Picture framing. One mat width and one inner radius for every photograph
+     on the site, so the hero strips and the service cards are visibly the same
+     treatment rather than two near-misses. The shadow is two layers on
+     purpose: a tight dark one for the contact edge, a wide soft one for the
+     lift. A single blur does one or the other, never both. */
+  --frame-mat: 5px;
+  --frame-inner: 8px;
+  --shadow-frame: 0 1px 2px rgba(17, 17, 17, 0.07), 0 14px 30px -10px rgba(17, 17, 17, 0.22);
   --cream: #FAF8F3;
   --gray: #6B6B6F;
   --gray-light: #9A9A9E;
@@ -314,6 +329,56 @@ textarea:focus-visible {
      leaves a single orphaned word. */
   text-wrap: balance;
 }
+
+/* --------------------------------------------------------------------------
+   The cycling word in the headline
+   Pure CSS, no script: the words are stacked in one grid cell and take turns.
+   Stacked rather than swapped by JS because the cell is then as wide as the
+   longest word from first paint, so the line never reflows mid-cycle and the
+   headline below it never jumps. It also means the fallback is the finished
+   thing rather than a blank space, if the CSS is all that arrives.
+   -------------------------------------------------------------------------- */
+.cycle { position: relative; display: inline-grid; vertical-align: bottom; }
+
+/* The headline's real text. The rotating words are decoration on top of one
+   fixed sentence, so a screen reader gets that sentence once, not five. */
+.cycle-sr {
+  position: absolute;
+  width: 1px; height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.cycle-track { display: inline-grid; }
+.cycle-track > span {
+  grid-area: 1 / 1;
+  justify-self: start;
+  white-space: nowrap;
+  color: var(--gold-hero);
+  opacity: 0;
+  /* 5 words x 3.5s. Each holds for about three seconds and takes half of one
+     to trade places with the next. */
+  animation: cycle-word 17.5s infinite;
+}
+.cycle-track > span:nth-child(2) { animation-delay:  3.5s; }
+.cycle-track > span:nth-child(3) { animation-delay:  7s; }
+.cycle-track > span:nth-child(4) { animation-delay: 10.5s; }
+.cycle-track > span:nth-child(5) { animation-delay: 14s; }
+
+@keyframes cycle-word {
+  0%   { opacity: 0; transform: translateY(0.3em); }
+  3%   { opacity: 1; transform: none; }
+  17%  { opacity: 1; transform: none; }
+  20%  { opacity: 0; transform: translateY(-0.3em); }
+  100% { opacity: 0; transform: translateY(0.3em); }
+}
+
+/* A word that changes itself every three seconds beside text someone is trying
+   to read is the exact thing this setting is for. One word, held. */
+@media (prefers-reduced-motion: reduce) {
+  .cycle-track > span { animation: none; opacity: 0; transform: none; }
+  .cycle-track > span:first-child { opacity: 1; }
+}
 .hero-sub {
   font-size: 1.15rem;
   margin-bottom: 36px;
@@ -369,10 +434,10 @@ textarea:focus-visible {
   background: #fff;
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  /* No padding: the photo is a banner and has to reach the card's own edges.
-     The title block below supplies its own. overflow:hidden is what makes the
-     photo take the border-radius, and what keeps the hover zoom inside it. */
-  padding: 0;
+  /* A mat, not zero padding: the photo sits inside the card the way the hero
+     strips sit inside theirs, instead of running out to the card's own border.
+     The title block below supplies its own padding. */
+  padding: var(--frame-mat);
   overflow: hidden;
   box-shadow: var(--shadow-sm);
   transition: box-shadow 0.25s var(--ease), transform 0.25s var(--ease), border-color 0.25s var(--ease);
@@ -389,6 +454,7 @@ textarea:focus-visible {
   position: relative;
   aspect-ratio: 16 / 9;
   overflow: hidden;
+  border-radius: var(--frame-inner);
   background: var(--gold-soft);   /* what shows while the WebP is in flight */
 }
 .service-media img {
@@ -414,8 +480,8 @@ textarea:focus-visible {
    down, and the scrim behind it is what keeps it legible over a dark frame. */
 .service-icon {
   position: absolute;
-  top: 12px;
-  left: 12px;
+  top: 10px;
+  left: 10px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -436,7 +502,9 @@ textarea:focus-visible {
 }
 .service-card h3 {
   margin: 0;
-  padding: 18px 46px 20px 22px;   /* right side is the arrow's lane */
+  padding: 17px 41px 16px 17px;   /* right side is the arrow's lane */
+                                  /* less than it looks: the card's own
+                                     5px mat is now part of the gap */
   font-size: 1.06rem;
   line-height: 1.25;
   transition: color 0.2s var(--ease);
@@ -456,10 +524,10 @@ a.service-card:hover h3, a.service-card:focus-visible h3 { color: var(--gold-dar
 a.service-card::after {
   content: "\2192";
   position: absolute;
-  right: 20px;
+  right: 18px;
   /* Pinned to the title row, not the card: the card's bottom is now wherever
      the longest title in the row put it. */
-  bottom: 20px;
+  bottom: 18px;
   font-size: 1.05rem;
   line-height: 1;
   color: var(--gold-dark);
@@ -1393,14 +1461,28 @@ a.service-card:focus-visible {
        height picked in advance */
     aspect-ratio: 2.6 / 1;
     display: grid;
-    overflow: hidden;
-    border-radius: 6px;
-    /* the ground behind the fade, so a frame never dissolves to page cream */
+    border-radius: 14px;
+    /* The mat. A photograph that runs straight into a cream page has no edge;
+       5px of white and a hairline give it one, and the shadow then has
+       something to lift. --frame-mat is the same width the service cards use,
+       so the two blocks of photography on the page are framed alike. */
+    padding: var(--frame-mat);
+    background: #fff;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-frame);
+  }
+  /* The ground behind the fade, so a frame never dissolves to page cream.
+     A pseudo-element rather than the row's own background, because the row is
+     the white mat now and this has to sit inside it. */
+  .shot-row::before {
+    content: "";
+    grid-area: 1 / 1;
+    border-radius: var(--frame-inner);
     background: var(--charcoal);
-    box-shadow: var(--shadow-md);
   }
   .shot-row img {
     grid-area: 1 / 1;
+    border-radius: var(--frame-inner);
     width: 100%;
     height: 100%;
     object-fit: cover;
