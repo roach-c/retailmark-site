@@ -39,13 +39,12 @@
      is 3.47:1: the brightest gold that still clears the bar. */
   --gold-hero: #A87F0E;
 
-  /* Picture framing. One mat width and one inner radius for every photograph
-     on the site, so the hero strips and the service cards are visibly the same
+  /* Picture framing. One radius and one shadow for every photograph on the
+     site, so the hero strips and the service cards are visibly the same
      treatment rather than two near-misses. The shadow is two layers on
      purpose: a tight dark one for the contact edge, a wide soft one for the
      lift. A single blur does one or the other, never both. */
-  --frame-mat: 5px;
-  --frame-inner: 8px;
+  --frame-radius: 12px;
   --shadow-frame: 0 1px 2px rgba(17, 17, 17, 0.07), 0 14px 30px -10px rgba(17, 17, 17, 0.22);
   --cream: #FAF8F3;
   --gray: #6B6B6F;
@@ -434,12 +433,14 @@ textarea:focus-visible {
   background: #fff;
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  /* A mat, not zero padding: the photo sits inside the card the way the hero
-     strips sit inside theirs, instead of running out to the card's own border.
-     The title block below supplies its own padding. */
-  padding: var(--frame-mat);
+  /* No padding: the photo is a banner and has to reach the card's own edges.
+     The title block below supplies its own. overflow:hidden is what makes the
+     photo take the border-radius, and what keeps the hover zoom inside it. */
+  padding: 0;
   overflow: hidden;
-  box-shadow: var(--shadow-sm);
+  /* The same shadow the hero strips carry, for the same reason: it is the only
+     thing giving a grey photograph an edge now that there is no mat. */
+  box-shadow: var(--shadow-frame);
   transition: box-shadow 0.25s var(--ease), transform 0.25s var(--ease), border-color 0.25s var(--ease);
 }
 .service-card:hover {
@@ -454,7 +455,6 @@ textarea:focus-visible {
   position: relative;
   aspect-ratio: 16 / 9;
   overflow: hidden;
-  border-radius: var(--frame-inner);
   background: var(--gold-soft);   /* what shows while the WebP is in flight */
 }
 .service-media img {
@@ -480,8 +480,8 @@ textarea:focus-visible {
    down, and the scrim behind it is what keeps it legible over a dark frame. */
 .service-icon {
   position: absolute;
-  top: 10px;
-  left: 10px;
+  top: 12px;
+  left: 12px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -502,9 +502,7 @@ textarea:focus-visible {
 }
 .service-card h3 {
   margin: 0;
-  padding: 17px 41px 16px 17px;   /* right side is the arrow's lane */
-                                  /* less than it looks: the card's own
-                                     5px mat is now part of the gap */
+  padding: 18px 46px 20px 22px;   /* right side is the arrow's lane */
   font-size: 1.06rem;
   line-height: 1.25;
   transition: color 0.2s var(--ease);
@@ -524,10 +522,10 @@ a.service-card:hover h3, a.service-card:focus-visible h3 { color: var(--gold-dar
 a.service-card::after {
   content: "\2192";
   position: absolute;
-  right: 18px;
+  right: 20px;
   /* Pinned to the title row, not the card: the card's bottom is now wherever
      the longest title in the row put it. */
-  bottom: 18px;
+  bottom: 20px;
   font-size: 1.05rem;
   line-height: 1;
   color: var(--gold-dark);
@@ -1461,28 +1459,16 @@ a.service-card:focus-visible {
        height picked in advance */
     aspect-ratio: 2.6 / 1;
     display: grid;
-    border-radius: 14px;
-    /* The mat. A photograph that runs straight into a cream page has no edge;
-       5px of white and a hairline give it one, and the shadow then has
-       something to lift. --frame-mat is the same width the service cards use,
-       so the two blocks of photography on the page are framed alike. */
-    padding: var(--frame-mat);
-    background: #fff;
-    border: 1px solid var(--border);
-    box-shadow: var(--shadow-frame);
-  }
-  /* The ground behind the fade, so a frame never dissolves to page cream.
-     A pseudo-element rather than the row's own background, because the row is
-     the white mat now and this has to sit inside it. */
-  .shot-row::before {
-    content: "";
-    grid-area: 1 / 1;
-    border-radius: var(--frame-inner);
+    overflow: hidden;
+    border-radius: var(--frame-radius);
+    /* the ground behind the fade, so a frame never dissolves to page cream */
     background: var(--charcoal);
+    /* No mat. The photograph reaches its own corners and the shadow alone
+       gives it an edge against the cream. */
+    box-shadow: var(--shadow-frame);
   }
   .shot-row img {
     grid-area: 1 / 1;
-    border-radius: var(--frame-inner);
     width: 100%;
     height: 100%;
     object-fit: cover;
