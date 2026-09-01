@@ -1228,7 +1228,11 @@ a.service-card:focus-visible {
 
 .svc {
   display: grid;
-  grid-template-columns: 92px 1fr;
+  /* Three columns from 1080px: number, copy, photograph. The copy column is
+     1fr rather than a fixed width so it absorbs the shrink on the way down and
+     the photograph keeps a usable size; .svc-body's own max-width still holds
+     the measure on a wide screen. */
+  grid-template-columns: 92px minmax(0, 1fr) minmax(200px, 340px);
   gap: 26px;
   padding: 42px 0;
   border-top: 1px solid var(--border);
@@ -1266,8 +1270,41 @@ a.service-card:focus-visible {
   background: var(--gold);
 }
 
+/* The photograph for each service. Same nine files the home page cards use, so
+   on a second page view they come out of cache rather than off the network.
+   Decorative: the heading beside it already names the service, and nine alt
+   texts restating it is nine things a screen reader has to sit through. */
+.svc-media {
+  align-self: start;
+  border-radius: var(--frame-radius);
+  overflow: hidden;
+  box-shadow: var(--shadow-frame);
+  background: var(--gold-soft);   /* what shows while the WebP is in flight */
+}
+.svc-media img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  filter: grayscale(1) contrast(1.04);
+}
+
+/* Below 1080 the photograph stops being a column and becomes a banner over the
+   copy. Two columns of 300px each is neither a readable measure nor a legible
+   picture, and `order` is what puts it above the text rather than stranded
+   under the last bullet. */
+@media (max-width: 1079px) {
+  .svc { grid-template-columns: 1fr; gap: 14px; }
+  .svc-num   { order: 1; }
+  .svc-media { order: 2; max-width: 720px; }   /* the same measure .svc-body has,
+                                                  or the banner overhangs the
+                                                  text it belongs to */
+  .svc-body  { order: 3; }
+}
+
 @media (max-width: 700px) {
-  .svc { grid-template-columns: 1fr; gap: 10px; padding: 34px 0; }
+  .svc { gap: 12px; padding: 34px 0; }
   .svc-num { font-size: 1.6rem; }
 }
 
