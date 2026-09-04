@@ -1684,7 +1684,14 @@ a.service-card:focus-visible {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 12px clamp(20px, 3.4vw, 52px);
+  /* The gap's ceiling is 46, not the 52 it was with five names. The row is
+     capped at the 1112px container until 1650, and the font stops growing at
+     1350 — so above that only the gap grows, and with a sixth name it pushed
+     the row past the container between about 1490 and 1640. The row broke into
+     two lines and then un-broke 150px later, which is exactly where a 1512
+     laptop sits. 46 is the widest ceiling that keeps six on one line inside
+     1112. Add a seventh banner and this has to be measured again. */
+  gap: 12px clamp(20px, 3.4vw, 46px);
   font-size: clamp(1.05rem, 2.2vw, 1.85rem);
   font-weight: 800;
   letter-spacing: -0.02em;
@@ -1695,7 +1702,7 @@ a.service-card:focus-visible {
 .retail-list li + li::before {
   content: "";
   position: absolute;
-  left: calc(clamp(20px, 3.4vw, 52px) / -2);
+  left: calc(clamp(20px, 3.4vw, 46px) / -2);
   top: 0.32em;
   bottom: 0.28em;
   width: 1px;
