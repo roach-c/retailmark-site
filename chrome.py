@@ -86,7 +86,7 @@ CARDS = {
     "why-us.html": ("Why Suppliers Choose RetailMark",
                     "We sat on the buying side. What that changes about a pitch, a forecast and a line review."),
     "partners.html": ("Platforms and Brands We Work With",
-                      "Retail Link, Supplier One, Nielsen, IRi, Canopy and Atlas: the systems we work in daily, and the brands we represent."),
+                      "Retail Link, Supplier One, Circana and NOVA: the systems we work in daily, and the brands we represent."),
     "glossary.html": ("Retail Glossary: Mod, Line Review, OTIF | RetailMark",
                       "The vocabulary a retail buyer actually uses, defined plainly. Modular, line review, OTIF, MABD, UPSPW and more."),
     "contact.html": ("Contact RetailMark | Bentonville, Arkansas",
