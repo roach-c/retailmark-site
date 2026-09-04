@@ -388,14 +388,17 @@ textarea:focus-visible {
   justify-content: center;
   background: var(--black);
   color: var(--gold);
-  /* Driven by the SAME 24vw as the pill's width below, which is the whole
+  /* Driven by the SAME 29vw as the pill's width below, which is the whole
      trick: the two then clamp at the same viewport widths and the line fills
      the same fraction of the pill at every size. Given its own vw coefficient
      the font hit its floor at 1042 while the pill was still growing from 875,
      so between those the text sat marooned in a widening bubble — 0.93 full on
-     a phone and 0.82 on a desktop. Measured, it now holds 0.90 to 0.93
-     throughout. Change 24vw in one place and change it in both. */
-  font-size: clamp(0.56rem, 1.026vw, 0.88rem);
+     a phone and 0.82 on a desktop. When the lockup grew from 24vw to 29vw
+     every number here was scaled by that same 1.208, floor and ceiling
+     included, which is what preserved it: font over pill went 14.08/330 to
+     17.12/400, and measured across 390 to 2560 the fill is now flat to three
+     decimals. Change one and change all three. */
+  font-size: clamp(0.68rem, 1.24vw, 1.07rem);
   font-weight: 700;
   letter-spacing: 0.04em;
   text-transform: uppercase;
@@ -407,7 +410,7 @@ textarea:focus-visible {
   /* The same width as the wordmark above it, so the two read as one lockup
      rather than as a mark with a smaller unrelated tag underneath. Identical
      expression to .hero-logo's width — change one and change both. */
-  width: clamp(210px, 24vw, 330px);
+  width: clamp(255px, 29vw, 400px);
 }
 .hero h1 {
   font-size: clamp(2.1rem, 5vw, 3.4rem);
@@ -1113,7 +1116,11 @@ a.service-card:focus-visible {
    an overflow check. Measure the rendered width, not the scrollbar. */
 .hero-logo {
   display: block;
-  width: clamp(210px, 24vw, 330px);
+  /* Grown about a fifth, at Justin's ask — it is the first thing on the page
+     and it was sitting smaller than the headline under it. The badge's width
+     and its font-size are the same expression scaled by the same factor: the
+     three move together or the lockup stops being one. */
+  width: clamp(255px, 29vw, 400px);
   height: auto;
   margin-bottom: 22px;
   justify-self: start;

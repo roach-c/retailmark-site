@@ -15,6 +15,16 @@ Same two conventions as photos.py, for the same two reasons:
   * The picks live in this file rather than in a folder of loose downloads, so a
     rerun reproduces exactly what is on the page and a swap is a one-line edit.
 
+Two picks were replaced on 2026-09-04 for legible foreign-language text, which
+is the same rule hero_photos.py is chosen against and for the same reason: the
+carton in the old item-creation shot carried a handwritten São Paulo address,
+and the old trend-management cooler was signed in Portuguese.
+
+A wall of one canned-food brand was tried for trend-management in between and
+rejected: a single identifiable third-party brand filling the frame reads as an
+endorsement, and it is food, on the same day the homepage stopped saying "food
+brands" precisely because the business is not food-only.
+
 Pexels licenses all of these for commercial use with no attribution required.
 CREDITS is kept anyway: it is the only record of where a file came from once it
 is a .webp on disk, and it is what a rights question a year from now needs.
@@ -39,12 +49,12 @@ PICKS = [
     # 16:9 fit — used only where a centre crop puts the subject off-frame)
     ("sales-strategy",         29397977),   # boardroom table set for a session
     ("forecasting-analytics",    577210),   # dashboard on a laptop, clean desk
-    ("item-creation",           7843978),   # barcode and QR labels on a carton
+    ("item-creation",          12969244),   # a retail ticket: UPC and a size grid
     ("replenishment-planning",  4487364),   # stocked racking, aisle in depth
     ("supply-chain-planning",  17653244),   # trailers lined up at a yard
     ("reporting",               7605981),   # printed performance pages
     ("e-commerce",              6956903),   # packed order beside a laptop
-    ("trend-management",        5498228),   # a category wall, shelf to shelf
+    ("trend-management",       37184325),   # a planogram: one category, every facing
     ("pitch-deck-development",  7948041, (0.06, 0.22, 0.94, 0.98)),  # deck on screen
 ]
 

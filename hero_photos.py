@@ -21,11 +21,25 @@ Three conventions, shared with service_photos.py for the same reasons:
     .webp on disk has no provenance and a rights question a year from now needs
     one.
 
-Two rules the picks are chosen against. No people: the hero is type over a
-photograph and a face pulls the eye off the headline, and Caleb asked for the
-site's stock photography to be people-free. No Walmart marks, signage or store
-livery: RetailMark sells into five banners and does not trade on anyone's
-trademark.
+Four rules the picks are chosen against.
+
+No people: the hero is type over a photograph and a face pulls the eye off the
+headline, and Caleb asked for the site's stock photography to be people-free.
+
+No Walmart marks, signage or store livery: RetailMark sells into five banners
+and does not trade on anyone's trademark.
+
+No legible foreign-language signage. Justin read the first set as "Asian and
+Indian" — they were in fact Brazilian, Hebrew and Turkish, which is the point:
+a viewer does not identify the language, they just register that the picture is
+from somewhere else, and a Bentonville brokerage's hero should not. Aisle
+photography is where this bites hardest, because a shop is mostly signage. What
+survives is the back of the operation — racking, pallets, cartons — which looks
+the same in every country and carries almost no type at all.
+
+Depth. Every frame needs somewhere to look down. A close crop of folded towels
+was in this list and came out: at full bleed a texture fills the frame and
+reads as a grey blur rather than as a place.
 """
 
 import io
@@ -43,15 +57,11 @@ OUT = os.path.join(HERE, "assets", "hero")
 W, H = 2400, 1350
 
 # slug -> Pexels photo id. Order is the order they cycle in.
-#
-# A close crop of folded towels was in here and came out: at full bleed it is a
-# wall of texture with no depth, so it read as a grey blur rather than as a
-# shop. The ones that survive all have somewhere to look down.
 PICKS = [
-    ("store-aisle",   5498225),   # supermarket aisle, deep centre perspective
-    ("club-racking",   4483610),  # club-format racking, pallets overhead
-    ("stocked-aisle",  5951182),  # a stacked display running back into shelves
-    ("distribution",   5860937),  # the aisle a pallet leaves from
+    ("warehouse-aisle", 5775099),   # racked aisle, vanishing point down the run
+    ("club-racking",    4483610),   # club-format racking, pallets overhead
+    ("pallet-stacks",  34221998),   # palletised cartons, floor line through them
+    ("racking-run",     4170172),   # a second run, higher and darker
 ]
 
 SRC = ("https://images.pexels.com/photos/{id}/pexels-photo-{id}.jpeg"

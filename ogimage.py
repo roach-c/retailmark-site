@@ -56,14 +56,14 @@ SCRIM_STOPS = ((0.0, 0.84), (0.6, 0.80), (1.0, 0.88))
 
 # The frame the hero opens on. Named rather than globbed so the card cannot
 # quietly change because a file was added to assets/hero/.
-PHOTO = "store-aisle.webp"
+PHOTO = "warehouse-aisle.webp"
 
 # The filename carries a version, and that is deliberate. Link-preview
 # scrapers — Apple's especially — cache an image by its URL and hold it for a
 # long time, so republishing a different picture at the same path is how you
 # get a card that is right on disk and wrong in everyone's messages. Bump this
 # whenever the card's design changes; leave it alone when only the code moves.
-OUT_NAME = "og-card-v2.png"
+OUT_NAME = "og-card-v3.png"
 
 FONT = "/System/Library/Fonts/Supplemental/Avenir Next.ttc"
 DEMI, MEDIUM = 2, 5           # face indices inside the .ttc

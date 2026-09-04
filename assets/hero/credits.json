@@ -2,11 +2,11 @@
   "license": "Pexels License \u2014 free for commercial use, no attribution required",
   "photos": [
     {
-      "slug": "store-aisle",
-      "pexels_id": 5498225,
-      "page": "https://www.pexels.com/photo/5498225/",
-      "file": "assets/hero/store-aisle.webp",
-      "kb": 376.3
+      "slug": "warehouse-aisle",
+      "pexels_id": 5775099,
+      "page": "https://www.pexels.com/photo/5775099/",
+      "file": "assets/hero/warehouse-aisle.webp",
+      "kb": 240.1
     },
     {
       "slug": "club-racking",
@@ -16,18 +16,18 @@
       "kb": 322.2
     },
     {
-      "slug": "stocked-aisle",
-      "pexels_id": 5951182,
-      "page": "https://www.pexels.com/photo/5951182/",
-      "file": "assets/hero/stocked-aisle.webp",
-      "kb": 637.0
+      "slug": "pallet-stacks",
+      "pexels_id": 34221998,
+      "page": "https://www.pexels.com/photo/34221998/",
+      "file": "assets/hero/pallet-stacks.webp",
+      "kb": 255.0
     },
     {
-      "slug": "distribution",
-      "pexels_id": 5860937,
-      "page": "https://www.pexels.com/photo/5860937/",
-      "file": "assets/hero/distribution.webp",
-      "kb": 394.1
+      "slug": "racking-run",
+      "pexels_id": 4170172,
+      "page": "https://www.pexels.com/photo/4170172/",
+      "file": "assets/hero/racking-run.webp",
+      "kb": 357.8
     }
   ]
 }
