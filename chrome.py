@@ -86,7 +86,7 @@ CARDS = {
     "why-us.html": ("Why Suppliers Choose RetailMark",
                     "We sat on the buying side. What that changes about a pitch, a forecast and a line review."),
     "partners.html": ("Platforms and Brands We Work With",
-                      "Retail Link, Item 360, Nielsen, IRi, Canopy and Atlas: the systems we work in daily, and the brands we represent."),
+                      "Retail Link, Supplier One, Nielsen, IRi, Canopy and Atlas: the systems we work in daily, and the brands we represent."),
     "glossary.html": ("Retail Glossary: Mod, Line Review, OTIF | RetailMark",
                       "The vocabulary a retail buyer actually uses, defined plainly. Modular, line review, OTIF, MABD, UPSPW and more."),
     "contact.html": ("Contact RetailMark | Bentonville, Arkansas",
@@ -136,7 +136,7 @@ def schema_for(page):
         "areaServed": {{ "@type": "Country", "name": "United States" }},
         "knowsAbout": [
           "Walmart supplier strategy", "Line review preparation",
-          "Retail Link", "Item 360", "Demand forecasting",
+          "Retail Link", "Supplier One", "Demand forecasting",
           "Replenishment planning", "Retail item setup"
         ],
         "contactPoint": {{
