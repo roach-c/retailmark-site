@@ -1,5 +1,13 @@
 # Where these photographs came from — unresolved
 
+> **Removed from the site on 2026-09-04.** The hero no longer uses them: it is
+> a scrim over cycling retail interiors from Pexels now (`hero_photos.py`),
+> which are licensed for commercial use. The `.webp` files are deleted rather
+> than left in place, because an unreferenced file in this repo is still a file
+> the web server hands out — and the licensing below was never resolved. This
+> note and `photos.py` stay as the record; `git log` has the images if the
+> question ever gets answered.
+
 **Four of the original ten were dropped** — see `photos.py`'s SKIP list. The
 Walmart welcome centre, which crops to a lone M in a strip. `images.jpeg`, a
 596x335 source needing 4.5x enlargement. The Walmart rebrand article image at

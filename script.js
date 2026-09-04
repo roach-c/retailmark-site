@@ -51,27 +51,33 @@ if (heroLogo && document.documentElement.classList.contains('hero-lockup')) {
 }
 
 /* ---- the hero slideshow -------------------------------------------------
-   Three bands, each cycling its own photographs.
+   The store interiors cross-fading behind the hero's grey.
 
-   The three sets are disjoint in the markup, so no two strips can ever show
-   the same picture; the script never has to reason about it. They change a third of the interval
-   apart, so something is always moving and the block never flips at once.
+   This drove three framed strips before and drives one full-bleed band now,
+   which is why it is still written against a list of bands rather than a
+   single element: the offset and the disjoint-sets reasoning are what made
+   three of them work, and throwing that away would mean writing it again the
+   next time there is more than one.
 
-   Each band waits for its own first two frames to decode before it starts. A
-   timer alone can fade to an image that has not loaded, which reads as a flash
-   of the backing colour rather than a cross-fade.
+   The band waits for its first two frames to decode before it starts. A timer
+   alone can fade to an image that has not loaded, which reads as a flash of
+   the backing colour rather than a cross-fade.
 
    It stops when the hero leaves the viewport and when the tab is hidden. A
    slideshow nobody is looking at is a timer, a decode and a repaint every few
    seconds, on someone's battery. */
 (function () {
-  var wrap = document.querySelector('.hero-shots');
+  var wrap = document.querySelector('.hero-bg');
   if (!wrap) return;
-  var cols = [].slice.call(wrap.querySelectorAll('.shot-row'));
+  var cols = [wrap];
   if (!cols.length) return;
 
   var still = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var HOLD = 5400;                       // one strip changes every HOLD/3
+  /* Longer than the three strips held for. Those were postcards in the corner
+     of the eye; this is the whole hero, and a full-frame picture swapping
+     every five seconds behind a headline someone is reading is a distraction
+     rather than a background. */
+  var HOLD = 7000;
 
   var strips = cols.map(function (col, ci) {
     var shots = [].slice.call(col.querySelectorAll('img'));

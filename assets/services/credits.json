@@ -3,10 +3,10 @@
   "photos": [
     {
       "slug": "sales-strategy",
-      "pexels_id": 7693692,
-      "page": "https://www.pexels.com/photo/7693692/",
+      "pexels_id": 29397977,
+      "page": "https://www.pexels.com/photo/29397977/",
       "file": "assets/services/sales-strategy.webp",
-      "kb": 61.5
+      "kb": 41.8
     },
     {
       "slug": "forecasting-analytics",
@@ -52,17 +52,17 @@
     },
     {
       "slug": "trend-management",
-      "pexels_id": 11608887,
-      "page": "https://www.pexels.com/photo/11608887/",
+      "pexels_id": 5498228,
+      "page": "https://www.pexels.com/photo/5498228/",
       "file": "assets/services/trend-management.webp",
-      "kb": 76.0
+      "kb": 97.3
     },
     {
       "slug": "pitch-deck-development",
-      "pexels_id": 9034728,
-      "page": "https://www.pexels.com/photo/9034728/",
+      "pexels_id": 7948041,
+      "page": "https://www.pexels.com/photo/7948041/",
       "file": "assets/services/pitch-deck-development.webp",
-      "kb": 17.1
+      "kb": 31.4
     }
   ]
 }

@@ -1,0 +1,40 @@
+{
+  "license": "Pexels License \u2014 free for commercial use, no attribution required",
+  "photos": [
+    {
+      "slug": "store-aisle",
+      "pexels_id": 5498225,
+      "page": "https://www.pexels.com/photo/5498225/",
+      "file": "assets/hero/store-aisle.webp",
+      "kb": 376.3
+    },
+    {
+      "slug": "soft-home",
+      "pexels_id": 20665616,
+      "page": "https://www.pexels.com/photo/20665616/",
+      "file": "assets/hero/soft-home.webp",
+      "kb": 246.9
+    },
+    {
+      "slug": "club-racking",
+      "pexels_id": 4483610,
+      "page": "https://www.pexels.com/photo/4483610/",
+      "file": "assets/hero/club-racking.webp",
+      "kb": 322.2
+    },
+    {
+      "slug": "stocked-aisle",
+      "pexels_id": 5951182,
+      "page": "https://www.pexels.com/photo/5951182/",
+      "file": "assets/hero/stocked-aisle.webp",
+      "kb": 637.0
+    },
+    {
+      "slug": "distribution",
+      "pexels_id": 5860937,
+      "page": "https://www.pexels.com/photo/5860937/",
+      "file": "assets/hero/distribution.webp",
+      "kb": 394.1
+    }
+  ]
+}

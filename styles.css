@@ -177,6 +177,27 @@ textarea:focus-visible {
   transform: translateY(0);
   box-shadow: 0 4px 12px -4px rgba(232, 185, 35, 0.5);
 }
+/* The ghost button on the hero. Its light pane and dark type were drawn for a
+   cream ground; on the scrim that is a white lozenge shouting louder than the
+   gold primary beside it, which inverts the two buttons' importance. Here it
+   is the outline it is meant to be — and the frost finally has something worth
+   blurring behind it, which the cream version never did. */
+.hero .btn-ghost {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.55);
+  color: #fff;
+  box-shadow:
+    0 8px 22px -6px rgba(17, 17, 17, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.28);
+}
+.hero .btn-ghost:hover {
+  background: #fff;
+  color: var(--black);
+  box-shadow:
+    0 12px 28px -6px rgba(232, 185, 35, 0.5),
+    0 4px 10px rgba(17, 17, 17, 0.35);
+}
+
 .btn-lg { padding: 15px 30px; font-size: 1rem; }
 .btn-block { width: 100%; }
 .btn-nav { display: inline-flex; }
@@ -277,20 +298,88 @@ textarea:focus-visible {
 /* Hero */
 .hero {
   padding: 104px 0 76px;
-  /* Tall enough to give the render room to grow. The shelf is framed to fit
-     its canvas, so on a big monitor it was height-limited, not width-limited —
-     it sat small in the middle of all that space with a canyon between it and
-     the copy. Height is the lever that actually closes that gap. A no-op on a
-     laptop, where the hero is already about this tall. */
+  /* Tall enough to give the photograph room to be a photograph. Under this it
+     is a letterbox strip behind some type rather than a picture of a store. */
   min-height: min(88vh, 1200px);
   display: flex;
   align-items: center;
-  background:
-    radial-gradient(circle at 85% 0%, rgba(232, 185, 35,0.18), transparent 55%),
-    radial-gradient(circle at 0% 100%, rgba(232, 185, 35,0.08), transparent 45%),
-    var(--cream);
+  /* The ground behind the photographs, so a cross-fade never dissolves to
+     white and the hero is still a dark block if the images never arrive. */
+  background: #2B2B2E;
+  color: #fff;
   position: relative;
   overflow: hidden;
+}
+
+/* --------------------------------------------------------------------------
+   The hero photograph, and the grey over it
+   A stack of store interiors cross-fading in place, with a scrim on top. The
+   scrim is the whole reason the type is readable: a photograph of a lit
+   supermarket is bright, busy and high-contrast everywhere, which is the worst
+   possible ground for white text.
+
+   It is a gradient rather than a flat wash, and left-weighted, so the copy
+   column sits on something near-solid while the right side of the frame stays
+   a picture. A flat 85% wash over the whole thing reads as a grey rectangle
+   that happens to have a photo in it; this reads as a photograph the type is
+   standing on.
+   -------------------------------------------------------------------------- */
+.hero-bg { position: absolute; inset: 0; z-index: 0; }
+.hero-bg img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* Greyscale here rather than baked into the files, as everywhere else on the
+     site: one asset serves either decision. The lift stops the darker frames
+     going muddy once the scrim is over them. */
+  filter: grayscale(1) contrast(1.06) brightness(1.02);
+  opacity: 0;
+  transition: opacity 1.25s var(--ease);
+}
+.hero-bg img.on { opacity: 1; }
+/* before the script runs, and if it never does, hold the first frame */
+.hero-bg img:first-child { opacity: 1; }
+
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    /* the grey, heaviest under the copy and thinning across the frame */
+    linear-gradient(100deg,
+      rgba(30, 30, 33, 0.95) 0%,
+      rgba(30, 30, 33, 0.93) 34%,
+      rgba(30, 30, 33, 0.78) 58%,
+      rgba(30, 30, 33, 0.55) 82%,
+      rgba(30, 30, 33, 0.48) 100%),
+    /* a little extra under the header, which is a black bar over a photograph
+       that might be pale at the top, and along the bottom edge where the hero
+       meets the next band */
+    linear-gradient(to bottom,
+      rgba(17, 17, 17, 0.5) 0%,
+      rgba(17, 17, 17, 0) 22%,
+      rgba(17, 17, 17, 0) 78%,
+      rgba(17, 17, 17, 0.45) 100%);
+}
+
+/* Narrow enough and there is no room for a photograph beside the copy — the
+   type runs most of the width, so the scrim has to run all of it. 900 rather
+   than a phone breakpoint because that is where the copy column stops being
+   capped and starts reaching into the part of the frame the picture shows
+   through: at 768 the last words of the paragraph were sitting on a lit shelf.
+   */
+@media (max-width: 900px) {
+  .hero::after {
+    background:
+      linear-gradient(180deg,
+        rgba(24, 24, 27, 0.92) 0%,
+        rgba(24, 24, 27, 0.9) 60%,
+        rgba(24, 24, 27, 0.94) 100%);
+  }
 }
 .hero-inner { position: relative; }
 .hero-badge {
@@ -353,6 +442,10 @@ textarea:focus-visible {
   grid-area: 1 / 1;
   justify-self: start;
   white-space: nowrap;
+  /* --gold-hero is the gold taken down until it clears 3:1 on cream. The hero
+     is not cream any more: on the scrim that value reads as brown and the full
+     --gold is 8.9:1. Anywhere else this class lands on a light ground, so the
+     variable stays and the hero overrides it. */
   color: var(--gold-hero);
   opacity: 0;
   /* 5 words x 3.5s. Each holds for about three seconds and takes half of one
@@ -374,6 +467,8 @@ textarea:focus-visible {
 
 /* A word that changes itself every three seconds beside text someone is trying
    to read is the exact thing this setting is for. One word, held. */
+.hero .cycle-track > span { color: var(--gold); }
+
 @media (prefers-reduced-motion: reduce) {
   .cycle-track > span { animation: none; opacity: 0; transform: none; }
   .cycle-track > span:first-child { opacity: 1; }
@@ -381,18 +476,24 @@ textarea:focus-visible {
 .hero-sub {
   font-size: 1.15rem;
   margin-bottom: 36px;
+  /* Not --gray. That is a mid grey picked to sit on cream; on the scrim it is
+     nearly the same value as its ground and the paragraph disappears. */
+  color: var(--on-dark-muted);
 }
 .hero-cta { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 60px; }
 .hero-stats {
   display: flex;
   gap: 28px 34px;
   flex-wrap: wrap;
-  border-top: 1px solid var(--border);
+  /* the rule is a hairline of the page showing through, so on a dark hero it
+     is white at low alpha rather than the cream --border, which would draw a
+     bright line across the picture */
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
   padding-top: 30px;
 }
 .hero-stats div { display: flex; flex-direction: column; gap: 4px; }
-.hero-stats strong { font-size: 1.2rem; letter-spacing: -0.01em; }
-.hero-stats span { font-size: 0.85rem; color: var(--gray); }
+.hero-stats strong { font-size: 1.2rem; letter-spacing: -0.01em; color: #fff; }
+.hero-stats span { font-size: 0.85rem; color: var(--on-dark-muted); }
 
 /* Logos strip */
 .logos-strip { padding: 36px 0; border-bottom: 1px solid var(--border); }
@@ -977,6 +1078,14 @@ a.service-card:focus-visible {
    stop looking like one. Everything else is meant to fill the column — the
    stats rule above the row draws its line across it. */
 .hero-badge{justify-self:start}
+/* The pill is a black lozenge, which on cream was the contrast. On a dark
+   scrim it is nearly its own ground, so the gold text floats on a smudge. A
+   hairline of the gold gives it its edge back without turning it into a second
+   gold button competing with the real one below. */
+.hero .hero-badge {
+  background: rgba(17, 17, 17, 0.72);
+  box-shadow: inset 0 0 0 1px rgba(232, 185, 35, 0.55);
+}
 
 /* --------------------------------------------------------------------------
    Hero lockup, and the hand-off to the header
@@ -1012,7 +1121,7 @@ a.service-card:focus-visible {
      it follows the letterforms' alpha instead of drawing a rectangle around a
      transparent PNG. Offset down rather than spread evenly, so it reads as the
      mark sitting above the cream rather than glowing on it. */
-  filter: drop-shadow(0 3px 8px rgba(var(--ink-rgb), 0.22));
+  filter: drop-shadow(0 4px 14px rgba(17, 17, 17, 0.55));
 }
 
 .logo { --logo-h: 40px; }
@@ -1443,87 +1552,16 @@ a.service-card:focus-visible {
 }
 
 /* --------------------------------------------------------------------------
-   Hero slideshow
-   Three horizontal bands, stacked, standing where the 3D shelf used to be.
-
-   The sketch had them as vertical strips and they were, until the photographs
-   argued otherwise: every source is landscape, so a tall narrow crop threw
-   most of each frame away and needed two to four times the enlargement to do
-   it. Rows crop with the grain of the pictures. Same block, same idea, turned
-   ninety degrees.
-
-   Each strip owns its own photographs and cycles them independently. The three
-   sets are disjoint, which is what actually guarantees two strips never show
-   the same picture at once — sharing one pool and hoping the timers stay out
-   of each other's way does not.
-
-   The strips change one at a time, a third of the interval apart, so the block
-   is always quietly moving somewhere without ever flipping all three at once.
-
-   Below 1000px none of it renders. Three narrow strips under a headline are
-   three slivers, and the copy needs the width more.
+   The hero copy column
+   The photographs used to be three framed strips in a second column here. They
+   are the background now, so the copy gets one column again — capped, because
+   a headline running the full width of a 2560 monitor is unreadable, and the
+   right of the frame is where the picture shows through the scrim.
    -------------------------------------------------------------------------- */
 
-.hero-shots { display: none; }
-
-@media (min-width: 1000px) {
-  /* A capped second column, not 1fr. With 1fr the block is pushed to the far
-     right gutter, which on a 2560 monitor leaves a quarter of the screen of
-     nothing between the headline and the pictures. */
-  .hero-inner {
-    grid-template-columns: minmax(0, var(--hero-copy)) minmax(0, 520px);
-    column-gap: clamp(32px, 5vw, 90px);
-  }
-  .hero-copy { grid-column: 1; }
-
-  .hero-shots {
-    grid-column: 2;
-    grid-row: 1 / -1;
-    justify-self: start;
-    /* start, not center: its top lines up with the top of the wordmark, which
-       is the first thing in the copy column. Centred it floated against the
-       middle of the copy and lined up with nothing. */
-    align-self: start;
-    display: grid;
-    grid-template-rows: repeat(3, 1fr);
-    gap: 10px;
-    width: 100%;
-  }
-
-  .shot-row {
-    /* the band's own ratio, matching the crop, so the container's height
-       follows the pictures rather than the pictures being squeezed to fit a
-       height picked in advance */
-    aspect-ratio: 2.6 / 1;
-    display: grid;
-    overflow: hidden;
-    border-radius: var(--frame-radius);
-    /* the ground behind the fade, so a frame never dissolves to page cream */
-    background: var(--charcoal);
-    /* No mat. The photograph reaches its own corners and the shadow alone
-       gives it an edge against the cream. */
-    box-shadow: var(--shadow-frame);
-  }
-  .shot-row img {
-    grid-area: 1 / 1;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    /* Greyscale here rather than baked into the files: one asset serves either
-       decision, and this is one line to remove where re-exporting ten images
-       is not. The slight lift stops the darker frames going muddy. */
-    filter: grayscale(1) contrast(1.06) brightness(1.02);
-    opacity: 0;
-    transition: opacity 1.25s var(--ease);
-  }
-  .shot-row img.on { opacity: 1; }
-  /* before the script runs, and if it never does, show the first of each */
-  html:not(.has-js-shots) .shot-row img:first-child { opacity: 1; }
-}
-
 @media (prefers-reduced-motion: reduce) {
-  /* No cycling. One photograph in each strip, held. */
-  .shot-row img { transition: none; }
+  /* No cycling. One photograph, held. */
+  .hero-bg img { transition: none; }
 }
 
 /* --------------------------------------------------------------------------

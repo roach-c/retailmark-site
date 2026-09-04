@@ -35,15 +35,17 @@ W, H = 900, 506
 
 # slug -> Pexels photo id. Order matches the numbered cards on the homepage.
 PICKS = [
-    ("sales-strategy",          7693692),   # team working a plan across a table
+    # (slug, pexels id, optional crop box as fractions of the source before the
+    # 16:9 fit — used only where a centre crop puts the subject off-frame)
+    ("sales-strategy",         29397977),   # boardroom table set for a session
     ("forecasting-analytics",    577210),   # dashboard on a laptop, clean desk
     ("item-creation",           7843978),   # barcode and QR labels on a carton
     ("replenishment-planning",  4487364),   # stocked racking, aisle in depth
     ("supply-chain-planning",  17653244),   # trailers lined up at a yard
     ("reporting",               7605981),   # printed performance pages
     ("e-commerce",              6956903),   # packed order beside a laptop
-    ("trend-management",       11608887),   # shopper reading a grocery shelf
-    ("pitch-deck-development",  9034728),   # a deck actually on the screen
+    ("trend-management",        5498228),   # a category wall, shelf to shelf
+    ("pitch-deck-development",  7948041, (0.06, 0.22, 0.94, 0.98)),  # deck on screen
 ]
 
 SRC = ("https://images.pexels.com/photos/{id}/pexels-photo-{id}.jpeg"
@@ -63,9 +65,13 @@ def fetch(pid):
 def main():
     os.makedirs(OUT, exist_ok=True)
     manifest = []
-    for slug, pid in PICKS:
+    for slug, pid, *rest in PICKS:
         im = Image.open(io.BytesIO(fetch(pid)))
         im = ImageOps.exif_transpose(im).convert("RGB")
+        if rest:
+            l, t, r, b = rest[0]
+            im = im.crop((int(im.width * l), int(im.height * t),
+                          int(im.width * r), int(im.height * b)))
         if im.width < W or im.height < H:
             raise SystemExit(f"{slug}: source {im.size} is smaller than {W}x{H}")
         im = ImageOps.fit(im, (W, H), Image.LANCZOS, centering=(0.5, 0.5))

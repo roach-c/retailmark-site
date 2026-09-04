@@ -102,7 +102,7 @@ if (!matchMedia('(prefers-reduced-motion: reduce)').matches)
 document.documentElement.classList.add('hero-lockup');
 document.documentElement.classList.add('has-js-shots');
 </script>
-<link rel="stylesheet" href="styles.css?v=20260901d">
+<link rel="stylesheet" href="styles.css?v=20260904a">
 </head>
 <body>
 
@@ -142,14 +142,27 @@ document.documentElement.classList.add('has-js-shots');
 
 <main id="top">
 
-  <section class="hero" data-tone="light">
+  <section class="hero" data-tone="dark">
+    <!-- The photographs behind the scrim. Same cycle as the three strips this
+         replaced — one band instead of three, full bleed instead of framed.
+         Decorative: they carry nothing the copy does not, so alt="" rather
+         than five descriptions a screen reader must sit through. Greyscale is
+         a CSS filter, not baked into the files. -->
+    <div class="hero-bg" aria-hidden="true">
+      <img class="on" src="assets/hero/store-aisle.webp" alt="" fetchpriority="high" width="2400" height="1350">
+      <img src="assets/hero/soft-home.webp" alt="" loading="lazy" width="2400" height="1350">
+      <img src="assets/hero/club-racking.webp" alt="" loading="lazy" width="2400" height="1350">
+      <img src="assets/hero/stocked-aisle.webp" alt="" loading="lazy" width="2400" height="1350">
+      <img src="assets/hero/distribution.webp" alt="" loading="lazy" width="2400" height="1350">
+    </div>
     <div class="container hero-inner">
       <div class="hero-copy">
         <!-- The mark itself, on the page rather than in the bar. The header
              picks it up once this has scrolled away; see .hero-lockup in
-             script.js. Dark variant, because the shipped wordmark is white for
-             the black header and disappears on the cream hero. -->
-        <img class="hero-logo" src="assets/retailmark-wordmark-dark.png"
+             script.js. The white variant: the hero is a dark scrim over a
+             photograph, which is what the shipped wordmark was drawn for. The
+             dark variant is still in assets/ and is what a light hero needs. -->
+        <img class="hero-logo" src="assets/retailmark-wordmark.png"
              alt="RetailMark" width="1479" height="294" fetchpriority="high">
         <div class="hero-badge">Omnichannel Supplier Solutions</div>
         <h1>From Opportunity to <span class="cycle"><span class="cycle-sr">On Shelf.</span><span class="cycle-track" aria-hidden="true"><span>On&nbsp;Shelf.</span><span>Purchase&nbsp;Order.</span><span>Reorder.</span><span>Rollout.</span><span>Scale.</span></span></span></h1>
@@ -167,25 +180,6 @@ document.documentElement.classList.add('has-js-shots');
           <div><strong>Buyer-side</strong><span>Our own team, not outside consultants</span></div>
         </div>
 
-        <!-- Bentonville, cycling in the space the 3D shelf used to hold.
-             Decorative: the photographs carry nothing the copy does not, so
-             alt="" rather than ten descriptions a screen reader must sit
-             through. Greyscale is a CSS filter, not baked into the files. -->
-      </div>
-
-      <div class="hero-shots" aria-hidden="true">
-        <div class="shot-row">
-          <img src="assets/bentonville/1940-1532185170.webp" alt="" fetchpriority="high" width="1400" height="540">
-          <img src="assets/bentonville/flintco-walmart-fitness-center-exterior7.webp" alt="" loading="lazy" width="1400" height="540">
-        </div>
-        <div class="shot-row">
-          <img src="assets/bentonville/27352-bentonville-356w-preview-c7a80d2f46a44.webp" alt="" fetchpriority="high" width="1400" height="540">
-          <img src="assets/bentonville/rendering-of-wide-view-of-office-spaces.webp" alt="" loading="lazy" width="1400" height="540">
-        </div>
-        <div class="shot-row">
-          <img src="assets/bentonville/central-avenue-at-night.webp" alt="" fetchpriority="high" width="1400" height="540">
-          <img src="assets/bentonville/sunrise-on-the-bentonville-arkansas-water-to.webp" alt="" loading="lazy" width="1400" height="540">
-        </div>
       </div>
     </div>
 
@@ -483,6 +477,6 @@ document.documentElement.classList.add('has-js-shots');
   </div>
 </footer>
 
-<script src="script.js?v=20260828j"></script>
+<script src="script.js?v=20260904a"></script>
 </body>
 </html>
