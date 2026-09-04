@@ -1,14 +1,10 @@
-# STAGING ONLY — REPLACE THIS FILE AT LAUNCH.
-# This deployment is a demo. The real site is retailmark.com.
+# retailmark.com — live since 2026-09-04.
 #
-# On the day the DNS moves, this whole file becomes:
-#
-#     User-agent: *
-#     Allow: /
-#     Sitemap: https://retailmark.com/sitemap.xml
-#
-# and the <meta name="robots" content="noindex, nofollow"> tag comes out of
-# every page. Until both of those happen, nothing on this site can rank,
-# however good the markup is.
+# This file used to be a Disallow-everything guard for the staging deployment.
+# It came out on launch day along with the <meta name="robots" content="noindex">
+# tag on every page. If either one ever comes back, nothing on this site can
+# rank however good the markup is.
 User-agent: *
-Disallow: /
+Allow: /
+
+Sitemap: https://retailmark.com/sitemap.xml

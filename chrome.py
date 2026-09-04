@@ -51,14 +51,22 @@ CTA = ("Book a Strategy Call", "contact.html", "#form")
 # card image 404'd, so iMessage fell back to scraping the page, found the
 # transparent wordmark, and rendered a link as a cropped logo on grey.
 #
-# ON LAUNCH DAY: change this one line to https://retailmark.com, then
-#   python3 chrome.py && python3 sitemap.py
-LAUNCH_ORIGIN = "https://retailmark.com"
-ORIGIN = "https://retailmark.tetheredcrew.com"
+# LAUNCHED 2026-09-04. The pages are on retailmark.com now, so this is the
+# host they are really on rather than one they are going to. Point it back at
+# the preview only if the site is ever served from there again — a card image
+# on the wrong host 404s, and iMessage then falls back to scraping the page,
+# finds the transparent wordmark, and renders a link as a cropped logo on grey.
+ORIGIN = "https://retailmark.com"
 
 # The build credit in the footer. The Tethered Crew landing page, not a deep
 # link into it. The utm_source says which client site sent them, which is the
 # only way to tell whether these credits do anything.
+# The link-preview card. Its filename carries a version because scrapers cache
+# an image by URL — see ogimage.py. It is imported rather than retyped so the
+# generator and the tag that points at it cannot drift apart, which they had:
+# this file still said og-card.png after the card became og-card-v3.png.
+from ogimage import OUT_NAME as OG_CARD  # noqa: E402
+
 CREDIT_URL = ("https://tetheredcrew.com/"
               "?utm_source=retailmark&utm_medium=footer&utm_campaign=site-credit")
 
@@ -165,14 +173,14 @@ def meta_for(page):
   <meta property="og:url" content="{url}">
   <meta property="og:title" content="{title}">
   <meta property="og:description" content="{desc}">
-  <meta property="og:image" content="{ORIGIN}/assets/og-card.png">
+  <meta property="og:image" content="{ORIGIN}/assets/{OG_CARD}">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta property="og:image:alt" content="RetailMark — omnichannel supplier solutions, Bentonville, Arkansas">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="{title}">
   <meta name="twitter:description" content="{desc}">
-  <meta name="twitter:image" content="{ORIGIN}/assets/og-card.png">{schema_for(page)}"""
+  <meta name="twitter:image" content="{ORIGIN}/assets/{OG_CARD}">{schema_for(page)}"""
 
 HEADER = """<!-- The black the glass bar sits on. Every page, not just the home page:
      the bar is translucent, so without this it takes its colour from whatever
