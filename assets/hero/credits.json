@@ -2,6 +2,13 @@
   "license": "Pexels License \u2014 free for commercial use, no attribution required",
   "photos": [
     {
+      "slug": "market-hall",
+      "pexels_id": 18139921,
+      "page": "https://www.pexels.com/photo/18139921/",
+      "file": "assets/hero/market-hall.webp",
+      "kb": 505.5
+    },
+    {
       "slug": "warehouse-aisle",
       "pexels_id": 5775099,
       "page": "https://www.pexels.com/photo/5775099/",

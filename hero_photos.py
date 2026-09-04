@@ -40,6 +40,23 @@ the same in every country and carries almost no type at all.
 Depth. Every frame needs somewhere to look down. A close crop of folded towels
 was in this list and came out: at full bleed a texture fills the frame and
 reads as a grey blur rather than as a place.
+
+`market-hall` is the one shop-floor frame and it is here because Justin asked
+for in-store pictures — of Walmart and TJ Maxx specifically, which is not
+possible twice over: no stock library licenses their interiors, and putting a
+retailer's livery on this site would be the endorsement the whole no-marks rule
+exists to avoid. So it is an unbranded store instead, chosen against the same
+three rules as everything else. Caleb picked it over a better-composed big-box
+aisle *because* that one had shoppers in the far distance and this one has
+none. Do not quietly swap it back.
+
+It keeps the plain centred crop, and that was checked rather than assumed. The
+band catches a wall banner reading "450 Canadian growers", and a country cue is
+the exact thing that got the first set of photographs replaced — but judged
+where it actually lands, greyscaled and under the scrim behind the buttons, the
+word is not readable. Cropping past it was tried and made the picture worse: the
+only band low enough is a chilled deli case, flat and close, and the only band
+high enough is ceiling. Judge a frame in the hero, not in the file.
 """
 
 import io
@@ -58,6 +75,7 @@ W, H = 2400, 1350
 
 # slug -> Pexels photo id. Order is the order they cycle in.
 PICKS = [
+    ("market-hall",    18139921),   # the only frame on the shop floor — see below
     ("warehouse-aisle", 5775099),   # racked aisle, vanishing point down the run
     ("club-racking",    4483610),   # club-format racking, pallets overhead
     ("pallet-stacks",  34221998),   # palletised cartons, floor line through them
