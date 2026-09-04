@@ -43,9 +43,12 @@ OUT = os.path.join(HERE, "assets", "hero")
 W, H = 2400, 1350
 
 # slug -> Pexels photo id. Order is the order they cycle in.
+#
+# A close crop of folded towels was in here and came out: at full bleed it is a
+# wall of texture with no depth, so it read as a grey blur rather than as a
+# shop. The ones that survive all have somewhere to look down.
 PICKS = [
     ("store-aisle",   5498225),   # supermarket aisle, deep centre perspective
-    ("soft-home",     20665616),  # folded home textiles, the off-price side
     ("club-racking",   4483610),  # club-format racking, pallets overhead
     ("stocked-aisle",  5951182),  # a stacked display running back into shelves
     ("distribution",   5860937),  # the aisle a pallet leaves from
